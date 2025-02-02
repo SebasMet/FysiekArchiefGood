@@ -4,9 +4,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HomeModule } from './home/home.module';
-import { provideIcons } from '@ng-icons/core';
-import { lucideChevronRight } from '@ng-icons/lucide';
-import { HlmIconDirective } from '@spartan-ng/ui-icon-helm';
+
 
 
 @NgModule({
@@ -17,9 +15,7 @@ import { HlmIconDirective } from '@spartan-ng/ui-icon-helm';
     BrowserModule,
     AppRoutingModule,
     HomeModule,
-    HlmIconDirective
   ],
-  providers: [provideIcons({ lucideChevronRight })],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

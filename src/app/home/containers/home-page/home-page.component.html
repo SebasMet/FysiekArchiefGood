@@ -1,12 +1,22 @@
 <body class="flex">
-    <div class="min-w-[255px] bg-gray-200"></div>
-    <section class="p-8 w-full flex flex-col self-stretch h-full">
-        
+    <!-- TO BE REMOVED -->
+    <div class="min-w-[255px] bg-gray-200"></div> 
+
+    <section class="p-8 w-full flex flex-col self-stretch h-full"> 
+    <section>
         <app-section-header>
+            <!-- CREATE THEME FOR BUTTONS -->
             <button class="bg-blue-900" hlmBtn> 
-                <ng-icon hlm size='sm' name="lucideChevronRight" /> 
+                <ng-icon name="heroPlus" size="20px" strokeWidth="2px" class="mr-1"></ng-icon>
                 Nieuw bestand analyseren
              </button>
         </app-section-header>
     </section>
+
+    <section class="flex flex-col gap-8">
+        <div>
+            <app-document-uploader></app-document-uploader>
+        </div>
+    </section>
+</section>
 </body>

@@ -3,25 +3,27 @@ import { CommonModule } from '@angular/common';
 import { HomePageComponent } from './containers/home-page/home-page.component';
 import { SectionHeaderComponent } from './components/section-header/section-header.component';
 import { HlmButtonDirective } from '@spartan-ng/ui-button-helm';
-import { HlmIconDirective } from "../../../libs/ui/ui-icon-helm/src/lib/hlm-icon.directive";
-import { HlmIconModule } from '@spartan-ng/ui-icon-helm';
-import { provideIcons } from '@ng-icons/core';
-import { lucideChevronRight } from '@ng-icons/lucide';
+import { NgIconsModule } from '@ng-icons/core';
+import { heroPlus } from '@ng-icons/heroicons/outline';
+import { heroArrowUpTray } from '@ng-icons/heroicons/outline';
+import { DocumentUploaderComponent } from './components/document-uploader/document-uploader.component';
+
 
 
 
 @NgModule({
   declarations: [
     HomePageComponent,
-    SectionHeaderComponent
+    SectionHeaderComponent,
+    DocumentUploaderComponent
   ],
   imports: [
     CommonModule,
     HlmButtonDirective,
-    HlmIconDirective,
-    HlmIconModule
+    NgIconsModule.withIcons({ heroPlus, heroArrowUpTray })
+
 ],
-providers: [provideIcons({ lucideChevronRight })],
+
 
 
 })
