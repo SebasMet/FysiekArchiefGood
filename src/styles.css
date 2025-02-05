@@ -19,7 +19,7 @@ body { margin: 0; font-family: Inter, Inter Fallback, sans-serif; }
 --card-foreground: 240 10% 3.9%;
 --popover: 0 0% 100%;
 --popover-foreground: 240 10% 3.9%;
---primary: 346.8 77.2% 49.8%;
+--primary: 219 46.4% 30.0%;
 --primary-foreground: 355.7 100% 97.3%;
 --secondary: 240 4.8% 95.9%;
 --secondary-foreground: 240 5.9% 10%;
@@ -31,7 +31,7 @@ body { margin: 0; font-family: Inter, Inter Fallback, sans-serif; }
 --destructive-foreground: 0 0% 98%;
 --border: 240 5.9% 90%;
 --input: 240 5.9% 90%;
---ring: 346.8 77.2% 49.8%;
+--ring: 219 46.4% 30.0%;
 --radius: 0.3rem;
 color-scheme: light;
 }

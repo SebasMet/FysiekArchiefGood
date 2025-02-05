@@ -1,22 +1,27 @@
-<body class="flex">
-    <!-- TO BE REMOVED -->
-    <div class="min-w-[255px] bg-gray-200"></div> 
+<body class="flex w-full">
+  <!-- TO BE REMOVED -->
+  <div class="min-w-[255px] bg-gray-200"></div>
 
-    <section class="p-8 w-full flex flex-col self-stretch h-full"> 
+  <section class="p-8 w-full flex flex-col self-stretch h-full">
     <section>
-        <app-section-header>
-            <!-- CREATE THEME FOR BUTTONS -->
-            <button class="bg-blue-900" hlmBtn> 
-                <ng-icon name="heroPlus" size="20px" strokeWidth="2px" class="mr-1"></ng-icon>
-                Nieuw bestand analyseren
-             </button>
-        </app-section-header>
+      <app-section-header>
+        <!-- CREATE THEME FOR BUTTONS -->
+        <button hlmBtn>
+          <ng-icon
+            name="heroPlus"
+            size="20px"
+            strokeWidth="2px"
+            class="mr-1"
+          ></ng-icon>
+          Nieuw bestand analyseren
+        </button>
+      </app-section-header>
     </section>
 
-    <section class="flex flex-col gap-8">
-        <div>
-            <app-document-uploader></app-document-uploader>
-        </div>
-    </section>
-</section>
+    <div class="flex flex-col gap-8 flex-grow">
+        <app-document-uploader></app-document-uploader>
+
+        <app-status-overview-table class="flex flex-col gap-4 flex-grow"></app-status-overview-table>
+    </div>
+  </section>
 </body>
