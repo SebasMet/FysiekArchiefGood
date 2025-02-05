@@ -1,0 +1,84 @@
+<div class="flex flex-col justify-between gap-4 sm:flex-row">
+    <input
+      hlmInput
+      class="w-full md:w-80"
+      placeholder="Filter emails..."
+      [ngModel]="_nameFilter()"
+      (ngModelChange)="_rawFilterInput.set($event)"
+    />
+
+    <button hlmBtn variant="outline" align="end">
+      Columns
+      <ng-icon hlm name="lucideChevronDown" class="ml-2" size="sm" />
+    </button>
+
+  </div>
+
+  <brn-table
+    hlm
+    stickyHeader
+    class="block overflow-auto rounded-md  h-full"
+    [dataSource]="_filteredSortedPaginatedPayments()"
+    [displayedColumns]="allDisplayedColumns"
+    [trackBy]="_trackBy"
+  >
+    <brn-column-def name="name" class="w-[25%] p-[10px]">
+      <hlm-th truncate *brnHeaderDef>Naam</hlm-th>
+      <hlm-td truncate *brnCellDef="let element">
+        {{ element.name | titlecase }}
+      </hlm-td>
+    </brn-column-def>
+    <brn-column-def name="ministry" class="w-[25%] p-[10px]">
+      <hlm-th *brnHeaderDef>
+        <button hlmBtn size="sm" variant="ghost" (click)="handleMinistirySort()">
+            Ministerie
+          <ng-icon hlm class="ml-3" size="sm" name="lucideArrowUpDown" />
+        </button>
+      </hlm-th>
+      <hlm-td truncate *brnCellDef="let element">
+        {{ element.ministry }}
+      </hlm-td>
+    </brn-column-def>
+    <brn-column-def name="assignedEmployee" class="w-[25%] p-[10px]">
+        <hlm-th truncate *brnHeaderDef>Toegewezen Medewerker</hlm-th>
+        <hlm-td truncate *brnCellDef="let element">
+          {{ element.assignedEmployee | titlecase }}
+        </hlm-td>
+      </brn-column-def>
+    <brn-column-def name="status" class="p-[10px]">
+      <hlm-th *brnHeaderDef>Status</hlm-th>
+      <hlm-td class="font-medium tabular-nums" *brnCellDef="let element">
+         {{ element.status}}
+      </hlm-td>
+    </brn-column-def>
+
+    <div class="flex items-center justify-center p-20 text-muted-foreground" brnNoDataRow>No data</div>
+  </brn-table>
+  <div
+    class="flex flex-col justify-between mt-4 sm:flex-row sm:items-center"
+    *brnPaginator="let ctx; totalElements: _totalElements(); pageSize: _pageSize(); onStateChange: _onStateChange"
+  >
+    <div class="flex mt-2 sm:mt-0 w-full justify-end">
+      <brn-select class="inline-block" placeholder="{{ _availablePageSizes[0] }}" [(ngModel)]="_pageSize">
+        <hlm-select-trigger class="inline-flex mr-1 w-15 h-9">
+          <hlm-select-value />
+        </hlm-select-trigger>
+        <hlm-select-content>
+          @for (size of _availablePageSizes; track size) {
+            <hlm-option [value]="size">
+              {{ size === 10000 ? 'All' : size }}
+            </hlm-option>
+          }
+        </hlm-select-content>
+      </brn-select>
+
+      <div class="flex space-x-1">
+        <button size="sm" variant="outline" hlmBtn [disabled]="!ctx.decrementable()" (click)="ctx.decrement()">
+          Previous
+        </button>
+        <button size="sm" variant="outline" hlmBtn [disabled]="!ctx.incrementable()" (click)="ctx.increment()">
+          Next
+        </button>
+      </div>
+    </div>
+  </div>
