@@ -5,7 +5,12 @@ import { AngularFireFunctionsModule } from '@angular/fire/compat/functions';
 import { firebaseConfig } from '../environments/environment';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { HomeModule } from './home/home.module';
+import { HomeModule } from '@home/home.module';
+import { CoreModule } from '@core/core.module';
+import { AngularFireStorageModule } from '@angular/fire/compat/storage';
+import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
+
+
 
 
 
@@ -17,7 +22,10 @@ import { HomeModule } from './home/home.module';
     BrowserModule,
     AppRoutingModule,
     HomeModule,
+    CoreModule,
     AngularFireModule.initializeApp(firebaseConfig),
+    AngularFireStorageModule, 
+    AngularFirestoreModule,
     AngularFireFunctionsModule,
   ],
   bootstrap: [AppComponent]
