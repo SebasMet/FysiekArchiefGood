@@ -5,6 +5,19 @@ import { AngularFireStorage, AngularFireUploadTask } from '@angular/fire/compat/
 import { from, Observable, of } from 'rxjs';
 import { switchMap, finalize, map, catchError } from 'rxjs/operators';
 import { NgZone } from '@angular/core';
+import {
+  Firestore,
+  setDoc,
+  addDoc,
+  collection,
+  getDocs,
+  query,
+  doc,
+  getDoc,
+  updateDoc,
+  arrayUnion,
+} from '@angular/fire/firestore';
+import { ref, Storage, uploadBytesResumable, getDownloadURL } from '@angular/fire/storage';
 
 
 
@@ -14,33 +27,29 @@ import { NgZone } from '@angular/core';
 export class DataService {
 
   constructor(
-    private storage: AngularFireStorage,
-    private firestore: AngularFirestore,
+    private storage: Storage,
+    private firestore: Firestore,
     private ngZone: NgZone
   ) { }
 
   public initializeArchiveDocument(uuid: string): Observable<boolean> {
-    return new Observable<boolean>((observer) => {
-      this.ngZone.run(() => {
-        this.firestore
-          .doc(`files/${uuid}`)
-          .set({ initialized: false })
-          .then(() => {
-            observer.next(true);
-            observer.complete();
-          })
-          .catch((error) => {
-            console.error('Error initializing document:', error);
-            observer.next(false);
-            observer.complete();
-          });
-      });
-    });
+    const filesCollection = collection(this.firestore, 'files');
+    const docRef = doc(filesCollection, uuid); 
+  
+    return from(
+      setDoc(docRef, { initialized: false }) 
+    ).pipe(
+      map(() => true), 
+      catchError((error) => {
+        console.error('Error initializing document:', error);
+        return of(false); 
+      })
+    );
   }
 
   public uploadFile(file: File, uuid: string): Observable<boolean> {
     const filePath = `uploads/${file.name}`;
-    const fileRef = this.storage.ref(filePath);
+    const fileRef = ref(this.storage, filePath);
     
     const metadata = {
       customMetadata: {
@@ -48,18 +57,26 @@ export class DataService {
       }
     };
 
-    const task = this.storage.upload(filePath, file, metadata);
+    const task = uploadBytesResumable(fileRef, file, metadata);
 
-    return task
-      .snapshotChanges()
-      .pipe(
-        finalize(() => {
-          fileRef.getDownloadURL().subscribe((url) => {
-            console.log(url)
+    return new Observable<boolean>(observer => {
+      task.on('state_changed',
+        (snapshot) => {
+          // progress updates can be handled here if needed
+        },
+        (error) => {
+          console.error('Upload failed:', error);
+          observer.next(false);
+          observer.complete();
+        },
+        () => {
+          getDownloadURL(fileRef).then(url => {
+            console.log(url);
+            observer.next(true);
+            observer.complete();
           });
-        }),
-        map(() => true),
-        catchError(() => of(false))
+        }
       );
+    });
   }
 }

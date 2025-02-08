@@ -38,7 +38,7 @@ if api_key is None:
 
 client = OpenAI(api_key=api_key)
 
-@storage_fn.on_object_finalized(region="europe-west4")
+@storage_fn.on_object_finalized(region="europe-west4", timeout_sec=300, memory=1024)
 def on_file_upload(event: storage_fn.CloudEvent[storage_fn.StorageObjectData]) -> None:
     db = firestore.client()
     bucket = storage.bucket()
@@ -169,7 +169,7 @@ def call_openai(req: https_fn.Request) -> https_fn.Response:
         response = client.beta.chat.completions.parse(
             model="gpt-4o-mini",
             messages=[
-                {"role": "system", "content": "Extract all data about perons and if available their job function, additionaly extract all dates and if available the event that happened on that day"},
+                {"role": "system", "content": "Extract all data about perons and if available their job function, additionaly extract all dates and if available the event that happened on that day. It is possible that not every page contains a name or date. Make sure to check every name, date, event and jobFunction on any gibberish and remove it"},
                 {"role": "user", "content": user_input},
             ],
             response_format=ContextData,

@@ -19,44 +19,39 @@ export class DocumentUploaderComponent {
 
   constructor(private dataService: DataService, private router: Router) {}
 
-  // Open the file input dialog
   openFileInput() {
     if (this.fileInput) {
       this.fileInput.nativeElement.click();
     }
   }
 
-  // Handle file selection from the input element
   onFileSelected(event: any) {
     const file: File = event.target.files[0];
 
     if (file && file.type === 'application/pdf') {
       this.selectedFile = file;
-      this.uploadFile(); // Automatically upload the file
+      this.uploadFile(); 
     } else {
       this.selectedFile = null;
       this.uploadError = 'Please select a valid PDF file.';
     }
   }
 
-  // Handle drag-over event to allow file drop
   onDragOver(event: DragEvent) {
     event.preventDefault();
   }
 
-  // Handle drag-leave event
   onDragLeave(event: DragEvent) {
     event.preventDefault();
   }
 
-  // Handle the drop event for drag-and-drop file uploads
   onDrop(event: DragEvent) {
     event.preventDefault();
     if (event.dataTransfer && event.dataTransfer.files.length > 0) {
       const file: File = event.dataTransfer.files[0];
       if (file && file.type === 'application/pdf') {
         this.selectedFile = file;
-        this.uploadFile(); // Automatically upload the file
+        this.uploadFile(); 
       } else {
         this.selectedFile = null;
         this.uploadError = 'Please select a valid PDF file.';
@@ -64,33 +59,31 @@ export class DocumentUploaderComponent {
     }
   }
 
-  // Upload the file using the DataService
   private uploadFile() {
     if (!this.selectedFile) {
       this.uploadError = 'No file selected.';
       return;
     }
   
-    this.uploadError = null; // Clear any previous errors
-    this.uploadSuccess = false; // Reset success state
-    this.uploadProgress = 0; // Reset progress
+    this.uploadError = null; 
+    this.uploadSuccess = false; 
+    this.uploadProgress = 0; 
   
     const uuid = crypto.randomUUID();
   
-    // Chain the calls using DataService
     this.dataService.uploadFile(this.selectedFile, uuid).pipe(
       switchMap((uploadSuccess) => {
         if (uploadSuccess) {
           return this.dataService.initializeArchiveDocument(uuid);
         } else {
-          return of(false); // If upload failed, skip initializing document
+          return of(false); 
         }
       })
     ).subscribe({
       next: (success) => {
         if (success) {
           this.uploadSuccess = true;
-          console.log('File uploaded and document initialized successfully');
+          this.router.navigate(['/report', uuid]); 
         } else {
           this.uploadError = 'File upload or document initialization failed.';
         }
@@ -108,7 +101,7 @@ export class DocumentUploaderComponent {
     this.uploadError = null;
     this.uploadSuccess = false;
     if (this.fileInput) {
-      this.fileInput.nativeElement.value = ''; // Clear the file input
+      this.fileInput.nativeElement.value = ''; 
     }
   }
 }
