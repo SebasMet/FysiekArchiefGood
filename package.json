@@ -29,8 +29,10 @@
     "clsx": "^2.1.1",
     "embla-carousel-angular": "18.0.0",
     "firebase": "^11.2.0",
+    "ng2-pdfjs-viewer": "^19.0.0",
     "ngx-scrollbar": ">=16.0.0",
     "ngx-sonner": "^2.0.0",
+    "pdfjs-dist": "^5.1.91",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
     "zone.js": "~0.15.0"

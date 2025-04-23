@@ -14,14 +14,17 @@ import { HlmInputDirective } from '@spartan-ng/ui-input-helm';
 import { HlmCheckboxComponent } from '@spartan-ng/ui-checkbox-helm';
 import { HlmLabelDirective } from '@spartan-ng/ui-label-helm';
 import { HlmButtonDirective } from '@spartan-ng/ui-button-helm';
-import { TempTableComponent } from './components/temp-table/temp-table.component';
 import { HlmTableModule } from '@spartan-ng/ui-table-helm';
 import { BrnTableModule } from '@spartan-ng/brain/table';
-import { TempTableDatesComponent } from './components/temp-table-dates/temp-table-dates.component';
 import { NgIconsModule } from '@ng-icons/core';
 import { NavigationCardComponent } from './components/navigation-card/navigation-card.component';
 import { heroCalendarDays, heroUsers, heroDocumentText } from '@ng-icons/heroicons/outline';
 import { ReportOptionsComponent } from './containers/report-options/report-options.component';
+import { ActorSearchResultCardComponent } from './components/actor-search-result-card/actor-search-result-card.component';
+import { PdfViewerComponent } from './components/pdf-viewer/pdf-viewer.component'
+
+// Please note, you must manually Copy node_modules\ng2-pdfjs-viewer\pdfjs to your public or asset folder or use any copy script as part of your build process.
+//  Another method could be to use TransferWebpackPlugin if you are using webpack(https://github.com/dkokorev90/transfer-webpack-plugin).
 
 
 
@@ -29,10 +32,10 @@ import { ReportOptionsComponent } from './containers/report-options/report-optio
   declarations: [
     ReportViewComponent,
     ContextConfirmationCardComponent,
-    TempTableComponent,
-    TempTableDatesComponent,
     NavigationCardComponent,
     ReportOptionsComponent,
+    ActorSearchResultCardComponent,
+    PdfViewerComponent,
   ],
   imports: [
     CommonModule,
