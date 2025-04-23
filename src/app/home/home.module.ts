@@ -13,10 +13,8 @@ import { heroArrowDownTray } from '@ng-icons/heroicons/outline';
 import { DocumentUploaderComponent } from './components/document-uploader/document-uploader.component';
 import { DocumentStatusOverviewComponent } from './components/document-status-overview/document-status-overview.component';
 import { StatusOverviewTableComponent } from './components/status-overview-table/status-overview-table.component';
-import { SelectionModel } from '@angular/cdk/collections';
 import { DecimalPipe, TitleCasePipe } from '@angular/common';
-import { Component, TrackByFunction, computed, effect, signal } from '@angular/core';
-import { toObservable, toSignal } from '@angular/core/rxjs-interop';
+
 import { FormsModule } from '@angular/forms';
 import { lucideArrowUpDown, lucideChevronDown, lucideEllipsis } from '@ng-icons/lucide';
 import { HlmCheckboxComponent } from '@spartan-ng/ui-checkbox-helm';
@@ -27,8 +25,6 @@ import { BrnTableModule, PaginatorState, useBrnColumnManager } from '@spartan-ng
 import { HlmTableModule } from '@spartan-ng/ui-table-helm';
 import { BrnSelectModule } from '@spartan-ng/brain/select';
 import { HlmSelectModule } from '@spartan-ng/ui-select-helm';
-import { hlmMuted } from '@spartan-ng/ui-typography-helm';
-import { debounceTime, map } from 'rxjs';
 import { HttpClientModule, provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 

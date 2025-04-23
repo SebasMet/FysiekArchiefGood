@@ -128,6 +128,7 @@ def on_file_upload(event: storage_fn.CloudEvent[storage_fn.StorageObjectData]) -
 
 @https_fn.on_request(region="europe-west4", timeout_sec=120, max_instances=500)
 def call_openai(req: https_fn.Request) -> https_fn.Response:
+    return
     """
     Firebase Cloud Function to call OpenAI's GPT-4 model.
     Accepts user input as a string in the request body (JSON format).

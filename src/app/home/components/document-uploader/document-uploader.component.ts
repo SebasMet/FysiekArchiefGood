@@ -83,7 +83,7 @@ export class DocumentUploaderComponent {
       next: (success) => {
         if (success) {
           this.uploadSuccess = true;
-          this.router.navigate(['/report', uuid]); 
+          this.router.navigate(['/options', uuid]); 
         } else {
           this.uploadError = 'File upload or document initialization failed.';
         }
