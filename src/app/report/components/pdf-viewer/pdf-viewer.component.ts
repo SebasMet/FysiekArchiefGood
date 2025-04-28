@@ -11,6 +11,7 @@ import {
   PDFDocumentProxy,
   PDFPageProxy,
 } from 'pdfjs-dist/types/src/display/api'; // Import types
+import { Observable, of } from 'rxjs';
 
 // Define a type for our shapes (optional but good practice)
 interface PdfShape {
@@ -108,6 +109,11 @@ export class PdfViewerComponent implements OnInit, AfterViewInit, OnDestroy {
       console.error('Error loading PDF:', error);
     }
   }
+
+  private renderPage2(pageNumber: number): Observable<void>{
+	if (!this.pdfDocument) {
+	}
+   }
 
   // Render a specific page of the PDF.
   async renderPage(pageNumber: number) {
@@ -237,16 +243,4 @@ export class PdfViewerComponent implements OnInit, AfterViewInit, OnDestroy {
       this.renderPage(this.currentPageNumber); // Re-render and redraw overlay
     }
   }
-
-  // Optional: Redraw overlay on window resize if layout might change
-  // @HostListener('window:resize')
-  // onResize() {
-  //   // Needs debouncing in a real app
-  //   if (this.pdfPage) {
-  //      // Re-rendering the page is safer as viewport might change completely
-  //      this.renderPage(this.currentPageNumber);
-  //      // Or, if only overlay needs repositioning/rescaling (less common):
-  //      // this.drawOverlay();
-  //   }
-  // }
 }
