@@ -1,7 +1,7 @@
 // src/app/document-uploader/document-uploader.component.ts
 import { Component, ElementRef, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
-import { DataService } from '@core/services/data.service'; // Import the DataService
+import { DataService } from '@core/services/data.service';
 import { of, switchMap } from 'rxjs';
 
 @Component({
@@ -51,7 +51,8 @@ export class DocumentUploaderComponent {
       const file: File = event.dataTransfer.files[0];
       if (file && file.type === 'application/pdf') {
         this.selectedFile = file;
-        this.uploadFile(); 
+      this.uploadFile(); 
+
       } else {
         this.selectedFile = null;
         this.uploadError = 'Please select a valid PDF file.';
@@ -71,28 +72,8 @@ export class DocumentUploaderComponent {
   
     const uuid = crypto.randomUUID();
   
-    this.dataService.uploadFile(this.selectedFile, uuid).pipe(
-      switchMap((uploadSuccess) => {
-        if (uploadSuccess) {
-          return this.dataService.initializeArchiveDocument(uuid);
-        } else {
-          return of(false); 
-        }
-      })
-    ).subscribe({
-      next: (success) => {
-        if (success) {
-          this.uploadSuccess = true;
-          this.router.navigate(['/options', uuid]); 
-        } else {
-          this.uploadError = 'File upload or document initialization failed.';
-        }
-      },
-      error: (error) => {
-        console.error('Error during upload or initialization:', error);
-        this.uploadError = 'An unexpected error occurred.';
-      },
-    });
+    this.dataService.uploadFile(this.selectedFile, uuid)
+     
   }
 
   resetState() {
@@ -105,3 +86,28 @@ export class DocumentUploaderComponent {
     }
   }
 }
+
+
+// this.dataService.uploadFile(this.selectedFile, uuid).pipe(
+//   switchMap((uploadSuccess) => {
+//     if (uploadSuccess) {
+//       return this.dataService.initializeArchiveDocument(uuid);
+//     } else {
+//       return of(false); 
+//     }
+//   })
+// ).subscribe({
+//   next: (success) => {
+//     if (success) {
+//       this.uploadSuccess = true;
+//       this.router.navigate(['/options', uuid]); 
+//     } else {
+//       this.uploadError = 'File upload or document initialization failed.';
+//     }
+//   },
+//   error: (error) => {
+//     console.error('Error during upload or initialization:', error);
+//     this.uploadError = 'An unexpected error occurred.';
+//   },
+// });
+// }

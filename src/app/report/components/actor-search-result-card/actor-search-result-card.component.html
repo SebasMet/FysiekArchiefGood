@@ -1,6 +1,45 @@
 <div hlmCard class="w-full">
-    <h1 class="font-bold text-xl" hlmCardHeader>Ministerie van Binnenlandse zaken en Koning dingen</h1>
+    <h1 class="font-bold text-xl" hlmCardHeader>
+      Ministerie van Binnenlandse zaken en Koning dingen
+    </h1>
+  
     <div hlmCardContent>
-        <p>Het ministerie van BZK is verantwoordelijk voor de binnenlandse aangelegenheden van Nederland, zoals de werking van de democratie, de rechtsstaat, de organisatie van de overheid, en de relatie tussen het Rijk en de gemeenten. Daarnaast onderhoudt het ministerie de betrekkingen binnen het Koninkrijk der Nederlanden, waaronder de samenwerking met Aruba, Curaçao en Sint Maarten.</p>
+      <p>
+        Het ministerie van BZK is verantwoordelijk voor de binnenlandse
+        aangelegenheden van Nederland, zoals de werking van de democratie, de
+        rechtsstaat, de organisatie van de overheid, en de relatie tussen het Rijk
+        en de gemeenten. Daarnaast onderhoudt het ministerie de betrekkingen
+        binnen het Koninkrijk der Nederlanden, waaronder de samenwerking met
+        Aruba, Curaçao en Sint Maarten.
+      </p>
     </div>
-</div>
+  
+    <hlm-dialog>
+      <hlm-dialog-content class="max-w-fit" *brnDialogContent="let ctx">
+        <app-pdf-viewer></app-pdf-viewer>
+      </hlm-dialog-content>
+  
+      <div class="gap-x-4 flex flex-wrap" hlmCardFooter>
+        <div
+          class="outline outline-1 h-33 w-24 rounded-lg overflow-hidden cursor-pointer hover:outline-blue-500 flex"
+          *ngFor="let thumbnail of imageThumbnails"
+        >
+          <button
+            brnDialogTrigger
+            hlmBtn
+            class="h-full w-full p-0 m-0 border-none bg-transparent flex"
+          >
+            <img
+              class="object-cover h-full w-full align-top"
+              [src]="thumbnail"
+              alt="thumbnail"
+            />
+          </button>
+        </div>
+        <div *ngIf="imageThumbnails.length > 2" class="outline outline-1 rounded-full aspect-square w-12 h-12">
+            dfdf
+        </div>
+
+      </div>
+    </hlm-dialog>
+  </div>

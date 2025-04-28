@@ -12,7 +12,7 @@ export class ReportOptionsComponent {
 
   private _uuid: string = '';
 
-  constructor(private router: Router,private route: ActivatedRoute) {
+  constructor(private router: Router, private route: ActivatedRoute) {
     this._uuid = this.route.snapshot.paramMap.get('uuid') || '';
 
    }

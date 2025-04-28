@@ -22,6 +22,15 @@ import { heroCalendarDays, heroUsers, heroDocumentText } from '@ng-icons/heroico
 import { ReportOptionsComponent } from './containers/report-options/report-options.component';
 import { ActorSearchResultCardComponent } from './components/actor-search-result-card/actor-search-result-card.component';
 import { PdfViewerComponent } from './components/pdf-viewer/pdf-viewer.component'
+import { BrnDialogContentDirective, BrnDialogTriggerDirective } from '@spartan-ng/brain/dialog';
+import {
+  HlmDialogComponent,
+  HlmDialogContentComponent,
+  HlmDialogDescriptionDirective,
+  HlmDialogFooterComponent,
+  HlmDialogHeaderComponent,
+  HlmDialogTitleDirective,
+} from '@spartan-ng/ui-dialog-helm';
 
 // Please note, you must manually Copy node_modules\ng2-pdfjs-viewer\pdfjs to your public or asset folder or use any copy script as part of your build process.
 //  Another method could be to use TransferWebpackPlugin if you are using webpack(https://github.com/dkokorev90/transfer-webpack-plugin).
@@ -51,6 +60,15 @@ import { PdfViewerComponent } from './components/pdf-viewer/pdf-viewer.component
     HlmLabelDirective,
     BrnTableModule,
     HlmTableModule,
+    BrnDialogTriggerDirective,
+    BrnDialogContentDirective,
+
+    HlmDialogComponent,
+    HlmDialogContentComponent,
+    HlmDialogHeaderComponent,
+    HlmDialogFooterComponent,
+    HlmDialogTitleDirective,
+    HlmDialogDescriptionDirective,
     NgIconsModule.withIcons({ heroDocumentText, heroUsers, heroCalendarDays}),
     
   ]

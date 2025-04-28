@@ -1,4 +1,4 @@
-<div class="pdf-viewer-controls">
+<div class="flex gap-x-4">
 	<button (click)="goToPrevPage()" [disabled]="currentPage <= 1">
 		Previous
 	</button>
@@ -13,6 +13,22 @@
 	<button (click)="zoomOut()">Zoom Out</button>
 </div>
 
+<!--
+  Container needs position: relative so the absolute overlay stays within it.
+  Adjust width/height/overflow as needed for your layout.
+-->
+<div class="relative w-max h-max border border-gray-300 overflow-auto">
+  <!-- Canvas for PDF rendering -->
+  <canvas #pdfCanvas></canvas>
+
+  <!-- Canvas for drawing overlay -->
+  <canvas #overlayCanvas class="absolute top-0 left-0 pointer-events-none"></canvas>
+</div>
+
+
+<!-- Remove the old container -->
+<!--
 <div class="pdf-container">
 	<div #pdfContainer></div>
 </div>
+-->

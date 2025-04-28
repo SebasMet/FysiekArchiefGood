@@ -8,5 +8,6 @@ import { Component } from '@angular/core';
   styles: ``
 })
 export class ActorSearchResultCardComponent {
+  public imageThumbnails: string[] = ['https://placehold.co/400x600','https://placehold.co/400x600','https://placehold.co/400x600']; 
 
 }
