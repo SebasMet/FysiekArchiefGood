@@ -27,6 +27,8 @@ import {
 } from '@supabase/supabase-js';
 import { environment } from '../../../environments/environment';
 import { Database } from '@core/types/types';
+import { map, Observable } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root',
@@ -35,7 +37,7 @@ export class DataService {
   private supabase: SupabaseClient<Database>;
   public _session: AuthSession | null = null
 
-  constructor() {
+  constructor(private readonly http: HttpClient) {
     this.supabase = createClient<Database>(
       environment.SUPABASE_URL,
       environment.SUPABASE_ANON_KEY
@@ -54,6 +56,15 @@ export class DataService {
   public async uploadFile(file: File, uuid: string) {
     const response = this.supabase.storage.from('archives').upload(`${file.name}_${uuid}`, file)
     
+  }
+
+  public getArchiveAnalyzeResults(uuid: string): Observable<any> {
+    // const url = new URL(`${environment.SUPABASE_URL}/storage/v1/object/public/archives/${uuid}`);
+    console.log("called")
+    const url = `http://localhost:3000/data`
+    return this.http.get<any>(url.toString())
+
+
   }
 
   // public async uploadFile(file: File, uuid: string) {

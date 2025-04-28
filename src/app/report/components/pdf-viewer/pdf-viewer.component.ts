@@ -110,10 +110,10 @@ export class PdfViewerComponent implements OnInit, AfterViewInit, OnDestroy {
     }
   }
 
-  private renderPage2(pageNumber: number): Observable<void>{
-	if (!this.pdfDocument) {
-	}
-   }
+  // private renderPage2(pageNumber: number): Observable<void>{
+	// if (!this.pdfDocument) {
+	// }
+  //  }
 
   // Render a specific page of the PDF.
   async renderPage(pageNumber: number) {
