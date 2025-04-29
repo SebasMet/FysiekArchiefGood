@@ -60,7 +60,7 @@ export class DocumentUploaderComponent {
     }
   }
 
-  private uploadFile() {
+  private async uploadFile() {
     if (!this.selectedFile) {
       this.uploadError = 'No file selected.';
       return;
@@ -72,7 +72,13 @@ export class DocumentUploaderComponent {
   
     const uuid = crypto.randomUUID();
   
-    this.dataService.uploadFile(this.selectedFile, uuid)
+
+    const upload = await this.dataService.uploadFile(this.selectedFile, uuid)
+    if(upload) {
+      this.router.navigate(['/options', upload])
+
+    }
+
      
   }
 

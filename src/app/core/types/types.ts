@@ -45,6 +45,7 @@ export type Database = {
           dossier_id: string
           embedding: string | null
           id: string
+          image_url: string
           importance: number | null
           markdown_text: string
           page_number: number | null
@@ -60,6 +61,7 @@ export type Database = {
           dossier_id: string
           embedding?: string | null
           id?: string
+          image_url?: string
           importance?: number | null
           markdown_text: string
           page_number?: number | null
@@ -75,6 +77,7 @@ export type Database = {
           dossier_id?: string
           embedding?: string | null
           id?: string
+          image_url?: string
           importance?: number | null
           markdown_text?: string
           page_number?: number | null
@@ -86,6 +89,13 @@ export type Database = {
             columns: ["dossier_id"]
             isOneToOne: false
             referencedRelation: "dossiers"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "dossiers_pages_dossier_id_fkey"
+            columns: ["dossier_id"]
+            isOneToOne: false
+            referencedRelation: "dossiers_with_storage_path"
             referencedColumns: ["id"]
           },
         ]
@@ -115,17 +125,9 @@ export type Database = {
           project_id?: string
           storage_object_id?: string
         }
-        Relationships: [
-          {
-            foreignKeyName: "dossiers_project_id_fkey"
-            columns: ["project_id"]
-            isOneToOne: false
-            referencedRelation: "project"
-            referencedColumns: ["id"]
-          },
-        ]
+        Relationships: []
       }
-      project: {
+      projects: {
         Row: {
           actors: string[]
           created_at: string
@@ -161,7 +163,25 @@ export type Database = {
             referencedRelation: "dossiers"
             referencedColumns: ["id"]
           },
+          {
+            foreignKeyName: "dossiers_pages_dossier_id_fkey"
+            columns: ["archive_id"]
+            isOneToOne: false
+            referencedRelation: "dossiers_with_storage_path"
+            referencedColumns: ["id"]
+          },
         ]
+      }
+      dossiers_with_storage_path: {
+        Row: {
+          created_at: string | null
+          created_by: string | null
+          id: string | null
+          project_id: string | null
+          storage_object_id: string | null
+          storage_object_path: string | null
+        }
+        Relationships: []
       }
       users: {
         Row: {
@@ -186,7 +206,7 @@ export type Database = {
       }
     }
     Functions: {
-      background_tasks_service_url: {
+      app_url: {
         Args: Record<PropertyKey, never>
         Returns: string
       }
@@ -202,11 +222,16 @@ export type Database = {
           dossier_id: string
           embedding: string | null
           id: string
+          image_url: string
           importance: number | null
           markdown_text: string
           page_number: number | null
           summary: string | null
         }[]
+      }
+      process_dossier: {
+        Args: { storage_object_id: string; project_id: string }
+        Returns: undefined
       }
       supabase_url: {
         Args: Record<PropertyKey, never>

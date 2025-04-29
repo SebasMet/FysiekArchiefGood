@@ -16,14 +16,14 @@
 
     <div hlmCardContent>
       <div class="p-3 flex flex-col gap-y-3" hlmCard>
-        <input class="w-full" hlmInput />
-        <input class="w-full" hlmInput />
-        <input class="w-full" hlmInput />
+        <input #actor1 class="w-full" hlmInput />
+        <input #actor2 class="w-full" hlmInput />
+        <input #actor3 class="w-full" hlmInput />
       </div>
     </div>
 
     <div hlmCardFooter class="justify-end">
-        <button (click)="navigateToReport()" hlmBtn>Analyze</button>
+        <button (click)="navigateToReport(actor1.value, actor2.value, actor3.value)" hlmBtn>Analyze</button>
     </div>
   </section>
 </div>

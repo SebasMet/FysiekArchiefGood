@@ -26,7 +26,7 @@ export class ReportViewComponent implements OnInit {
   ngOnInit(): void {
     console.log('ReportViewComponent initialized');
     this._uuid = this.route.snapshot.paramMap.get('uuid') || '';
-    this.analyzedResults$ = this.dataService.getArchiveAnalyzeResults(this._uuid)
+    // this.analyzedResults$ = this.dataService.getArchiveAnalyzeResults(this._uuid)
   }
 
 }
