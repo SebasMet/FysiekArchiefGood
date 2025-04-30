@@ -1,7 +1,15 @@
 <div class="flex gap-x-5 p-5">
   <app-navigation-card></app-navigation-card>
   <div class="w-full">
-  <app-actor-search-result-card [analyzedResults$]="analyzedResults$"></app-actor-search-result-card>
+    <div hlmCard *ngIf="!isInitialized" class="w-full h-96 flex flex-col justify-center items-center gap-y-3">
+      <hlm-spinner />
+      <p class="text-sm text-gray-600">Bezig met analyseren...</p>
+
+    </div>
+    <app-actor-search-result-card
+    *ngFor="let actorGroup of groupedActorData"
+    [actorGroupData]="actorGroup">
+    </app-actor-search-result-card>
 
   </div>
   <div hlmCard class="xl:min-w-[330px] md:min-w-[270px] h-[300px]"></div>

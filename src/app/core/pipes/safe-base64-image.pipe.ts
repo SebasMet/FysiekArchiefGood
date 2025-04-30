@@ -4,7 +4,7 @@ import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 
 @Pipe({
   name: 'safeBase64Image',
-  standalone: false
+  standalone: true
 })
 export class SafeBase64ImagePipe implements PipeTransform {
 

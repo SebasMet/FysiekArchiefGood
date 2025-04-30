@@ -31,6 +31,9 @@ import {
   HlmDialogHeaderComponent,
   HlmDialogTitleDirective,
 } from '@spartan-ng/ui-dialog-helm';
+import { SafeBase64ImagePipe } from '@core/pipes/safe-base64-image.pipe';
+import { HlmSpinnerComponent } from '@spartan-ng/ui-spinner-helm';
+
 
 // Please note, you must manually Copy node_modules\ng2-pdfjs-viewer\pdfjs to your public or asset folder or use any copy script as part of your build process.
 //  Another method could be to use TransferWebpackPlugin if you are using webpack(https://github.com/dkokorev90/transfer-webpack-plugin).
@@ -58,10 +61,12 @@ import {
     HlmButtonDirective,
     HlmCheckboxComponent,
     HlmLabelDirective,
+    HlmSpinnerComponent,
     BrnTableModule,
     HlmTableModule,
     BrnDialogTriggerDirective,
     BrnDialogContentDirective,
+    SafeBase64ImagePipe,
 
     HlmDialogComponent,
     HlmDialogContentComponent,

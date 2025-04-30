@@ -4,8 +4,11 @@ import {
   OnDestroy,
   ElementRef,
   ViewChild,
-  AfterViewInit, // Import AfterViewInit
+  AfterViewInit,
+  Input, // Import AfterViewInit
 } from '@angular/core';
+import { DataService } from '@core/services/data.service';
+import { AnalyzedDocument } from '@core/types/AnalyzedDocument';
 import * as pdfjsLib from 'pdfjs-dist';
 import {
   PDFDocumentProxy,
@@ -34,10 +37,12 @@ export class PdfViewerComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild('overlayCanvas', { static: true })
   overlayCanvasRef!: ElementRef<HTMLCanvasElement>;
 
+  @Input() actorGroupData: AnalyzedDocument[] | undefined; // Define the type based on your data structure
+
   private pdfDocument: PDFDocumentProxy | null = null;
   private pdfPage: PDFPageProxy | null = null; // Store the current page object
   private currentPageNumber = 1;
-  private scale = 1.5;
+  private scale = 0.5;
   public totalPages = 0;
   public currentPage = 1;
 
@@ -70,7 +75,9 @@ export class PdfViewerComponent implements OnInit, AfterViewInit, OnDestroy {
   ];
   // -------------------------------------------
 
-  constructor() {}
+  constructor(private dataService: DataService) {
+
+  }
 
   ngOnInit(): void {
     // Worker setup can happen here
@@ -99,7 +106,19 @@ export class PdfViewerComponent implements OnInit, AfterViewInit, OnDestroy {
         console.error('Canvas elements not ready yet.');
         return;
       }
-      const loadingTask = pdfjsLib.getDocument('../../assets/sample.pdf'); // Path to your PDF file. Adjust if needed.
+
+      const pdfFile: File | null | undefined = this.dataService.currentFile;
+
+      // --- Check if the file exists ---
+      if (!pdfFile) {
+        console.warn('No current PDF file found in DataService.');
+        return;
+      }
+      const arrayBuffer = await pdfFile.arrayBuffer();
+      console.log('File read into ArrayBuffer.');
+      const loadingTask = pdfjsLib.getDocument({ data: arrayBuffer });
+
+
       this.pdfDocument = await loadingTask.promise;
       this.totalPages = this.pdfDocument.numPages;
       this.currentPageNumber = 1;
@@ -111,8 +130,8 @@ export class PdfViewerComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   // private renderPage2(pageNumber: number): Observable<void>{
-	// if (!this.pdfDocument) {
-	// }
+  // if (!this.pdfDocument) {
+  // }
   //  }
 
   // Render a specific page of the PDF.

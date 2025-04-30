@@ -42,6 +42,7 @@ export class DataService {
   private supabase: SupabaseClient<Database>;
   public _session: AuthSession | null = null
   public _UserSession: User
+  public currentFile: File | null = null;
 
   private analyzeResultSubject = new BehaviorSubject<any>(null);
   public analyzeResult$ = this.analyzeResultSubject.asObservable();
@@ -74,6 +75,7 @@ export class DataService {
       return null
     }
     if (response.data.id) {
+      this.currentFile = file
       return response.data.id
     }
     return null
@@ -81,7 +83,6 @@ export class DataService {
 
   public async createDossier(projectId: string, storageObjectId: string) {
     const response = await this.supabase.from("dossiers").insert({ project_id: projectId, storage_object_id: storageObjectId, created_by: this.session?.user.id ?? '' }).select("id").single()
-
     if(!response) {
       return;
     }
@@ -98,6 +99,7 @@ export class DataService {
       return null
     }
   }
+
 
   public startAnalyze(dossierId: string): void {
     const url = '/api/process/actors';

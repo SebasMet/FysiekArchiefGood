@@ -1,29 +1,24 @@
 <div hlmCard class="w-full">
     <h1 class="font-bold text-xl" hlmCardHeader>
-      Ministerie van Binnenlandse zaken en Koning dingen
+      {{actorGroupData?.actorName}}
     </h1>
 
     <div hlmCardContent>
       <p>
-        Het ministerie van BZK is verantwoordelijk voor de binnenlandse
-        aangelegenheden van Nederland, zoals de werking van de democratie, de
-        rechtsstaat, de organisatie van de overheid, en de relatie tussen het Rijk
-        en de gemeenten. Daarnaast onderhoudt het ministerie de betrekkingen
-        binnen het Koninkrijk der Nederlanden, waaronder de samenwerking met
-        Aruba, Curaçao en Sint Maarten.
+        Een speciale manier om vraag en aanbod op de arbeidsmarkt met elkaar in overeenstemming te brengen is emigratie: het overschot aan arbeidskrachten wordt hiermee in wezen verplaatst naar buiten de nationale arbeidsmarkt. Het gaat dus om een bijzondere vorm van geografische mobiliteit.
       </p>
     </div>
 
     <hlm-dialog>
       <hlm-dialog-content class="max-w-fit" *brnDialogContent="let ctx">
-        <app-pdf-viewer></app-pdf-viewer>
+        <app-pdf-viewer [actorGroupData]="actorGroupData?.pages"></app-pdf-viewer>
       </hlm-dialog-content>
 
       <div class="gap-x-4 flex flex-wrap" hlmCardFooter>
         <div
-          class="outline outline-1 h-33 w-24 rounded-lg overflow-hidden cursor-pointer hover:outline-blue-500 flex"
-          *ngFor="let thumbnail of imageThumbnails"
-        >
+          class=" h-33 w-24 rounded-lg overflow-hidden cursor-pointer hover:outline-blue-500 flex"
+          *ngFor="let thumbnail of actorGroupData?.pages | slice:0:3"
+          >
           <button
             brnDialogTrigger
             hlmBtn
@@ -31,13 +26,13 @@
           >
             <img
               class="object-cover h-full w-full align-top"
-              [src]="thumbnail"
               alt="thumbnail"
+              [src]="thumbnail?.base64Image | safeBase64Image:'png'"
             />
           </button>
         </div>
-        <div *ngIf="imageThumbnails.length > 2" class="outline outline-1 rounded-full aspect-square w-12 h-12 flex justify-center items-center ">
-            <p>+99</p>
+        <div *ngIf="actorGroupData && actorGroupData.pages && actorGroupData.pages.length > 3" class="flex items-center text-sm text-gray-500 pl-2">
+          ... and {{ actorGroupData.pages.length - 3 }} more
         </div>
 
       </div>

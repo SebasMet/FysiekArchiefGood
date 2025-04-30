@@ -1,6 +1,11 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { AnalyzedDocument } from '@core/types/AnalyzedDocument';
-import { Observable } from 'rxjs';
+import { Component, Input, OnInit, OnDestroy } from '@angular/core';
+import { AnalyzedDocument, ActorMentioned } from '@core/types/AnalyzedDocument';
+import { Observable, Subscription } from 'rxjs';
+
+export interface GroupedActor {
+  actorName: string;
+  pages: AnalyzedDocument[];
+}
 
 @Component({
   selector: 'app-actor-search-result-card',
@@ -8,28 +13,9 @@ import { Observable } from 'rxjs';
   templateUrl: './actor-search-result-card.component.html',
   styles: ``
 })
-export class ActorSearchResultCardComponent implements OnInit {
-  public imageThumbnails: string[] = [];
-
-  @Input() analyzedResults$: Observable<any>; // Expected to be { data: [...] }
+export class ActorSearchResultCardComponent   {
+  @Input() actorGroupData: GroupedActor | null = null;
 
   constructor() {}
 
-  ngOnInit(): void {
-    this.analyzedResults$.subscribe((results) => {
-      if (!results || !Array.isArray(results.data)) {
-        return;
-      }
-
-      const filtered = results.data.filter((result: AnalyzedDocument) => {
-        return result.actors_mentioned?.some((actor: any) => actor.mentioned === true);
-      });
-
-      this.imageThumbnails = filtered.slice(0, 3).map((result: any) => {
-        return `data:image/png;base64,${result.base64Image}`;
-      });
-
-      console.log("Filtered image thumbnails:", this.imageThumbnails);
-    });
-  }
 }
