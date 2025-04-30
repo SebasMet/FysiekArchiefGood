@@ -70,7 +70,7 @@ import {
     HlmDialogTitleDirective,
     HlmDialogDescriptionDirective,
     NgIconsModule.withIcons({ heroDocumentText, heroUsers, heroCalendarDays}),
-    
+
   ]
 })
 export class ReportModule { }

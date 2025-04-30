@@ -27,8 +27,8 @@ import {
 } from '@supabase/supabase-js';
 import { environment } from '../../../environments/environment';
 import { Database } from '@core/types/types';
-import { map, Observable } from 'rxjs';
-import { HttpClient } from '@angular/common/http';
+import { BehaviorSubject, map, Observable } from 'rxjs';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 const test_user = {
   email: "test@test.com",
@@ -42,6 +42,9 @@ export class DataService {
   private supabase: SupabaseClient<Database>;
   public _session: AuthSession | null = null
   public _UserSession: User
+
+  private analyzeResultSubject = new BehaviorSubject<any>(null);
+  public analyzeResult$ = this.analyzeResultSubject.asObservable();
 
   constructor(private readonly http: HttpClient) {
     this.supabase = createClient<Database>(
@@ -96,21 +99,26 @@ export class DataService {
     }
   }
 
-  public async startAnalyze(dossierId: string) {
-    console.log(`dossierId = ${dossierId}`)
+  public startAnalyze(dossierId: string): void {
+    const url = '/api/process/actors';
 
-    // Use the relative proxy path '/api' instead of the full backend URL
-    const response = await fetch("/api/process/actors", { // <--- CHANGE HERE
-      body: JSON.stringify({dossier_id: dossierId}),
-      method: "POST",
-      headers: {
-        'Content-Type': 'application/json',
-        // Ensure session and token exist before using them!
-        ...(this.session?.access_token && {'Authorization': `Bearer ${this.session.access_token}`})
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      ...(this.session?.access_token && { 'Authorization': `Bearer ${this.session.access_token}` })
+    });
+
+    const body = { dossier_id: dossierId };
+
+    this.http.post(url, body, { headers }).subscribe({
+      next: (response) => {
+        console.log('Result from backend:', JSON.stringify(response));
+        this.analyzeResultSubject.next(response); // <-- Push result to BehaviorSubject
       },
-    })
-
-    console.log(await response.json())
+      error: (error) => {
+        console.error('Error in startAnalyze:', error);
+        this.analyzeResultSubject.error(error); // Optional
+      }
+    });
   }
 
 

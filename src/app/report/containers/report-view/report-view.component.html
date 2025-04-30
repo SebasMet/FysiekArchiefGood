@@ -1,9 +1,8 @@
 <div class="flex gap-x-5 p-5">
   <app-navigation-card></app-navigation-card>
   <div class="w-full">
-  <app-actor-search-result-card></app-actor-search-result-card>
-    <div hlmCard class="w-full mt-10">
-    </div>
+  <app-actor-search-result-card [analyzedResults$]="analyzedResults$"></app-actor-search-result-card>
+
   </div>
   <div hlmCard class="xl:min-w-[330px] md:min-w-[270px] h-[300px]"></div>
 </div>
