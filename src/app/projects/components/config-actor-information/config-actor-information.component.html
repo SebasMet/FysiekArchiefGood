@@ -1,0 +1,18 @@
+<div class="flex flex-col gap-y-4">
+  <div>
+    <h2 class="text-lg font-semibold">Actoren</h2>
+    <h5 class="text-base text-[#142137cc]">
+      Met de hulp van het beslisdocument, vul de actoren in
+    </h5>
+  </div>
+  <app-config-actor-form *ngFor="let actor of actors" [actor]="actor"></app-config-actor-form>
+  <button hlmBtn (click)="addActor()" variant="outline" class="w-fit text-gray-500">
+    <ng-icon
+      name="heroPlus"
+      size="20px"
+      strokeWidth="2px"
+      class="mr-1"
+    ></ng-icon>
+    Nog een actor toevoegen
+  </button>
+</div>

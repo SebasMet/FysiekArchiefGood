@@ -5,6 +5,7 @@ import { AppComponent } from './app.component';
 import { HomeModule } from '@home/home.module';
 import { CoreModule } from '@core/core.module';
 import { ReportModule } from './report/report.module';
+import { ProjectsModule } from './projects/projects.module';
 
 
 
@@ -16,6 +17,7 @@ import { ReportModule } from './report/report.module';
     HomeModule,
     CoreModule,
     ReportModule,
+    ProjectsModule
 
   ],
   providers: [
