@@ -7,6 +7,12 @@ import { CoreModule } from '@core/core.module';
 import { ReportModule } from './report/report.module';
 import { ProjectsModule } from './projects/projects.module';
 
+import { HlmSeparatorDirective } from '@spartan-ng/ui-separator-helm';
+import { BrnSeparatorComponent } from '@spartan-ng/brain/separator';
+import { NgIconsModule } from '@ng-icons/core';
+import { heroDocumentArrowUp, heroHome, heroSquare2Stack, heroUsers } from '@ng-icons/heroicons/outline';
+
+
 
 
 @NgModule({
@@ -17,7 +23,10 @@ import { ProjectsModule } from './projects/projects.module';
     HomeModule,
     CoreModule,
     ReportModule,
-    ProjectsModule
+    ProjectsModule,
+    HlmSeparatorDirective,
+    BrnSeparatorComponent,
+    NgIconsModule.withIcons({ heroHome, heroUsers, heroDocumentArrowUp, heroSquare2Stack }),
 
   ],
   providers: [
