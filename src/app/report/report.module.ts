@@ -33,6 +33,10 @@ import {
 } from '@spartan-ng/ui-dialog-helm';
 import { SafeBase64ImagePipe } from '@core/pipes/safe-base64-image.pipe';
 import { HlmSpinnerComponent } from '@spartan-ng/ui-spinner-helm';
+import { HlmTabsComponent, HlmTabsContentDirective, HlmTabsListComponent, HlmTabsTriggerDirective } from '@spartan-ng/ui-tabs-helm';
+import { TimelineResultCardComponent } from './components/timeline-result-card/timeline-result-card.component';
+import { TimelineComponent } from './components/timeline/timeline.component';
+import { SummaryResultCardComponent } from './components/summary-result-card/summary-result-card.component';
 
 
 // Please note, you must manually Copy node_modules\ng2-pdfjs-viewer\pdfjs to your public or asset folder or use any copy script as part of your build process.
@@ -48,6 +52,9 @@ import { HlmSpinnerComponent } from '@spartan-ng/ui-spinner-helm';
     ReportOptionsComponent,
     ActorSearchResultCardComponent,
     PdfViewerComponent,
+    TimelineResultCardComponent,
+    TimelineComponent,
+    SummaryResultCardComponent,
   ],
   imports: [
     CommonModule,
@@ -74,6 +81,10 @@ import { HlmSpinnerComponent } from '@spartan-ng/ui-spinner-helm';
     HlmDialogFooterComponent,
     HlmDialogTitleDirective,
     HlmDialogDescriptionDirective,
+    HlmTabsComponent,
+    HlmTabsListComponent,
+    HlmTabsTriggerDirective,
+    HlmTabsContentDirective,
     NgIconsModule.withIcons({ heroDocumentText, heroUsers, heroCalendarDays}),
 
   ]

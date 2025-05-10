@@ -11,6 +11,7 @@ import { HlmSeparatorDirective } from '@spartan-ng/ui-separator-helm';
 import { BrnSeparatorComponent } from '@spartan-ng/brain/separator';
 import { NgIconsModule } from '@ng-icons/core';
 import { heroDocumentArrowUp, heroHome, heroSquare2Stack, heroUsers } from '@ng-icons/heroicons/outline';
+import { TeamsModule } from './teams/teams.module';
 
 
 
@@ -24,6 +25,7 @@ import { heroDocumentArrowUp, heroHome, heroSquare2Stack, heroUsers } from '@ng-
     CoreModule,
     ReportModule,
     ProjectsModule,
+    TeamsModule,
     HlmSeparatorDirective,
     BrnSeparatorComponent,
     NgIconsModule.withIcons({ heroHome, heroUsers, heroDocumentArrowUp, heroSquare2Stack }),

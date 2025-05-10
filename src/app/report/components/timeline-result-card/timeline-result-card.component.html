@@ -1,0 +1,18 @@
+<div hlmCard class="w-full  h-fit flex flex-col gap-y-4">
+  <div class="pb-0" hlmCardHeader>
+    <h1 class="text-base text-muted-foreground">Tijdlijn</h1>
+  </div>
+  <div hlmCardContent class="flex flex-col gap-y-4">
+    <div class="  flex justify-between mr-32">
+      <div *ngFor="let data of timelineData">
+        <h2 class="text-xl font-medium">{{data.title}}</h2>
+        <h3 class="text-muted-foreground uppercase text-base">{{data.description}}</h3>
+        <h3 class="text-muted-foreground text-base">{{data.date}} </h3>
+      </div>
+    </div>
+    <app-timeline></app-timeline>
+  </div>
+  <div hlmCardFooter class="flex justify-end">
+    <button hlmBtn variant="outline" class="w-fit mt-4">Volledige tijdlijn weergeven </button>
+  </div>
+</div>
