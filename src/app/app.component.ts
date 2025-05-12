@@ -20,9 +20,11 @@ export class AppComponent {
 
   public navItems: NavItem[] = [
     { name: 'Home', icon: 'heroHome', route: '/', exact: true },
-    { name: 'Projecten', icon: 'heroSquare2Stack', route: '/config', exact: true },
+    { name: 'Projecten', icon: 'heroSquare2Stack', route: '/projects/overview', exact: true },
     { name: 'Teams', icon: 'heroUsers', route: '/teams', exact: true },
     { name: 'Bestanden', icon: 'heroDocumentArrowUp', route: '/idk', exact: true },
     { name: 'REPORT', icon: 'heroDocumentArrowUp', route: '/report/34', exact: false },
+    { name: 'Project CREATE', icon: 'heroSquare2Stack', route: '/project/create/:uuid', exact: false },
+    { name: 'Projecten', icon: 'heroSquare2Stack', route: '/project/:uuid', exact: false },
   ]
 }

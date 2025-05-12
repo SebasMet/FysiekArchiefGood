@@ -8,8 +8,14 @@ import { ConfigActorFormComponent } from './components/config-actor-form/config-
 import { HlmLabelDirective } from '@spartan-ng/ui-label-helm';
 import { HlmButtonDirective } from '@spartan-ng/ui-button-helm';
 import { NgIconsModule } from '@ng-icons/core';
-import { heroPlus } from '@ng-icons/heroicons/outline';
+import { heroArrowDownTray, heroCog, heroCog6Tooth, heroPlus } from '@ng-icons/heroicons/outline';
 import { ConfigSelectionListUploadComponent } from './components/config-selection-list-upload/config-selection-list-upload.component';
+import { ProjectListOverviewComponent } from './containers/project-list-overview/project-list-overview.component';
+import { ProjectListCardComponent } from './components/project-list-card/project-list-card.component';
+import { HlmCardContentDirective, HlmCardDescriptionDirective, HlmCardDirective, HlmCardFooterDirective, HlmCardHeaderDirective, HlmCardTitleDirective } from '@spartan-ng/ui-card-helm';
+import { BrnSeparatorComponent } from '@spartan-ng/brain/separator';
+import { HlmSeparatorDirective } from '@spartan-ng/ui-separator-helm';
+import { ProjectViewComponent } from './containers/project-view/project-view.component';
 
 
 
@@ -19,14 +25,25 @@ import { ConfigSelectionListUploadComponent } from './components/config-selectio
     ConfigGeneralInformationComponent,
     ConfigActorInformationComponent,
     ConfigActorFormComponent,
-    ConfigSelectionListUploadComponent
+    ConfigSelectionListUploadComponent,
+    ProjectListOverviewComponent,
+    ProjectListCardComponent,
+    ProjectViewComponent
   ],
   imports: [
     CommonModule,
     HlmInputDirective,
     HlmLabelDirective,
     HlmButtonDirective,
-    NgIconsModule.withIcons({heroPlus}),
+    HlmCardDirective,
+    HlmCardHeaderDirective,
+    HlmCardTitleDirective,
+    HlmCardDescriptionDirective,
+    HlmCardContentDirective,
+    HlmCardFooterDirective,
+    HlmSeparatorDirective,
+    BrnSeparatorComponent,
+    NgIconsModule.withIcons({heroPlus, heroCog6Tooth, heroArrowDownTray}),
 
   ]
 })

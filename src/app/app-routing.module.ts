@@ -5,14 +5,18 @@ import { ReportViewComponent } from './report/containers/report-view/report-view
 import { ReportOptionsComponent } from './report/containers/report-options/report-options.component';
 import { ProjectConfigComponent } from './projects/containers/project-config/project-config.component';
 import { TeamsOverviewComponent } from './teams/containers/teams-overview/teams-overview.component';
+import { ProjectListOverviewComponent } from './projects/containers/project-list-overview/project-list-overview.component';
+import { ProjectViewComponent } from './projects/containers/project-view/project-view.component';
 
 const routes: Routes = [
   { path: '', component: HomePageComponent },
   { path: 'options/:uuid', component: ReportOptionsComponent },
   { path: 'report/:uuid', component: ReportViewComponent },
-  { path: 'teams', component: TeamsOverviewComponent },
-  //{ path: 'project/:uuid/config', component: ProjectConfigComponent }, // Placeholder for project config
+  { path: 'projects/overview', component: ProjectListOverviewComponent },
+  { path: 'project/:uuid', component: ProjectViewComponent },
+  { path: 'project/create/:uuid', component: ProjectConfigComponent }, // Placeholder for project config
   { path: 'config', component: ProjectConfigComponent }, // Placeholder for project config
+  { path: 'teams', component: TeamsOverviewComponent },
 
 ];
 
