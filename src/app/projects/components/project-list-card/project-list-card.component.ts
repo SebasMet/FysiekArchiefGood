@@ -1,4 +1,6 @@
 import { Component, Input } from '@angular/core';
+import { Router } from '@angular/router';
+import { ProjectData } from '@core/models/project.model';
 
 @Component({
   selector: 'app-project-list-card',
@@ -8,8 +10,11 @@ import { Component, Input } from '@angular/core';
   styles: ``
 })
 export class ProjectListCardComponent {
-  @Input() projectName: string = 'Project Title 1';
-  @Input() teamName: string = 'Team Cofee';
-  @Input() progress: number = 50.50;
+  @Input() projectData: ProjectData ;
 
+  constructor(private router: Router) {}
+
+  public navigateToProject() {
+    this.router.navigate([`project/${this.projectData.projectId}`]);
+  }
 }

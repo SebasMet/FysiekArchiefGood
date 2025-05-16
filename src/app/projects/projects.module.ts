@@ -16,6 +16,8 @@ import { HlmCardContentDirective, HlmCardDescriptionDirective, HlmCardDirective,
 import { BrnSeparatorComponent } from '@spartan-ng/brain/separator';
 import { HlmSeparatorDirective } from '@spartan-ng/ui-separator-helm';
 import { ProjectViewComponent } from './containers/project-view/project-view.component';
+import { ReactiveFormsModule } from '@angular/forms';
+import { SharedModule } from '../shared/shared.module';
 
 
 
@@ -32,6 +34,10 @@ import { ProjectViewComponent } from './containers/project-view/project-view.com
   ],
   imports: [
     CommonModule,
+    ReactiveFormsModule,
+
+    SharedModule,
+
     HlmInputDirective,
     HlmLabelDirective,
     HlmButtonDirective,

@@ -8,7 +8,7 @@ import {
   Input, // Import AfterViewInit
 } from '@angular/core';
 import { DataService } from '@core/services/data.service';
-import { AnalyzedDocument } from '@core/types/AnalyzedDocument';
+import { AnalyzedDocument } from '@core/models/result.model';
 import * as pdfjsLib from 'pdfjs-dist';
 import {
   PDFDocumentProxy,

@@ -14,13 +14,14 @@
 </div>
 
 <div class="">
-  <div class="flex justify-between w-fit">
-      <h1 class="text-3xl font-semibold mb-2.5">Project Title</h1>
+  <div class="flex w-full justify-between my-4">
+      <h1 class="text-3xl font-semibold mb-2.5">Start Scan</h1>
           <button variant="outline" hlmBtn>
       <ng-icon name="heroArrowDownTray" size="20px" strokeWidth="2px" class="mr-1"></ng-icon>
       Export
     </button>
-    </div>
+  </div>
+    <app-file-upload [projectId]="projectId"></app-file-upload>
 
 
 </div>

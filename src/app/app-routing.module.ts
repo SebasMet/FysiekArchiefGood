@@ -14,7 +14,7 @@ const routes: Routes = [
   { path: 'report/:uuid', component: ReportViewComponent },
   { path: 'projects/overview', component: ProjectListOverviewComponent },
   { path: 'project/:uuid', component: ProjectViewComponent },
-  { path: 'project/create/:uuid', component: ProjectConfigComponent }, // Placeholder for project config
+  { path: 'projects/create-new', component: ProjectConfigComponent }, // Placeholder for project config
   { path: 'config', component: ProjectConfigComponent }, // Placeholder for project config
   { path: 'teams', component: TeamsOverviewComponent },
 

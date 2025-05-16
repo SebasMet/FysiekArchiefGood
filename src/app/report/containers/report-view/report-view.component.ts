@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { DataService } from '@core/services/data.service';
-import { AnalyzedDocument, ActorMentioned } from '@core/types/AnalyzedDocument'; // Adjust path if needed
+import { AnalyzedDocument, ActorMentioned } from '@core/models/result.model'; // Adjust path if needed
 import { Observable, Subscription } from 'rxjs';
 
 export interface GroupedActor {
@@ -16,7 +16,9 @@ export interface GroupedActor {
   styleUrl: './report-view.component.css',
 })
 export class ReportViewComponent {
-  // private _uuid: string = '';
+
+
+  private _uuid: string = '';
   // public analyzedResults$: Observable<
   //   { data: AnalyzedDocument[] } | any | null
   // >;
@@ -26,14 +28,24 @@ export class ReportViewComponent {
   // isInitialized: boolean = false;
   // private resultsSubscription: Subscription | null = null;
 
-  // constructor(
-  //   private route: ActivatedRoute,
-  //   private dataService: DataService
-  // ) {}
+  constructor(
+    private route: ActivatedRoute,
+    private dataService: DataService
+  ) {}
 
-  // ngOnInit(): void {
-  //   console.log('ReportViewComponent initialized');
-  //   this._uuid = this.route.snapshot.paramMap.get('uuid') || '';
+  ngOnInit(): void {
+    console.log('ReportViewComponent initialized');
+    this._uuid = this.route.snapshot.paramMap.get('uuid') || '';
+    this.dataService.getAnalysisVersionsByDossier(this._uuid).subscribe({
+      next: (data) => {
+        console.log('Data received:', data);
+        if(data.length === 0) {
+          this.dataService.startAnalyze(this._uuid);
+        }
+      }
+    });
+    //this.dataService.startAnalyze(this._uuid)
+  }
   //   this.analyzedResults$ = this.dataService.analyzeResult$;
   //   this.resultsSubscription?.unsubscribe();
 

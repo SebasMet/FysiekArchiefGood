@@ -5,16 +5,14 @@
       <h2 class="text-neutral-700 text-sm">Alle beschikbare projecten</h2>
     </div>
     <div>
-      <button hlmBtn>
-        <ng-icon
-          name="heroPlus"
-          size="20px"
-          strokeWidth="2px"
-          class="mr-1"
-        ></ng-icon>
+      <button (click)="navigateToCreateProjectPage()" hlmBtn>
+        <ng-icon name="heroPlus" size="20px" strokeWidth="2px" class="mr-1"></ng-icon>
         Nieuw project aanmaken
       </button>
     </div>
   </div>
-  <app-project-list-card></app-project-list-card>
+  <div class="flex flex-wrap gap-4">
+    <app-project-list-card [projectData]="project"  *ngFor="let project of projects">
+    </app-project-list-card>
+  </div>
 </div>

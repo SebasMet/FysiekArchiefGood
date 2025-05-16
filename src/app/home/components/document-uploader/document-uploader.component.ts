@@ -30,7 +30,7 @@ export class DocumentUploaderComponent {
 
     if (file && file.type === 'application/pdf') {
       this.selectedFile = file;
-      this.uploadFile(); 
+      this.uploadFile();
     } else {
       this.selectedFile = null;
       this.uploadError = 'Please select a valid PDF file.';
@@ -51,7 +51,7 @@ export class DocumentUploaderComponent {
       const file: File = event.dataTransfer.files[0];
       if (file && file.type === 'application/pdf') {
         this.selectedFile = file;
-      this.uploadFile(); 
+      this.uploadFile();
 
       } else {
         this.selectedFile = null;
@@ -65,21 +65,21 @@ export class DocumentUploaderComponent {
       this.uploadError = 'No file selected.';
       return;
     }
-  
-    this.uploadError = null; 
-    this.uploadSuccess = false; 
-    this.uploadProgress = 0; 
-  
+
+    this.uploadError = null;
+    this.uploadSuccess = false;
+    this.uploadProgress = 0;
+
     const uuid = crypto.randomUUID();
-  
 
-    const upload = await this.dataService.uploadFile(this.selectedFile, uuid)
-    if(upload) {
-      this.router.navigate(['/options', upload])
 
-    }
+    // const upload = await this.dataService.uploadFile(this.selectedFile, uuid)
+    // if(upload) {
+    //   this.router.navigate(['/options', upload])
 
-     
+    // }
+
+
   }
 
   resetState() {
@@ -88,7 +88,7 @@ export class DocumentUploaderComponent {
     this.uploadError = null;
     this.uploadSuccess = false;
     if (this.fileInput) {
-      this.fileInput.nativeElement.value = ''; 
+      this.fileInput.nativeElement.value = '';
     }
   }
 }
@@ -99,14 +99,14 @@ export class DocumentUploaderComponent {
 //     if (uploadSuccess) {
 //       return this.dataService.initializeArchiveDocument(uuid);
 //     } else {
-//       return of(false); 
+//       return of(false);
 //     }
 //   })
 // ).subscribe({
 //   next: (success) => {
 //     if (success) {
 //       this.uploadSuccess = true;
-//       this.router.navigate(['/options', uuid]); 
+//       this.router.navigate(['/options', uuid]);
 //     } else {
 //       this.uploadError = 'File upload or document initialization failed.';
 //     }
