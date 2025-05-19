@@ -2,7 +2,9 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { DataService } from '@core/services/data.service';
 import { AnalyzedDocument, ActorMentioned } from '@core/models/result.model'; // Adjust path if needed
-import { Observable, Subscription } from 'rxjs';
+import { map, Observable, Subscription } from 'rxjs';
+import { Database } from '@core/types/types';
+
 
 export interface GroupedActor {
   actorName: string;
@@ -19,6 +21,11 @@ export class ReportViewComponent {
 
 
   private _uuid: string = '';
+
+  public initialized: boolean = false;
+  public actoren: any= []
+  public dateringen: any = []
+  public beschrijving: any = []
   // public analyzedResults$: Observable<
   //   { data: AnalyzedDocument[] } | any | null
   // >;
@@ -33,19 +40,39 @@ export class ReportViewComponent {
     private dataService: DataService
   ) {}
 
-  ngOnInit(): void {
-    console.log('ReportViewComponent initialized');
-    this._uuid = this.route.snapshot.paramMap.get('uuid') || '';
-    this.dataService.getAnalysisVersionsByDossier(this._uuid).subscribe({
-      next: (data) => {
-        console.log('Data received:', data);
-        if(data.length === 0) {
-          this.dataService.startAnalyze(this._uuid);
-        }
+ngOnInit(): void {
+  this._uuid = this.route.snapshot.paramMap.get('uuid')!;
+
+  this.dataService.getAnalysisVersionsByDossier(this._uuid).pipe(
+
+  map((versions) => {
+      if (versions.length === 0) return null;
+
+      return versions.sort((a, b) => b.version_number - a.version_number)[0];
+    })
+
+  ).subscribe({
+    next: (latest) => {
+      console.log('Latest version:', latest);
+      if (!latest) {
+        this.dataService.startAnalysis(this._uuid).subscribe({
+          next: (result) => {
+            this.actoren      = result.actoren;
+            this.dateringen   = result.datering;
+            this.beschrijving = result.beschrijving;
+            this.initialized = true;
+          }
+        });
+      } else {
+        this.actoren      = latest.actoren;
+        this.dateringen   = latest.datering;
+        this.beschrijving = latest.beschrijving;
+        this.initialized = true;
       }
-    });
-    //this.dataService.startAnalyze(this._uuid)
-  }
+    },
+    error: console.error
+  });
+}
   //   this.analyzedResults$ = this.dataService.analyzeResult$;
   //   this.resultsSubscription?.unsubscribe();
 

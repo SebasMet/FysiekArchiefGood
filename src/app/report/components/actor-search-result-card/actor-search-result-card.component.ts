@@ -14,7 +14,7 @@ export interface GroupedActor {
   styles: ``
 })
 export class ActorSearchResultCardComponent   {
-  @Input() actorGroupData: GroupedActor | null = null;
+  @Input() actorGroupData: any
 
   constructor() {}
 

@@ -4,10 +4,15 @@
   </div>
   <div hlmCardContent class="flex flex-col gap-y-4">
     <div class="  flex justify-between mr-32">
-      <div *ngFor="let data of timelineData">
-        <h2 class="text-xl font-medium">{{data.title}}</h2>
-        <h3 class="text-muted-foreground uppercase text-base">{{data.description}}</h3>
-        <h3 class="text-muted-foreground text-base">{{data.date}} </h3>
+      <div class="max-w-64">
+        <h2 class="text-xl font-medium">Eerste Gebeurtenis</h2>
+        <h3 class="text-muted-foreground uppercase text-base">{{firstDateData.date}}</h3>
+        <h3 class="text-muted-foreground text-base">{{firstDateData.event}} </h3>
+      </div>
+      <div class="max-w-64">
+        <h2 class="text-xl font-medium">Laatste Gebeurtenis</h2>
+        <h3 class="text-muted-foreground uppercase text-base">{{lastDateData.date}}</h3>
+        <h3 class="text-muted-foreground text-base">{{lastDateData.event}} </h3>
       </div>
     </div>
     <app-timeline></app-timeline>

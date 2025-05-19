@@ -1,11 +1,11 @@
 <div hlmCard class="w-full">
     <h1 class="font-bold text-xl" hlmCardHeader>
-      {{actorGroupData?.actorName}}
+      {{actorGroupData?.name}}
     </h1>
 
     <div hlmCardContent>
       <p>
-        Een speciale manier om vraag en aanbod op de arbeidsmarkt met elkaar in overeenstemming te brengen is emigratie: het overschot aan arbeidskrachten wordt hiermee in wezen verplaatst naar buiten de nationale arbeidsmarkt. Het gaat dus om een bijzondere vorm van geografische mobiliteit.
+        {{actorGroupData?.whatDidTheyDo}}
       </p>
     </div>
 
@@ -24,11 +24,11 @@
             hlmBtn
             class="h-full w-full p-0 m-0 border-none bg-transparent flex"
           >
-            <img
+            <!-- <img
               class="object-cover h-full w-full align-top"
               alt="thumbnail"
               [src]="thumbnail?.base64Image | safeBase64Image:'png'"
-            />
+            /> -->
           </button>
         </div>
         <div *ngIf="actorGroupData && actorGroupData.pages && actorGroupData.pages.length > 3" class="flex items-center text-sm text-gray-500 pl-2">

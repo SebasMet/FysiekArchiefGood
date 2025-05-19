@@ -1,6 +1,6 @@
 <div class="h-screen flex flex-col">
-  <div class="h-[140px] bg-red-500">
-  </div>
+  <!-- <div class="min-h-[140px] bg-red-500">
+  </div> -->
   <div class="flex flex-grow gap-x-8">
     <div class="flex-1 overflow-y-scroll overflow-x-hidden">
 
@@ -13,9 +13,17 @@
 
         <div hlmTabsContent="overview">
           <div class="flex flex-col gap-y-4">
-            <app-summary-result-card></app-summary-result-card>
-            <app-timeline-result-card></app-timeline-result-card>
-            <app-actor-search-result-card></app-actor-search-result-card>
+            <app-summary-result-card [beschrijving]="beschrijving" *ngIf="initialized"></app-summary-result-card>
+            <app-timeline-result-card [dateringen]="dateringen" *ngIf="initialized"></app-timeline-result-card>
+            <app-actor-search-result-card [actorGroupData]="actor"  *ngFor="let actor of actoren"></app-actor-search-result-card>
+
+            <!-- loading state -->
+            <div *ngIf="!initialized" class="w-full h-[30rem] flex items-center justify-center" hlmCard>
+              <div class="flex flex-col items-center gap-y-2">
+                <hlm-spinner />
+                <p class="text-muted-foreground text-sm">Bezig met analyseren...</p>
+              </div>
+            </div>
           </div>
         </div>
 

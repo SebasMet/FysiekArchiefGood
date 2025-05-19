@@ -5,7 +5,7 @@ import {
   ElementRef,
   ViewChild,
   AfterViewInit,
-  Input, // Import AfterViewInit
+  Input,
 } from '@angular/core';
 import { DataService } from '@core/services/data.service';
 import { AnalyzedDocument } from '@core/models/result.model';
@@ -16,40 +16,33 @@ import {
 } from 'pdfjs-dist/types/src/display/api'; // Import types
 import { Observable, of } from 'rxjs';
 
-// Define a type for our shapes (optional but good practice)
 interface PdfShape {
-  page: number; // Page number the shape belongs to
-  type: 'rect'; // Type of shape
-  coords: [number, number, number, number]; // PDF Coordinates [x1, y1, x2, y2] (bottom-left origin usually)
-  color?: string; // Optional color
-  lineWidth?: number; // Optional line width
+  page: number;
+  type: 'rect';
+  coords: [number, number, number, number];
+  color?: string;
+  lineWidth?: number;
 }
 
 @Component({
   selector: 'app-pdf-viewer',
   templateUrl: './pdf-viewer.component.html',
-  standalone: false, // Keep as false if not using standalone components
+  standalone: false,
 })
 export class PdfViewerComponent implements OnInit, AfterViewInit, OnDestroy {
-  // --- Use ViewChild for the new canvas elements ---
   @ViewChild('pdfCanvas', { static: true })
   pdfCanvasRef!: ElementRef<HTMLCanvasElement>;
   @ViewChild('overlayCanvas', { static: true })
   overlayCanvasRef!: ElementRef<HTMLCanvasElement>;
 
-  @Input() actorGroupData: AnalyzedDocument[] | undefined; // Define the type based on your data structure
-
+  @Input() actorGroupData: AnalyzedDocument[] | undefined;
   private pdfDocument: PDFDocumentProxy | null = null;
-  private pdfPage: PDFPageProxy | null = null; // Store the current page object
+  private pdfPage: PDFPageProxy | null = null;
   private currentPageNumber = 1;
   private scale = 0.5;
   public totalPages = 0;
   public currentPage = 1;
 
-  // --- Define the shapes you want to draw ---
-  // Coordinates are in PDF space (points, usually origin at bottom-left)
-  // Example: Draw a red rectangle on page 1 from (100, 700) to (200, 750)
-  // Remember: y-coordinate increases upwards in PDF space
   shapesToDraw: PdfShape[] = [
     {
       page: 1,
@@ -80,7 +73,6 @@ export class PdfViewerComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    // Worker setup can happen here
     try {
       const pdfjs = pdfjsLib as any;
       pdfjs.GlobalWorkerOptions.workerSrc = 'assets/pdf.worker.min.mjs'; // Ensure this path is correct relative to your deployed assets
@@ -90,16 +82,13 @@ export class PdfViewerComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   ngAfterViewInit(): void {
-    // Load PDF after views are initialized so canvas refs are available
     this.loadPdf();
   }
 
   ngOnDestroy(): void {
-    // Clean up resources if needed
     this.pdfDocument?.destroy();
   }
 
-  // Load the PDF file
   async loadPdf() {
     try {
       if (!this.pdfCanvasRef || !this.overlayCanvasRef) {
@@ -109,7 +98,6 @@ export class PdfViewerComponent implements OnInit, AfterViewInit, OnDestroy {
 
       const pdfFile: File | null | undefined = this.dataService.currentFile;
 
-      // --- Check if the file exists ---
       if (!pdfFile) {
         console.warn('No current PDF file found in DataService.');
         return;
@@ -137,9 +125,8 @@ export class PdfViewerComponent implements OnInit, AfterViewInit, OnDestroy {
   // Render a specific page of the PDF.
   async renderPage(pageNumber: number) {
     if (!this.pdfDocument) {
-      return; // PDF not loaded
+      return;
     }
-    // Set loading state if desired
 
     try {
       this.pdfPage = await this.pdfDocument.getPage(pageNumber); // Store the page
@@ -156,7 +143,6 @@ export class PdfViewerComponent implements OnInit, AfterViewInit, OnDestroy {
       pdfCanvas.height = viewport.height;
       pdfCanvas.width = viewport.width;
 
-      // Apply styles to the canvas if needed (e.g., for borders)
       pdfCanvas.style.width = `${viewport.width}px`;
       pdfCanvas.style.height = `${viewport.height}px`;
 
@@ -167,17 +153,13 @@ export class PdfViewerComponent implements OnInit, AfterViewInit, OnDestroy {
 
       await this.pdfPage.render(renderContext).promise;
 
-      // --- Draw the overlay AFTER the page is rendered ---
       this.drawOverlay();
-      // ---
     } catch (error) {
       console.error(`Error rendering page ${pageNumber}:`, error);
     } finally {
-      // Clear loading state if set
     }
   }
 
-  // --- Function to draw on the overlay canvas ---
   drawOverlay() {
     if (!this.pdfPage || !this.overlayCanvasRef) return; // Ensure page and canvas are available
 
@@ -190,76 +172,60 @@ export class PdfViewerComponent implements OnInit, AfterViewInit, OnDestroy {
       return;
     }
 
-    // --- Match overlay canvas size to the PDF canvas size ---
     overlayCanvas.width = viewport.width;
     overlayCanvas.height = viewport.height;
     overlayCanvas.style.width = `${viewport.width}px`; // Keep CSS size in sync too
     overlayCanvas.style.height = `${viewport.height}px`;
 
-    // Clear previous drawings on the overlay
     overlayCtx.clearRect(0, 0, overlayCanvas.width, overlayCanvas.height);
 
-    // --- Filter shapes for the current page ---
     const shapesForCurrentPage = this.shapesToDraw.filter(
       (shape) => shape.page === this.currentPageNumber
     );
 
-    // --- Draw each shape ---
     shapesForCurrentPage.forEach((shape) => {
       if (shape.type === 'rect') {
-        // Convert PDF coordinates [x1, y1, x2, y2] to viewport coordinates
-        // pdfCoords are [bottomLeftX, bottomLeftY, topRightX, topRightY]
         const pdfCoords = shape.coords;
-        // viewportRect is [topLeftX, topLeftY, bottomRightX, bottomRightY] in pixels
         const viewportRect = viewport.convertToViewportRectangle(pdfCoords);
         const [vx1, vy1, vx2, vy2] = viewportRect;
 
-        // Calculate width and height for drawing (in viewport pixels)
         const rectWidth = vx2 - vx1;
         const rectHeight = vy2 - vy1;
 
-        // Set drawing styles
-        overlayCtx.strokeStyle = shape.color || 'red'; // Default to red
-        overlayCtx.lineWidth = shape.lineWidth || 1; // Default to 1
+        overlayCtx.strokeStyle = shape.color || 'red';
+        overlayCtx.lineWidth = shape.lineWidth || 1;
 
-        // Draw the rectangle
         overlayCtx.strokeRect(vx1, vy1, rectWidth, rectHeight);
       }
-      // Add logic for other shape types here if needed (e.g., 'circle', 'line')
+
     });
   }
-  // --- End overlay drawing ---
 
-  // Navigate to the previous page.
   goToPrevPage() {
     if (this.currentPageNumber > 1) {
       this.currentPageNumber--;
       this.currentPage = this.currentPageNumber;
-      this.renderPage(this.currentPageNumber); // renderPage now calls drawOverlay
+      this.renderPage(this.currentPageNumber);
     }
   }
 
-  // Navigate to the next page.
   goToNextPage() {
     if (this.currentPageNumber < this.totalPages) {
       this.currentPageNumber++;
       this.currentPage = this.currentPageNumber;
-      this.renderPage(this.currentPageNumber); // renderPage now calls drawOverlay
+      this.renderPage(this.currentPageNumber);
     }
   }
 
-  // Zoom in to the PDF.
   zoomIn() {
     this.scale += 0.25;
-    this.renderPage(this.currentPageNumber); // Re-render and redraw overlay
+    this.renderPage(this.currentPageNumber);
   }
 
-  // Zoom out of the PDF.
   zoomOut() {
     if (this.scale > 0.3) {
-      // Prevent zooming out too much
       this.scale -= 0.25;
-      this.renderPage(this.currentPageNumber); // Re-render and redraw overlay
+      this.renderPage(this.currentPageNumber);
     }
   }
 }

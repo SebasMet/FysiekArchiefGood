@@ -79,6 +79,7 @@ export class FileUploadComponent {
 
       this.dataService.uploadFile(this.selectedFiles.pdf, this.selectedFiles.json, uuid, this.projectId).subscribe({
         next: (dossierUUID) => {
+          console.log('File uploaded successfully:', dossierUUID);
           this.router.navigate(['/report', dossierUUID]);
           this.uploadSuccess = true;
         },

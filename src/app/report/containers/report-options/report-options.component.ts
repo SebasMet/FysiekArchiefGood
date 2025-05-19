@@ -23,7 +23,7 @@ export class ReportOptionsComponent {
   //   if (actors) {
   //     // const response = await this.dataService.createProject()
   //     let response = true
-  //     if (!response) {
+      //  if (!response) {
   //       return;
   //     }
   //     const dossierID = await this.dataService.createDossier(response, this._uuid)

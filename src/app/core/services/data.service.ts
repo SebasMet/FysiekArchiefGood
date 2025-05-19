@@ -1,22 +1,5 @@
 // // src/app/services/data.service.ts
 import { Injectable } from '@angular/core';
-
-// import { from, Observable, of } from 'rxjs';
-// import { switchMap, finalize, map, catchError } from 'rxjs/operators';
-// import { NgZone } from '@angular/core';
-// import {
-//   Firestore,
-//   setDoc,
-//   addDoc,
-//   collection,
-//   getDocs,
-//   query,
-//   doc,
-//   getDoc,
-//   updateDoc,
-//   arrayUnion,
-// } from '@angular/fire/firestore';
-// import { ref, Storage, uploadBytesResumable, getDownloadURL } from '@angular/fire/storage';
 import {
   AuthChangeEvent,
   AuthSession,
@@ -250,23 +233,35 @@ public getAnalysisVersionsByDossier(dossierId: string)  {
     );
   }
 
-  public startAnalyze(dossierId: string): void {
-    console.log('Starting analysis for dossier ID:', dossierId);
-    const messagingChannel = this.supabase.channel(
-      `dossier-analysis-${dossierId}`
-    );
-    console.log(messagingChannel);
-    messagingChannel
-      .on('broadcast', { event: 'dossier-analysis' }, (payload) => {
-        console.log('Received message:', payload['payload'].status);
-        if (payload['payload'].status === 'completed') {
-          messagingChannel.unsubscribe().then(() => {
-            console.log('Unsubscribed from channel');
-          });
-        }
-      })
-      .subscribe();
+ public startAnalysis(dossierId: string): Observable<any> {
+
+    return new Observable<any>((observer) => {
+      const channel = this.supabase.channel(`dossier-analysis-${dossierId}`)
+        .on('broadcast', { event: 'dossier-analysis' }, async (payload) => {
+          const status = payload?.['payload']?.status;
+          console.log('status update Dservice', status);
+
+          if (status === 'completed') {
+            channel.unsubscribe();
+
+            try {
+              const { data, error } = await this.fetchLatestAnalysisVersion(dossierId);
+              if (error) throw error;
+
+              observer.next(data);
+              observer.complete();
+            } catch (err) {
+              observer.error(err);
+            }
+          }
+        })
+        .subscribe();
+
+      // Teardown if caller unsubscribes early
+      return () => channel.unsubscribe();
+    });
   }
+
 
   // public getArchiveAnalyzeResults(uuid: string): Observable<any> {
   //   // const url = new URL(`${environment.SUPABASE_URL}/storage/v1/object/public/archives/${uuid}`);
@@ -275,6 +270,16 @@ public getAnalysisVersionsByDossier(dossierId: string)  {
   //   return this.http.get<any>(url.toString())
 
   // }
+
+private fetchLatestAnalysisVersion(dossierId: string) {
+  return this.supabase
+    .from('analysis_versions')
+    .select('*, analysis!inner(id, dossier_id)')
+    .eq('analysis.dossier_id', dossierId)
+    .order('version_number', { ascending: false })
+    .limit(1)
+    .maybeSingle();
+}
 
   private async login() {
     const session = await this.supabase.auth.signInWithPassword({
