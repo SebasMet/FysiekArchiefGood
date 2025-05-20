@@ -15,10 +15,6 @@ export class ChatWindowComponent implements OnInit {
       this.send();
     }
   }
-  getParsedContent(m: Message): string {
-    return m.content.replace(/\\n/g, '\n');
-  }
-
   handleSubmit() {
     this.send();
   }

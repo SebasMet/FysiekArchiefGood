@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReportViewComponent } from './containers/report-view/report-view.component';
 import { ContextConfirmationCardComponent } from './components/context-confirmation-card/context-confirmation-card.component';
-import { MarkdownModule } from 'ngx-markdown';
+import { MarkdownModule, MARKED_OPTIONS } from 'ngx-markdown';
 import {
   HlmCardContentDirective,
   HlmCardDescriptionDirective,
@@ -89,7 +89,15 @@ import { FormsModule } from '@angular/forms';
     BrnDialogContentDirective,
     SafeBase64ImagePipe,
 
-    MarkdownModule.forRoot(),
+    MarkdownModule.forRoot({
+      markedOptions: {
+        provide: MARKED_OPTIONS,
+        useValue: {
+          gfm: true,
+          breaks: true,
+        },
+      },
+    }),
 
     HlmDialogComponent,
     HlmDialogContentComponent,
