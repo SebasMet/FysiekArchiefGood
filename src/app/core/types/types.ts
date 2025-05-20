@@ -1,1 +1,560 @@
-C:/Users/sebas/Documents/VSProjects/Stage/RvIHH-backend/services/app/lib/supabase/types.ts
+export type Json =
+  | string
+  | number
+  | boolean
+  | null
+  | { [key: string]: Json | undefined }
+  | Json[]
+
+export type Database = {
+  graphql_public: {
+    Tables: {
+      [_ in never]: never
+    }
+    Views: {
+      [_ in never]: never
+    }
+    Functions: {
+      graphql: {
+        Args: {
+          operationName?: string
+          query?: string
+          variables?: Json
+          extensions?: Json
+        }
+        Returns: Json
+      }
+    }
+    Enums: {
+      [_ in never]: never
+    }
+    CompositeTypes: {
+      [_ in never]: never
+    }
+  }
+  public: {
+    Tables: {
+      analysis: {
+        Row: {
+          completed: boolean
+          created_at: string
+          dossier_id: string
+          id: string
+        }
+        Insert: {
+          completed?: boolean
+          created_at?: string
+          dossier_id: string
+          id?: string
+        }
+        Update: {
+          completed?: boolean
+          created_at?: string
+          dossier_id?: string
+          id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "analysis_dossier_id_fkey"
+            columns: ["dossier_id"]
+            isOneToOne: false
+            referencedRelation: "dossier_analysis_status"
+            referencedColumns: ["dossier_id"]
+          },
+          {
+            foreignKeyName: "analysis_dossier_id_fkey"
+            columns: ["dossier_id"]
+            isOneToOne: false
+            referencedRelation: "dossiers"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "analysis_dossier_id_fkey"
+            columns: ["dossier_id"]
+            isOneToOne: false
+            referencedRelation: "dossiers_with_storage_path"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      analysis_authors: {
+        Row: {
+          created_at: string
+          id: string
+          type: Database["public"]["Enums"]["author_type"]
+          user: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          type?: Database["public"]["Enums"]["author_type"]
+          user: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          type?: Database["public"]["Enums"]["author_type"]
+          user?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "analysis_authors_user_fkey"
+            columns: ["user"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      analysis_versions: {
+        Row: {
+          actoren: Json
+          analysis_id: string
+          author: string | null
+          beschrijving: Json
+          created_at: string
+          datering: Json
+          id: string
+          version_number: number
+        }
+        Insert: {
+          actoren: Json
+          analysis_id: string
+          author?: string | null
+          beschrijving: Json
+          created_at?: string
+          datering: Json
+          id?: string
+          version_number?: number
+        }
+        Update: {
+          actoren?: Json
+          analysis_id?: string
+          author?: string | null
+          beschrijving?: Json
+          created_at?: string
+          datering?: Json
+          id?: string
+          version_number?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "analysis_versions_analysis_id_fkey"
+            columns: ["analysis_id"]
+            isOneToOne: false
+            referencedRelation: "analysis"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "analysis_versions_author_fkey"
+            columns: ["author"]
+            isOneToOne: false
+            referencedRelation: "analysis_authors"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      dossier_page_chunks: {
+        Row: {
+          content: string
+          created_at: string
+          embeddings: string | null
+          id: string
+          page_id: string
+        }
+        Insert: {
+          content: string
+          created_at?: string
+          embeddings?: string | null
+          id?: string
+          page_id: string
+        }
+        Update: {
+          content?: string
+          created_at?: string
+          embeddings?: string | null
+          id?: string
+          page_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "dossier_page_chunks_page_id_fkey"
+            columns: ["page_id"]
+            isOneToOne: false
+            referencedRelation: "dossier_pages"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      dossier_pages: {
+        Row: {
+          annotations: Json | null
+          created_at: string
+          document_creation_timestamp: string | null
+          dossier_id: string
+          id: string
+          image_url: string
+          markdown_text: string
+          page_number: number | null
+          summary: string | null
+        }
+        Insert: {
+          annotations?: Json | null
+          created_at?: string
+          document_creation_timestamp?: string | null
+          dossier_id: string
+          id?: string
+          image_url?: string
+          markdown_text: string
+          page_number?: number | null
+          summary?: string | null
+        }
+        Update: {
+          annotations?: Json | null
+          created_at?: string
+          document_creation_timestamp?: string | null
+          dossier_id?: string
+          id?: string
+          image_url?: string
+          markdown_text?: string
+          page_number?: number | null
+          summary?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "dossiers_pages_dossier_id_fkey"
+            columns: ["dossier_id"]
+            isOneToOne: false
+            referencedRelation: "dossier_analysis_status"
+            referencedColumns: ["dossier_id"]
+          },
+          {
+            foreignKeyName: "dossiers_pages_dossier_id_fkey"
+            columns: ["dossier_id"]
+            isOneToOne: false
+            referencedRelation: "dossiers"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "dossiers_pages_dossier_id_fkey"
+            columns: ["dossier_id"]
+            isOneToOne: false
+            referencedRelation: "dossiers_with_storage_path"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      dossiers: {
+        Row: {
+          content: Json
+          created_at: string
+          created_by: string
+          id: string
+          project_id: string
+          storage_object_id: string
+          total_pages: number | null
+        }
+        Insert: {
+          content: Json
+          created_at?: string
+          created_by: string
+          id?: string
+          project_id: string
+          storage_object_id: string
+          total_pages?: number | null
+        }
+        Update: {
+          content?: Json
+          created_at?: string
+          created_by?: string
+          id?: string
+          project_id?: string
+          storage_object_id?: string
+          total_pages?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "dossiers_created_by_fkey"
+            columns: ["created_by"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "dossiers_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "projects"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      projects: {
+        Row: {
+          actors: string[]
+          created_at: string
+          created_by: string
+          id: string
+          name: string
+          period_from: string | null
+          period_to: string | null
+        }
+        Insert: {
+          actors: string[]
+          created_at?: string
+          created_by: string
+          id?: string
+          name: string
+          period_from?: string | null
+          period_to?: string | null
+        }
+        Update: {
+          actors?: string[]
+          created_at?: string
+          created_by?: string
+          id?: string
+          name?: string
+          period_from?: string | null
+          period_to?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "projects_created_by_fkey"
+            columns: ["created_by"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+    }
+    Views: {
+      dossier_analysis_status: {
+        Row: {
+          dossier_id: string | null
+          pages_analyzed: number | null
+          project_id: string | null
+          ready_for_analysis: boolean | null
+          total_pages: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "dossiers_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "projects"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      dossiers_with_storage_path: {
+        Row: {
+          created_at: string | null
+          created_by: string | null
+          id: string | null
+          project_id: string | null
+          storage_object_id: string | null
+          storage_object_path: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "dossiers_created_by_fkey"
+            columns: ["created_by"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "dossiers_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "projects"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      users: {
+        Row: {
+          created_at: string | null
+          email: string | null
+          id: string | null
+          raw_user_meta_data: Json | null
+        }
+        Insert: {
+          created_at?: string | null
+          email?: string | null
+          id?: string | null
+          raw_user_meta_data?: Json | null
+        }
+        Update: {
+          created_at?: string | null
+          email?: string | null
+          id?: string | null
+          raw_user_meta_data?: Json | null
+        }
+        Relationships: []
+      }
+    }
+    Functions: {
+      app_url: {
+        Args: Record<PropertyKey, never>
+        Returns: string
+      }
+      match_archive_pages: {
+        Args: { query_embedding: string; match_threshold: number }
+        Returns: {
+          chunk_id: string
+          dossier_page_id: string
+          chunk_text: string
+          embedding: string
+          page_id: string
+          dossier_id: string
+          page_number: number
+          page_content: string
+          image_url: string
+          similarity: number
+        }[]
+      }
+      match_table_embeddings: {
+        Args: {
+          embedding: string
+          match_threshold: number
+          table_name: string
+          content_column: string
+          embedding_column: string
+        }
+        Returns: {
+          id: string
+          content: string
+        }[]
+      }
+      supabase_url: {
+        Args: Record<PropertyKey, never>
+        Returns: string
+      }
+    }
+    Enums: {
+      author_type: "primary" | "co-author"
+    }
+    CompositeTypes: {
+      [_ in never]: never
+    }
+  }
+}
+
+type DefaultSchema = Database[Extract<keyof Database, "public">]
+
+export type Tables<
+  DefaultSchemaTableNameOrOptions extends
+    | keyof (DefaultSchema["Tables"] & DefaultSchema["Views"])
+    | { schema: keyof Database },
+  TableName extends DefaultSchemaTableNameOrOptions extends {
+    schema: keyof Database
+  }
+    ? keyof (Database[DefaultSchemaTableNameOrOptions["schema"]]["Tables"] &
+        Database[DefaultSchemaTableNameOrOptions["schema"]]["Views"])
+    : never = never,
+> = DefaultSchemaTableNameOrOptions extends { schema: keyof Database }
+  ? (Database[DefaultSchemaTableNameOrOptions["schema"]]["Tables"] &
+      Database[DefaultSchemaTableNameOrOptions["schema"]]["Views"])[TableName] extends {
+      Row: infer R
+    }
+    ? R
+    : never
+  : DefaultSchemaTableNameOrOptions extends keyof (DefaultSchema["Tables"] &
+        DefaultSchema["Views"])
+    ? (DefaultSchema["Tables"] &
+        DefaultSchema["Views"])[DefaultSchemaTableNameOrOptions] extends {
+        Row: infer R
+      }
+      ? R
+      : never
+    : never
+
+export type TablesInsert<
+  DefaultSchemaTableNameOrOptions extends
+    | keyof DefaultSchema["Tables"]
+    | { schema: keyof Database },
+  TableName extends DefaultSchemaTableNameOrOptions extends {
+    schema: keyof Database
+  }
+    ? keyof Database[DefaultSchemaTableNameOrOptions["schema"]]["Tables"]
+    : never = never,
+> = DefaultSchemaTableNameOrOptions extends { schema: keyof Database }
+  ? Database[DefaultSchemaTableNameOrOptions["schema"]]["Tables"][TableName] extends {
+      Insert: infer I
+    }
+    ? I
+    : never
+  : DefaultSchemaTableNameOrOptions extends keyof DefaultSchema["Tables"]
+    ? DefaultSchema["Tables"][DefaultSchemaTableNameOrOptions] extends {
+        Insert: infer I
+      }
+      ? I
+      : never
+    : never
+
+export type TablesUpdate<
+  DefaultSchemaTableNameOrOptions extends
+    | keyof DefaultSchema["Tables"]
+    | { schema: keyof Database },
+  TableName extends DefaultSchemaTableNameOrOptions extends {
+    schema: keyof Database
+  }
+    ? keyof Database[DefaultSchemaTableNameOrOptions["schema"]]["Tables"]
+    : never = never,
+> = DefaultSchemaTableNameOrOptions extends { schema: keyof Database }
+  ? Database[DefaultSchemaTableNameOrOptions["schema"]]["Tables"][TableName] extends {
+      Update: infer U
+    }
+    ? U
+    : never
+  : DefaultSchemaTableNameOrOptions extends keyof DefaultSchema["Tables"]
+    ? DefaultSchema["Tables"][DefaultSchemaTableNameOrOptions] extends {
+        Update: infer U
+      }
+      ? U
+      : never
+    : never
+
+export type Enums<
+  DefaultSchemaEnumNameOrOptions extends
+    | keyof DefaultSchema["Enums"]
+    | { schema: keyof Database },
+  EnumName extends DefaultSchemaEnumNameOrOptions extends {
+    schema: keyof Database
+  }
+    ? keyof Database[DefaultSchemaEnumNameOrOptions["schema"]]["Enums"]
+    : never = never,
+> = DefaultSchemaEnumNameOrOptions extends { schema: keyof Database }
+  ? Database[DefaultSchemaEnumNameOrOptions["schema"]]["Enums"][EnumName]
+  : DefaultSchemaEnumNameOrOptions extends keyof DefaultSchema["Enums"]
+    ? DefaultSchema["Enums"][DefaultSchemaEnumNameOrOptions]
+    : never
+
+export type CompositeTypes<
+  PublicCompositeTypeNameOrOptions extends
+    | keyof DefaultSchema["CompositeTypes"]
+    | { schema: keyof Database },
+  CompositeTypeName extends PublicCompositeTypeNameOrOptions extends {
+    schema: keyof Database
+  }
+    ? keyof Database[PublicCompositeTypeNameOrOptions["schema"]]["CompositeTypes"]
+    : never = never,
+> = PublicCompositeTypeNameOrOptions extends { schema: keyof Database }
+  ? Database[PublicCompositeTypeNameOrOptions["schema"]]["CompositeTypes"][CompositeTypeName]
+  : PublicCompositeTypeNameOrOptions extends keyof DefaultSchema["CompositeTypes"]
+    ? DefaultSchema["CompositeTypes"][PublicCompositeTypeNameOrOptions]
+    : never
+
+export const Constants = {
+  graphql_public: {
+    Enums: {},
+  },
+  public: {
+    Enums: {
+      author_type: ["primary", "co-author"],
+    },
+  },
+} as const
+

@@ -51,6 +51,8 @@ export class FileUploadComponent {
     const pdfFile = Array.from(files).find(file => file.type === 'application/pdf');
     const jsonFile = Array.from(files).find(file => file.type === 'application/json');
 
+    console.log('Selected files:', files);
+
     if (files.length === 2 && pdfFile && jsonFile) {
       this.selectedFiles.pdf = pdfFile;
       this.selectedFiles.json = jsonFile;
@@ -63,6 +65,7 @@ export class FileUploadComponent {
 
 
   private async uploadFiles() {
+    console.log('Uploading files:', this.selectedFiles);
     if (!this.selectedFiles.pdf || !this.selectedFiles.json) {
       this.uploadError = 'Both PDF and JSON files are required.';
       return;
@@ -73,6 +76,7 @@ export class FileUploadComponent {
     this.uploadProgress = 0;
 
     const uuid = crypto.randomUUID();
+    console.log(this.selectedFiles);
 
     try {
 ;
