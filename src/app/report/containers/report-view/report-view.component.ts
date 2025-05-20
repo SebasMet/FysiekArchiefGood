@@ -20,7 +20,7 @@ export interface GroupedActor {
 export class ReportViewComponent {
 
 
-  private _uuid: string = '';
+  public _uuid: string = '';
 
   public initialized: boolean = false;
   public actoren: any= []
