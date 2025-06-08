@@ -208,6 +208,28 @@ public getAnalysisVersionsByDossier(dossierId: string)  {
     );
   }
 
+  public getDossiersByProjectId(projectId: string): Observable<any[]> {
+    return defer(() =>
+      this.supabase
+        .from('dossiers')
+        .select('id, created_at, storage_object_id, total_pages')
+        .eq('project_id', projectId)
+    ).pipe(
+      map((response: any) => {
+        if (response.error) {
+          console.error('Supabase error fetching dossiers:', response.error);
+          return [];
+        }
+        console.log('Fetched dossiers:', response.data);
+        return response.data || [];
+      }),
+      catchError((error) => {
+        console.error('Error fetching dossiers:', error);
+        return of([]);
+      })
+    );
+  }
+
   public createProject(projectData: ProjectData): Observable<string | null> {
     const projectDataPayload = {
       actors: projectData.actorInformation,

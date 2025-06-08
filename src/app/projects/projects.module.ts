@@ -18,7 +18,10 @@ import { HlmSeparatorDirective } from '@spartan-ng/ui-separator-helm';
 import { ProjectViewComponent } from './containers/project-view/project-view.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { SharedModule } from '../shared/shared.module';
-
+import { DossierInfoCardComponent } from './components/dossier-info-card/dossier-info-card.component';
+import { HlmAvatarComponent, HlmAvatarFallbackDirective, HlmAvatarImageDirective } from '@spartan-ng/ui-avatar-helm';
+import { ProjectUpdateCardComponent } from './components/project-update-card/project-update-card.component';
+import { ProjectViewSidebarComponent } from './components/project-view-sidebar/project-view-sidebar.component';
 
 
 @NgModule({
@@ -30,14 +33,15 @@ import { SharedModule } from '../shared/shared.module';
     ConfigSelectionListUploadComponent,
     ProjectListOverviewComponent,
     ProjectListCardComponent,
-    ProjectViewComponent
+    ProjectViewComponent,
+    DossierInfoCardComponent,
+    ProjectUpdateCardComponent,
+    ProjectViewSidebarComponent
   ],
   imports: [
     CommonModule,
     ReactiveFormsModule,
-
     SharedModule,
-
     HlmInputDirective,
     HlmLabelDirective,
     HlmButtonDirective,
@@ -49,8 +53,11 @@ import { SharedModule } from '../shared/shared.module';
     HlmCardFooterDirective,
     HlmSeparatorDirective,
     BrnSeparatorComponent,
-    NgIconsModule.withIcons({heroPlus, heroCog6Tooth, heroArrowDownTray}),
-
-  ]
+    NgIconsModule.withIcons({ heroPlus, heroCog6Tooth, heroArrowDownTray }),
+    HlmAvatarComponent,
+    HlmAvatarImageDirective,
+    HlmAvatarFallbackDirective
+]
 })
+
 export class ProjectsModule { }
