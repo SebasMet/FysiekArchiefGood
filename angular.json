@@ -4,7 +4,6 @@
   "newProjectRoot": "projects",
   "schematics": {
     "@schematics/angular:component": {
-      "skipTests": true,
       "inlineStyle": true
     }
   },
