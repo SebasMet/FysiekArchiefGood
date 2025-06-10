@@ -15,6 +15,6 @@ export class ProjectListCardComponent {
   constructor(private router: Router) {}
 
   public navigateToProject() {
-    this.router.navigate([`project/${this.projectData.projectId}`]);
+    this.router.navigate([`projects/project/${this.projectData.projectId}`]);
   }
 }

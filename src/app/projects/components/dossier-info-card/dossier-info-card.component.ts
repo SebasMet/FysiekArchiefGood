@@ -1,5 +1,6 @@
 import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { Router } from '@angular/router';
+import { DataService } from '@core/services/data.service';
 
 @Component({
   selector: 'app-dossier-info-card',
@@ -9,13 +10,15 @@ import { Router } from '@angular/router';
 })
 export class DossierInfoCardComponent implements OnChanges {
   @Input() dossierInfo: any;
+  public scanCompleted: boolean  = false;
 
-  constructor(private router: Router) {}
+  constructor(private router: Router, private dataService: DataService) {}
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes['dossierInfo'] && changes['dossierInfo'].currentValue) {
       console.log('Dossier Info Card Component - Data received');
       console.log('Dossier Info:', this.dossierInfo);
+      
     }
   }
 

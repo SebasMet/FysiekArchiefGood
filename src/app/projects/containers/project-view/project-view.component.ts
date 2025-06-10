@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { DataService } from '@core/services/data.service';
-import { Observable } from 'rxjs';
+import { map, Observable } from 'rxjs';
 
 @Component({
   selector: 'app-project-view',
@@ -31,7 +31,31 @@ export class ProjectViewComponent implements OnInit {
   private loadDossiers() {
     if (!this.projectId) return;
 
-    this.dossiersInfo$ = this.dataService.getDossiersByProjectId(this.projectId)
+    this.dossiersInfo$ = this.dataService.getDossiersByProjectId(this.projectId).pipe(
+      map(dossiers => {
+        dossiers.forEach(dossier => {
+          this.dataService.getAnalysisVersionsByDossier(dossier.id).subscribe({
+            next: (data) => {
+              if (data && data.length > 0) {
+                console.log('Analysis versions fetched successfully for dossier:', dossier.id);
+                dossier.scanCompleted = true;
+              } else {
+                console.log('No analysis versions found for dossier:', dossier.id);
+                dossier.scanCompleted = false;
+              }
+            },
+            error: (error) => {
+              console.error('Error fetching analysis versions for dossier:', dossier.id, error);
+              dossier.scanCompleted = false;
+            },
+            complete: () => {
+              console.log('Analysis versions fetch completed for dossier:', dossier.id);
+            }
+          });
+        });
+        return dossiers;
+      })
+    )
   }
 
 }
