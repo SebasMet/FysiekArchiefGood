@@ -1,16 +1,77 @@
-<div class="flex gap-x-5 p-5">
-  <app-navigation-card></app-navigation-card>
-  <div class="w-full">
-    <div hlmCard *ngIf="!isInitialized" class="w-full h-96 flex flex-col justify-center items-center gap-y-3">
-      <hlm-spinner />
-      <p class="text-sm text-gray-600">Bezig met analyseren...</p>
+<div class="h-screen flex flex-col">
+  <!-- <div class="min-h-[140px] bg-red-500">
+  </div> -->
+  <div class="flex flex-grow gap-4">
+    <div class="overflow-auto overflow-x-hidden w-full pb-16">
+      <hlm-tabs tab="overview" class="block w-full">
+        <hlm-tabs-list
+          class="w-fit grid h-12 grid-cols-3 bg-slate-200 mb-4"
+          aria-label="tabs example"
+        >
+          <button class="px-6 py-2" hlmTabsTrigger="overview">Overview</button>
+          <button class="px-6 py-2" hlmTabsTrigger="headings">Rubrieken</button>
+          <button class="px-6 py-2" hlmTabsTrigger="retention_schedule">
+            Selectielijsten
+          </button>
+        </hlm-tabs-list>
 
+        <div hlmTabsContent="overview">
+          <div class="flex flex-col gap-4">
+            <app-summary-result-card
+              [beschrijving]="beschrijving"
+              *ngIf="initialized"
+            ></app-summary-result-card>
+            <app-timeline-result-card
+              [dateringen]="dateringen"
+              *ngIf="initialized"
+            ></app-timeline-result-card>
+            <app-actor-search-result-card
+              [actorGroupData]="actor"
+              *ngFor="let actor of actoren"
+            ></app-actor-search-result-card>
+
+            <!-- loading state -->
+            <div
+              *ngIf="!initialized"
+              class="w-full h-[30rem] flex items-center justify-center"
+              hlmCard
+            >
+              <div class="flex flex-col items-center gap-y-2">
+                <hlm-spinner />
+                <p class="text-muted-foreground text-sm">
+                  Bezig met analyseren...
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div hlmTabsContent="headings">Comming soon!</div>
+
+        <div hlmTabsContent="retention_schedule">Comming soon!</div>
+      </hlm-tabs>
     </div>
-    <app-actor-search-result-card
-    *ngFor="let actorGroup of groupedActorData"
-    [actorGroupData]="actorGroup">
-    </app-actor-search-result-card>
 
+    <div class="w-[450px] flex flex-col items-center">
+      <hlm-tabs tab="confirmation" class="block w-[350px] sticky top-0">
+        <hlm-tabs-list
+          class="w-full grid h-12 grid-cols-2 bg-slate-200 mb-4"
+          aria-label="tabs example"
+        >
+          <button class="px-6 py-2" hlmTabsTrigger="confirmation">
+            Confirmatie
+          </button>
+          <button class="px-6 py-2" hlmTabsTrigger="chat">Chat</button>
+        </hlm-tabs-list>
+
+        <div hlmTabsContent="confirmation">
+          <app-context-confirmation-card> </app-context-confirmation-card>
+        </div>
+
+        <div hlmTabsContent="chat">
+          <app-chat-window></app-chat-window>
+        </div>
+      </hlm-tabs>
+    </div>
   </div>
-  <div hlmCard class="xl:min-w-[330px] md:min-w-[270px] h-[300px]"></div>
 </div>

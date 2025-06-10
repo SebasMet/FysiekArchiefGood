@@ -1,5 +1,9 @@
 # See https://docs.github.com/get-started/getting-started-with-git/ignoring-files for more about ignoring files.
 
+# Ignore TODO files
+TODO.txt
+note.md
+
 # Firebase functions
 functions/*
 
@@ -53,3 +57,5 @@ testem.log
 # System files
 .DS_Store
 Thumbs.db
+src/assets/test-dossiers-groot/9fdddaf0-2266-4aaa-ad89-e148d433f19b.pdf
+src/assets/test-dossiers-groot/combined_document_data_9fdddaf0-2266-4aaa-ad89-e148d433f19b.json

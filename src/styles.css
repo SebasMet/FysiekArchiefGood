@@ -1,6 +1,5 @@
 @import '@angular/cdk/overlay-prebuilt.css';
 
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -24,7 +23,7 @@ body { margin: 0; font-family: Inter, Inter Fallback, sans-serif; }
 --secondary: 240 4.8% 95.9%;
 --secondary-foreground: 240 5.9% 10%;
 --muted: 240 4.8% 95.9%;
---muted-foreground: 240 3.8% 46.1%;
+--muted-foreground: 218 7.4% 37.9%;
 --accent: 240 4.8% 95.9%;
 --accent-foreground: 240 5.9% 10%;
 --destructive: 0 84.2% 60.2%;
@@ -32,7 +31,7 @@ body { margin: 0; font-family: Inter, Inter Fallback, sans-serif; }
 --border: 240 5.9% 90%;
 --input: 240 5.9% 90%;
 --ring: 219 46.4% 30.0%;
---radius: 0.3rem;
+--radius: 0.6rem;
 color-scheme: light;
 }
 
@@ -43,7 +42,6 @@ color-scheme: light;
 --card-foreground: 0 0% 95%;
 --popover: 0 0% 9%;
 --popover-foreground: 0 0% 95%;
---primary: 346.8 77.2% 49.8%;
 --primary-foreground: 355.7 100% 97.3%;
 --secondary: 240 3.7% 15.9%;
 --secondary-foreground: 0 0% 98%;

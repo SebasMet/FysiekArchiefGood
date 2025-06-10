@@ -10,7 +10,6 @@ import { heroPlus } from '@ng-icons/heroicons/outline';
 import { heroArrowUpTray } from '@ng-icons/heroicons/outline';
 import { heroArrowDownTray } from '@ng-icons/heroicons/outline';
 
-import { DocumentUploaderComponent } from './components/document-uploader/document-uploader.component';
 import { DocumentStatusOverviewComponent } from './components/document-status-overview/document-status-overview.component';
 import { StatusOverviewTableComponent } from './components/status-overview-table/status-overview-table.component';
 import { DecimalPipe, TitleCasePipe } from '@angular/common';
@@ -34,7 +33,6 @@ import { HttpClientModule, provideHttpClient, withInterceptorsFromDi } from '@an
   declarations: [
     HomePageComponent,
     SectionHeaderComponent,
-    DocumentUploaderComponent,
     DocumentStatusOverviewComponent,
     StatusOverviewTableComponent
   ],

@@ -1,0 +1,55 @@
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ProjectListCardComponent } from './project-list-card.component';
+import { ProjectsModule } from '../../projects.module';
+import { Router } from '@angular/router';
+
+describe('ProjectListCardComponent', () => {
+  let component: ProjectListCardComponent;
+  let fixture: ComponentFixture<ProjectListCardComponent>;
+  let routerSpy: jasmine.SpyObj<Router>;
+
+  const mockProjectData = {
+    projectId: '123',
+    generalInformation: {
+      projectName: 'Test Project'
+    }
+  } as any;
+
+  beforeEach(async () => {
+    routerSpy = jasmine.createSpyObj('Router', ['navigate']);
+
+    await TestBed.configureTestingModule({
+      declarations: [ ProjectListCardComponent ],
+      imports: [ProjectsModule],
+      providers: [
+        { provide: Router, useValue: routerSpy }
+      ]
+    }).compileComponents();
+
+    fixture = TestBed.createComponent(ProjectListCardComponent);
+    component = fixture.componentInstance;
+    component.projectData = mockProjectData;
+    fixture.detectChanges();
+  });
+
+  it('should create', () => {
+    expect(component).toBeTruthy();
+  });
+
+  it('should display the project name', () => {
+    const title = fixture.nativeElement.querySelector('h1');
+    expect(title.textContent).toContain('Test Project');
+  });
+
+  it('should call navigateToProject and navigate to the correct route', () => {
+    component.navigateToProject();
+    expect(routerSpy.navigate).toHaveBeenCalledWith(['project/123']);
+  });
+
+  it('should call navigateToProject when button is clicked', () => {
+    spyOn(component, 'navigateToProject');
+    const button = fixture.nativeElement.querySelector('button');
+    button.click();
+    expect(component.navigateToProject).toHaveBeenCalled();
+  });
+});

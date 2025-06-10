@@ -1,0 +1,39 @@
+<div [formGroup]="actorListForm" class="flex flex-col gap-y-4"> <!-- Bind the main FormGroup -->
+  <div>
+    <h2 class="text-lg font-semibold">Actoren</h2>
+    <h5 class="text-base text-[#142137cc]">
+      Met de hulp van het beslisdocument, vul de actoren in
+    </h5>
+  </div>
+
+  <div formArrayName="actorEntries">
+
+    <div *ngFor="let actorEntryControl of actorEntries.controls; let i = index"
+         [formGroupName]="i"
+         class="flex flex-col gap-y-4 mb-4">
+
+      <h3>Actor {{ i + 1 }}</h3>
+
+      <div class="space-y-1.5">
+
+        <label hlmLabel class="text-base" [for]="'actorNaam-' + i"> Naam </label>
+        <textarea [id]="'actorNaam-' + i"
+                  formControlName="actorNaam"
+                  class="min-h-[80px] w-full"
+                  hlmInput
+                  placeholder="Type your message here."></textarea>
+        <div *ngIf="actorEntryControl.get('actorNaam')?.invalid && (actorEntryControl.get('actorNaam')?.dirty || actorEntryControl.get('actorNaam')?.touched)"
+             class="text-red-500 text-xs">
+          <span *ngIf="actorEntryControl.get('actorNaam')?.errors?.['required']">Naam is vereist.</span>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+
+  <button hlmBtn (click)="addActor()" variant="outline" class="w-fit text-gray-500">
+    <ng-icon name="heroPlus" size="20px" strokeWidth="2px" class="mr-1"></ng-icon>
+    Nog een actor toevoegen
+  </button>
+</div>

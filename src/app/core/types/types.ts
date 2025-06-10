@@ -34,56 +34,200 @@ export type Database = {
   }
   public: {
     Tables: {
+      analysis: {
+        Row: {
+          completed: boolean
+          created_at: string
+          dossier_id: string
+          id: string
+        }
+        Insert: {
+          completed?: boolean
+          created_at?: string
+          dossier_id: string
+          id?: string
+        }
+        Update: {
+          completed?: boolean
+          created_at?: string
+          dossier_id?: string
+          id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "analysis_dossier_id_fkey"
+            columns: ["dossier_id"]
+            isOneToOne: false
+            referencedRelation: "dossier_analysis_status"
+            referencedColumns: ["dossier_id"]
+          },
+          {
+            foreignKeyName: "analysis_dossier_id_fkey"
+            columns: ["dossier_id"]
+            isOneToOne: false
+            referencedRelation: "dossiers"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "analysis_dossier_id_fkey"
+            columns: ["dossier_id"]
+            isOneToOne: false
+            referencedRelation: "dossiers_with_storage_path"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      analysis_authors: {
+        Row: {
+          created_at: string
+          id: string
+          type: Database["public"]["Enums"]["author_type"]
+          user: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          type?: Database["public"]["Enums"]["author_type"]
+          user: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          type?: Database["public"]["Enums"]["author_type"]
+          user?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "analysis_authors_user_fkey"
+            columns: ["user"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      analysis_versions: {
+        Row: {
+          actoren: Json
+          analysis_id: string
+          author: string | null
+          beschrijving: Json
+          created_at: string
+          datering: Json
+          id: string
+          version_number: number
+        }
+        Insert: {
+          actoren: Json
+          analysis_id: string
+          author?: string | null
+          beschrijving: Json
+          created_at?: string
+          datering: Json
+          id?: string
+          version_number?: number
+        }
+        Update: {
+          actoren?: Json
+          analysis_id?: string
+          author?: string | null
+          beschrijving?: Json
+          created_at?: string
+          datering?: Json
+          id?: string
+          version_number?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "analysis_versions_analysis_id_fkey"
+            columns: ["analysis_id"]
+            isOneToOne: false
+            referencedRelation: "analysis"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "analysis_versions_author_fkey"
+            columns: ["author"]
+            isOneToOne: false
+            referencedRelation: "analysis_authors"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      dossier_page_chunks: {
+        Row: {
+          content: string
+          created_at: string
+          embeddings: string | null
+          id: string
+          page_id: string
+        }
+        Insert: {
+          content: string
+          created_at?: string
+          embeddings?: string | null
+          id?: string
+          page_id: string
+        }
+        Update: {
+          content?: string
+          created_at?: string
+          embeddings?: string | null
+          id?: string
+          page_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "dossier_page_chunks_page_id_fkey"
+            columns: ["page_id"]
+            isOneToOne: false
+            referencedRelation: "dossier_pages"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       dossier_pages: {
         Row: {
-          actors_mentioned: Json | null
           annotations: Json | null
           created_at: string
           document_creation_timestamp: string | null
-          document_creator: string | null
-          document_type: string | null
           dossier_id: string
-          embedding: string | null
           id: string
           image_url: string
-          importance: number | null
           markdown_text: string
           page_number: number | null
           summary: string | null
         }
         Insert: {
-          actors_mentioned?: Json | null
           annotations?: Json | null
           created_at?: string
           document_creation_timestamp?: string | null
-          document_creator?: string | null
-          document_type?: string | null
           dossier_id: string
-          embedding?: string | null
           id?: string
           image_url?: string
-          importance?: number | null
           markdown_text: string
           page_number?: number | null
           summary?: string | null
         }
         Update: {
-          actors_mentioned?: Json | null
           annotations?: Json | null
           created_at?: string
           document_creation_timestamp?: string | null
-          document_creator?: string | null
-          document_type?: string | null
           dossier_id?: string
-          embedding?: string | null
           id?: string
           image_url?: string
-          importance?: number | null
           markdown_text?: string
           page_number?: number | null
           summary?: string | null
         }
         Relationships: [
+          {
+            foreignKeyName: "dossiers_pages_dossier_id_fkey"
+            columns: ["dossier_id"]
+            isOneToOne: false
+            referencedRelation: "dossier_analysis_status"
+            referencedColumns: ["dossier_id"]
+          },
           {
             foreignKeyName: "dossiers_pages_dossier_id_fkey"
             columns: ["dossier_id"]
@@ -102,72 +246,103 @@ export type Database = {
       }
       dossiers: {
         Row: {
+          content: Json
           created_at: string
           created_by: string
-          description: string
           id: string
           project_id: string
           storage_object_id: string
+          total_pages: number | null
         }
         Insert: {
+          content: Json
           created_at?: string
           created_by: string
-          description?: string
           id?: string
           project_id: string
           storage_object_id: string
+          total_pages?: number | null
         }
         Update: {
+          content?: Json
           created_at?: string
           created_by?: string
-          description?: string
           id?: string
           project_id?: string
           storage_object_id?: string
+          total_pages?: number | null
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "dossiers_created_by_fkey"
+            columns: ["created_by"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "dossiers_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "projects"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       projects: {
         Row: {
           actors: string[]
           created_at: string
+          created_by: string
           id: string
+          name: string
+          period_from: string | null
+          period_to: string | null
         }
         Insert: {
           actors: string[]
           created_at?: string
+          created_by: string
           id?: string
+          name: string
+          period_from?: string | null
+          period_to?: string | null
         }
         Update: {
           actors?: string[]
           created_at?: string
+          created_by?: string
           id?: string
+          name?: string
+          period_from?: string | null
+          period_to?: string | null
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "projects_created_by_fkey"
+            columns: ["created_by"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
       }
     }
     Views: {
-      dossier_analysis_progress: {
+      dossier_analysis_status: {
         Row: {
-          analyzed_pages: number | null
-          archive_id: string | null
-          missing_analysis_pages: number | null
-          scanned_percentage: number | null
+          dossier_id: string | null
+          pages_analyzed: number | null
+          project_id: string | null
+          ready_for_analysis: boolean | null
           total_pages: number | null
         }
         Relationships: [
           {
-            foreignKeyName: "dossiers_pages_dossier_id_fkey"
-            columns: ["archive_id"]
+            foreignKeyName: "dossiers_project_id_fkey"
+            columns: ["project_id"]
             isOneToOne: false
-            referencedRelation: "dossiers"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "dossiers_pages_dossier_id_fkey"
-            columns: ["archive_id"]
-            isOneToOne: false
-            referencedRelation: "dossiers_with_storage_path"
+            referencedRelation: "projects"
             referencedColumns: ["id"]
           },
         ]
@@ -181,7 +356,22 @@ export type Database = {
           storage_object_id: string | null
           storage_object_path: string | null
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "dossiers_created_by_fkey"
+            columns: ["created_by"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "dossiers_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "projects"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       users: {
         Row: {
@@ -211,27 +401,32 @@ export type Database = {
         Returns: string
       }
       match_archive_pages: {
-        Args: { embedding: string; match_threshold: number }
+        Args: { query_embedding: string; match_threshold: number }
         Returns: {
-          actors_mentioned: Json | null
-          annotations: Json | null
-          created_at: string
-          document_creation_timestamp: string | null
-          document_creator: string | null
-          document_type: string | null
+          chunk_id: string
+          dossier_page_id: string
+          chunk_text: string
+          embedding: string
+          page_id: string
           dossier_id: string
-          embedding: string | null
-          id: string
+          page_number: number
+          page_content: string
           image_url: string
-          importance: number | null
-          markdown_text: string
-          page_number: number | null
-          summary: string | null
+          similarity: number
         }[]
       }
-      process_dossier: {
-        Args: { storage_object_id: string; project_id: string }
-        Returns: undefined
+      match_table_embeddings: {
+        Args: {
+          embedding: string
+          match_threshold: number
+          table_name: string
+          content_column: string
+          embedding_column: string
+        }
+        Returns: {
+          id: string
+          content: string
+        }[]
       }
       supabase_url: {
         Args: Record<PropertyKey, never>
@@ -239,7 +434,7 @@ export type Database = {
       }
     }
     Enums: {
-      [_ in never]: never
+      author_type: "primary" | "co-author"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -357,7 +552,9 @@ export const Constants = {
     Enums: {},
   },
   public: {
-    Enums: {},
+    Enums: {
+      author_type: ["primary", "co-author"],
+    },
   },
 } as const
 

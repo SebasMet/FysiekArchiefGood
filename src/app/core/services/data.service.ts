@@ -1,22 +1,5 @@
 // // src/app/services/data.service.ts
 import { Injectable } from '@angular/core';
-
-// import { from, Observable, of } from 'rxjs';
-// import { switchMap, finalize, map, catchError } from 'rxjs/operators';
-// import { NgZone } from '@angular/core';
-// import {
-//   Firestore,
-//   setDoc,
-//   addDoc,
-//   collection,
-//   getDocs,
-//   query,
-//   doc,
-//   getDoc,
-//   updateDoc,
-//   arrayUnion,
-// } from '@angular/fire/firestore';
-// import { ref, Storage, uploadBytesResumable, getDownloadURL } from '@angular/fire/storage';
 import {
   AuthChangeEvent,
   AuthSession,
@@ -27,12 +10,23 @@ import {
 } from '@supabase/supabase-js';
 import { environment } from '../../../environments/environment';
 import { Database } from '@core/types/types';
-import { BehaviorSubject, map, Observable } from 'rxjs';
+import {
+  BehaviorSubject,
+  catchError,
+  defer,
+  from,
+  map,
+  Observable,
+  of,
+  switchMap,
+  tap,
+} from 'rxjs';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { ProjectData } from '@core/models/project.model';
 
 const test_user = {
-  email: "test@test.com",
-  password: "Password",
+  email: 'test@test.com',
+  password: 'Password',
 };
 
 @Injectable({
@@ -40,8 +34,8 @@ const test_user = {
 })
 export class DataService {
   private supabase: SupabaseClient<Database>;
-  public _session: AuthSession | null = null
-  public _UserSession: User
+  public _session: AuthSession | null = null;
+  public _UserSession: User;
   public currentFile: File | null = null;
 
   private analyzeResultSubject = new BehaviorSubject<any>(null);
@@ -53,8 +47,6 @@ export class DataService {
       environment.SUPABASE_ANON_KEY
     );
     this.login();
-
-
   }
 
   get session() {
@@ -64,62 +56,231 @@ export class DataService {
     return this._session;
   }
 
-
-
-
-  //shitcode
-  public async uploadFile(file: File, uuid: string) {
-    const response = await this.supabase.storage.from('archives').upload(`${file.name}_${uuid}`, file)
-    if (response.error) {
-      console.error("smth went wrong uploading the ifle")
-      return null
-    }
-    if (response.data.id) {
-      this.currentFile = file
-      return response.data.id
-    }
-    return null
-  }
-
-  public async createDossier(projectId: string, storageObjectId: string) {
-    const response = await this.supabase.from("dossiers").insert({ project_id: projectId, storage_object_id: storageObjectId, created_by: this.session?.user.id ?? '' }).select("id").single()
-    if(!response) {
-      return;
-    }
-    return response.data?.id;
-  }
-
-
-  public async createProject(actors: string[]) {
-    const response = await this.supabase.from("projects").insert({ actors: actors }).select("id").single();
-    if (response.data) {
-      return response.data.id
-    }
-    else {
-      return null
-    }
-  }
-
-
-  public startAnalyze(dossierId: string): void {
-    const url = '/api/process/actors';
-
-    const headers = new HttpHeaders({
-      'Content-Type': 'application/json',
-      ...(this.session?.access_token && { 'Authorization': `Bearer ${this.session.access_token}` })
-    });
-
-    const body = { dossier_id: dossierId };
-
-    this.http.post(url, body, { headers }).subscribe({
-      next: (response) => {
-        console.log('Result from backend:', JSON.stringify(response));
-        this.analyzeResultSubject.next(response); // <-- Push result to BehaviorSubject
-      },
-      error: (error) => {
-        console.error('Error in startAnalyze:', error);
-        this.analyzeResultSubject.error(error); // Optional
+public getAnalysisVersionsByDossier(dossierId: string)  {
+  console.log
+  return defer(() =>
+    from(
+      this.supabase
+          .from('analysis')
+          .select('id')
+          .eq('dossier_id', dossierId)
+    )
+  ).pipe(
+    switchMap(({ data: analysisRows, error }) => {
+      if (error) {
+        throw error;
       }
+
+      const analysisIds = (analysisRows ?? []).map(r => r.id);
+
+      if (!analysisIds.length) {
+        return of({ data: [], error: null });
+      }
+
+      return from(
+        this.supabase
+            .from('analysis_versions')
+            .select('*')
+            .in('analysis_id', analysisIds)
+      );
+    }),
+    map(({ data }) => data ?? []),
+
+    catchError(err => {
+      console.error('Error fetching analysis_versions:', err);
+      return of([]);
+    })
+  );
+}
+
+  public uploadFile(
+    file: File,
+    jsonFile: File,
+    uuid: string,
+    projectId: string
+  ) {
+    return defer(() =>
+      from(
+        this.supabase.storage
+          .from('archives')
+          .upload(`/dossiers/project_${projectId}/${file.name}`, file, {
+            upsert: true,
+            cacheControl: '3600',
+          })
+      )
+    ).pipe(
+      tap(({ error }) => {
+        if (error) {
+          throw error;
+        }
+      }),
+      switchMap(({ data }) => {
+        if (data?.id) {
+          this.currentFile = file;
+          return this.createDossier(projectId, data.id, jsonFile);
+        }
+        return of(null);
+      }),
+
+      catchError((err) => {
+        console.error('smth went wrong uploading the file', err);
+        return of(null);
+      })
+    );
+  }
+
+  private createDossier(
+    projectId: string,
+    storageObjectId: string,
+    jsonFile: File
+  ): Observable<string | null> {
+    return defer(() => from(jsonFile.text())).pipe(
+      map((rawText) => {
+        try {
+          return JSON.parse(rawText);
+        } catch (error) {
+          console.error('Invalid JSON file', error);
+          throw error;
+        }
+      }),
+
+      switchMap((parsedContent) =>
+        from(
+          this.supabase
+            .from('dossiers')
+            .insert({
+              project_id: projectId,
+              storage_object_id: storageObjectId,
+              created_by: this.session?.user.id ?? '',
+              content: parsedContent,
+            })
+            .select('id')
+            .single()
+        )
+      ),
+      tap((resp) => {
+        if (resp.error) {
+          throw resp.error;
+        }
+        console.log('Dossier created with ID:', resp.data?.id);
+      }),
+      map((resp) => resp.data?.id ?? null),
+
+      catchError((err) => {
+        console.error('Error creating dossier:', err);
+        return of(null);
+      })
+    );
+  }
+
+  public getProjects(): Observable<ProjectData[]> {
+    return defer(() =>
+      this.supabase.from('projects').select(`
+        id,
+        name,
+        period_from,
+        period_to,
+        actors
+      `)
+    ).pipe(
+      map((response: any) => {
+        if (response.error) {
+          console.error('Supabase error fetching projects:', response.error);
+          return [];
+        }
+        return (response.data || []).map(
+          (item: any) =>
+          ({
+            generalInformation: {
+              projectName: item.name,
+              projectPeriodFrom: item.period_from,
+              projectPeriodTo: item.period_to,
+            },
+            actorInformation: item.actors || [],
+            projectId: item.id
+          } as ProjectData)
+        );
+      }),
+      catchError((error) => {
+        console.error('Error fetching projects:', error);
+        return of([]);
+      })
+    );
+  }
+
+  public getDossiersByProjectId(projectId: string): Observable<any[]> {
+    return defer(() =>
+      this.supabase
+        .from('dossiers')
+        .select('id, created_at, storage_object_id, total_pages')
+        .eq('project_id', projectId)
+    ).pipe(
+      map((response: any) => {
+        if (response.error) {
+          console.error('Supabase error fetching dossiers:', response.error);
+          return [];
+        }
+        console.log('Fetched dossiers:', response.data);
+        return response.data || [];
+      }),
+      catchError((error) => {
+        console.error('Error fetching dossiers:', error);
+        return of([]);
+      })
+    );
+  }
+
+  public createProject(projectData: ProjectData): Observable<string | null> {
+    const projectDataPayload = {
+      actors: projectData.actorInformation,
+      created_by: this.session?.user.id ?? '',
+      name: projectData.generalInformation.projectName,
+      period_from: projectData.generalInformation.projectPeriodFrom,
+      period_to: projectData.generalInformation.projectPeriodTo,
+    };
+
+    return defer(() =>
+      this.supabase
+        .from('projects')
+        .insert(projectDataPayload)
+        .select('id')
+        .single()
+        .throwOnError()
+    ).pipe(
+      map((res) => res.data.id),
+      catchError((err) => {
+        console.error('Error creating project:', err);
+        return of(null);
+      })
+    );
+  }
+
+ public startAnalysis(dossierId: string): Observable<any> {
+
+    return new Observable<any>((observer) => {
+      const channel = this.supabase.channel(`dossier-analysis-${dossierId}`)
+        .on('broadcast', { event: 'dossier-analysis' }, async (payload) => {
+          const status = payload?.['payload']?.status;
+          console.log('status update Dservice', status);
+
+          if (status === 'completed') {
+            channel.unsubscribe();
+
+            try {
+              const { data, error } = await this.fetchLatestAnalysisVersion(dossierId);
+              if (error) throw error;
+
+              observer.next(data);
+              observer.complete();
+            } catch (err) {
+              observer.error(err);
+            }
+          }
+        })
+        .subscribe();
+
+      // Teardown if caller unsubscribes early
+      return () => channel.unsubscribe();
     });
   }
 
@@ -130,22 +291,30 @@ export class DataService {
   //   const url = `http://localhost:3000/data`
   //   return this.http.get<any>(url.toString())
 
-
   // }
+
+private fetchLatestAnalysisVersion(dossierId: string) {
+  return this.supabase
+    .from('analysis_versions')
+    .select('*, analysis!inner(id, dossier_id)')
+    .eq('analysis.dossier_id', dossierId)
+    .order('version_number', { ascending: false })
+    .limit(1)
+    .maybeSingle();
+}
 
   private async login() {
     const session = await this.supabase.auth.signInWithPassword({
       ...test_user,
     });
     if (session.error) {
-      throw new Error("Failed to generate access token", {
+      throw new Error('Failed to generate access token', {
         cause: session.error,
       });
-    }
-    else {
-      this._session = session.data.session
-      console.log("pogchamp")
-      console.log(session.data.user.id)
+    } else {
+      this._session = session.data.session;
+      console.log('pogchamp');
+      console.log(session.data.user.id);
     }
   }
 
@@ -156,9 +325,4 @@ export class DataService {
 
   //https://www.learnrxjs.io/learn-rxjs/recipes/http-polling
   //https://ui.dev/imperative-vs-declarative-programming
-
-
-
-
 }
-

@@ -1,0 +1,9 @@
+{
+  "name": "test",
+  "version": "1.0.0",
+  "description": "A test file for JSON parsing",
+  "author": {
+    "name": "John Doe",
+    "email": "@gmail.com"
+  }
+}

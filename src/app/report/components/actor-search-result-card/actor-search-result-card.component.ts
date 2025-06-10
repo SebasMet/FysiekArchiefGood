@@ -1,5 +1,5 @@
 import { Component, Input, OnInit, OnDestroy } from '@angular/core';
-import { AnalyzedDocument, ActorMentioned } from '@core/types/AnalyzedDocument';
+import { AnalyzedDocument, ActorMentioned } from '@core/models/result.model';
 import { Observable, Subscription } from 'rxjs';
 
 export interface GroupedActor {
@@ -14,7 +14,7 @@ export interface GroupedActor {
   styles: ``
 })
 export class ActorSearchResultCardComponent   {
-  @Input() actorGroupData: GroupedActor | null = null;
+  @Input() actorGroupData: any
 
   constructor() {}
 

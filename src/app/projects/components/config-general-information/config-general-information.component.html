@@ -1,0 +1,46 @@
+
+<form [formGroup]="generalInfoForm" class="flex flex-col gap-y-4">
+  <div>
+    <h2 class="text-lg font-semibold">Basis informatie</h2>
+    <h4 class="text-base text-[#142137cc]">Informatie over het project</h4>
+  </div>
+
+  <div class="flex flex-col gap-y-2">
+    <div class="space-y-1.5">
+      <label hlmLabel class="text-base" for="projectName"> Naam Project </label>
+      <p class="text-sm text-muted-foreground">
+        De naam van het project kan je later veranderen
+      </p>
+    </div>
+    <textarea id="projectNameInput" class="min-h-[80px] w-full" formControlName="projectName" hlmInput placeholder="Type your message here."></textarea>
+       <div *ngIf="projectName?.invalid && (projectName?.dirty || projectName?.touched)" class="text-red-500 text-xs mt-1">
+      <div *ngIf="projectName?.errors?.['required']">
+        Naam Project is vereist.
+      </div>
+    </div>
+  </div>
+
+
+  <div class="space-y-1.5">
+    <label hlmLabel class="text-base" for="projectPeriod"> Project Periode </label>
+    <p  class="text-sm text-muted-foreground">
+      Wat de verwachte datering is van het hele archief
+    </p>
+    <input id="projectPeriodFromInput" formControlName="projectPeriodFrom" class="w-80" hlmInput placeholder="Van" type="date" />
+
+          <div *ngIf="projectPeriodFrom?.invalid && (projectPeriodFrom?.dirty || projectPeriodFrom?.touched)" class="text-red-500 text-xs mt-1">
+      <div *ngIf="projectPeriodFrom?.errors?.['required']">
+        Beginddatum is vereist.
+      </div>
+    </div>
+    <input id="projectPeriodToInput" formControlName="projectPeriodTo" class="w-80" hlmInput placeholder="Tot" type="date" />
+          <div *ngIf="projectPeriodTo?.invalid && (projectPeriodTo?.dirty || projectPeriodTo?.touched)" class="text-red-500 text-xs mt-1">
+      <div *ngIf="projectPeriodTo?.errors?.['required']">
+        Einddatum is vereist.
+      </div>
+    </div>
+      <div *ngIf="generalInfoForm.errors?.['dateOrderInvalid'] && (projectPeriodFrom?.touched || projectPeriodTo?.touched)" class="text-red-500 text-xs mt-1">
+      Einddatum kan niet voor de begindatum liggen.
+    </div>
+  </div>
+</form>

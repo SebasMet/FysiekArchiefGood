@@ -1,0 +1,190 @@
+{
+    "pages_data": [
+        {
+            "markdown_text": "# Bezoek van 8 t/m 10 juni 1976 Australische Min. van Immigratie en bevolkingszaken de hr. M.J.R. MacKellar.\n\nzie voor: emigratie programma Australi\\u00eb 1976/77\ndoss. -1.839.621 Austr.",
+            "document_date": "10 juni 1976",
+            "page_number": 1,
+            "annotations": [
+                {
+                    "type": "text",
+                    "text": "Bezoek van 8 t/m 10 juni 1976 Australische Min. van Immigratie en bevolkingszaken de hr. M.J.R. MacKellar.",
+                    "confidence": 0.95,
+                    "bounding_box": {
+                        "x": 0,
+                        "y": 0,
+                        "width": 800,
+                        "height": 60
+                    }
+                },
+                {
+                    "type": "text",
+                    "text": "zie voor: emigratie programma Australië 1976/77 doss. -1.839.621 Austr.",
+                    "confidence": 0.95,
+                    "bounding_box": {
+                        "x": 0,
+                        "y": 60,
+                        "width": 800,
+                        "height": 60
+                    }
+                }
+            ]
+        },
+        {
+            "markdown_text": "### ONTVANGEN CODEBERICHT\n\n**Datum van ontvangst:** 6 mei 1976\n\n**Bestemd voor:** min. van b.z.\n\n**Afkomstig van:** canberra\n\n---\n\n### Onderwerp\n\nministerieel bezoek.\n\n---\n\n### Inhoud\n\nMin. voor immigration en ethnic affairs, Michael John Randal Mackellar, heeft mij persoonlijk mededeling gedaan dat eerste minister Malcolm Fraser goedkeuring heeft gegeven aan zijn voorgenomen reis naar Europa ter bespreking van migratie.\n\nMin. Mackellar (van huis uit landbouw-specialist die in Oxford heeft gestudeerd en die ook Wageningen kent) hoopt in Nederland aan te komen vanuit Londen op 8 juni met BE-206 om 10.30 uur en te vertrekken naar Genève op 10 juni met SR-795 om 20.15 uur.\n\nMin. Mackellar zal zijn vergezeld van echtgenote, de secretary van zijn departement Lloyd F. Bott, alsmede particulier secretaris Wayne Gibbons.\n\nBehalve v.k. en Nederland bezoeken zij Italië, Griekenland en Turkije.\n\nBelangstelling gaat ook uit naar Nederlandse bevolkingspolitiek.\n\nVerneem t.b.v. minister Mackellar gaarne ontwerp-programma en suggesties voor gesprekken.\n\n---\n\n### Annotaties\n\n- Handgeschreven notities bovenaan het document: \"@ 093/76\", \"B.58 / Emmij. / J.Z.\", \"Hu v.d. Kolff\", \"dr. Emmij\", \"Sona\".\n- Stempel \"INGEKOMEN (G.A.) Dossier: -7 MEI 1976\" met een kader.\n- Stempel \"CONFIDENTIEEL\" onderaan en in het midden van het document.\n- Handtekening of paraaf onderaan rechts naast \"pesch 16 ++\".\n\n---\n\n### Documentinformatie\n\n- **Type document:** codebericht\n- **Documentmaker:** Ministerie van Buitenlandse Zaken, Afdeling Verbindingen\n- **Documentdatum:** 6 mei 1976\n\n---\n\n### Actoren\n\n- **Ministerie van Sociale Zaken en Werkgelegenheid: Directie voor de Emigratie - SZW / Emigratie**\n  - Niet expliciet genoemd in de tekst, maar het document is bestemd voor de minister van Buitenlandse Zaken (b.z.)\n  - Er is geen directe vermelding van SZW of Emigratie in de tekst.\n\n---\n\n### Belang van het document\n\n- Het document betreft een ministerieel bezoek en migratiebeleid, wat beleidsmatig relevant is.\n- Het is geclassificeerd als \"CONFIDENTIEEL\".\n- Het document is belangrijk voor de minister van Buitenlandse Zaken en mogelijk voor betrokken departementen.\n\n---",
+            "document_date": "1976-05-06",
+            "page_number": 2,
+            "annotations": [
+                {
+                    "type": "text",
+                    "text": "@ 093/76",
+                    "confidence": 0.9,
+                    "bounding_box": {
+                        "x": 20,
+                        "y": 20,
+                        "width": 80,
+                        "height": 20
+                    }
+                },
+                {
+                    "type": "text",
+                    "text": "B.58 / Emmij. / J.Z.",
+                    "confidence": 0.9,
+                    "bounding_box": {
+                        "x": 120,
+                        "y": 20,
+                        "width": 150,
+                        "height": 20
+                    }
+                },
+                {
+                    "type": "text",
+                    "text": "Hu v.d. Kolff",
+                    "confidence": 0.9,
+                    "bounding_box": {
+                        "x": 280,
+                        "y": 20,
+                        "width": 120,
+                        "height": 20
+                    }
+                },
+                {
+                    "type": "text",
+                    "text": "dr. Emmij",
+                    "confidence": 0.9,
+                    "bounding_box": {
+                        "x": 410,
+                        "y": 20,
+                        "width": 80,
+                        "height": 20
+                    }
+                },
+                {
+                    "type": "text",
+                    "text": "Sona",
+                    "confidence": 0.9,
+                    "bounding_box": {
+                        "x": 500,
+                        "y": 20,
+                        "width": 50,
+                        "height": 20
+                    }
+                },
+                {
+                    "type": "stamp",
+                    "text": "INGEKOMEN (G.A.) Dossier: -7 MEI 1976",
+                    "confidence": 1,
+                    "bounding_box": {
+                        "x": 320,
+                        "y": 130,
+                        "width": 180,
+                        "height": 60
+                    }
+                },
+                {
+                    "type": "stamp",
+                    "text": "CONFIDENTIEEL",
+                    "confidence": 1,
+                    "bounding_box": {
+                        "x": 200,
+                        "y": 600,
+                        "width": 200,
+                        "height": 40
+                    }
+                },
+                {
+                    "type": "stamp",
+                    "text": "CONFIDENTIEEL",
+                    "confidence": 1,
+                    "bounding_box": {
+                        "x": 200,
+                        "y": 300,
+                        "width": 200,
+                        "height": 40
+                    }
+                },
+                {
+                    "type": "signature",
+                    "text": "pesch 16 ++",
+                    "confidence": 0.95,
+                    "bounding_box": {
+                        "x": 450,
+                        "y": 550,
+                        "width": 100,
+                        "height": 40
+                    }
+                }
+            ]
+        },
+        {
+            "page_number": 3,
+            "markdown_text": "# ROYAL NETHERLANDS EMBASSY\n## OFFICE OF THE EMIGRATION ATTACHE\n\n---\n\n**CANBERRA, 6 mei 1976**\n\nDe Heer Direktuer voor de Emigratie\nGroot Hertoginnelaan 258\n's-GRAVENHAGE\n\n---\n\n### Onderwerp: Bezoek Minister M.J.R. MacKellar aan Nederland\n\nReeds eerder deelde ik u mede dat de Minister for Immigration and Ethnic Affairs, de heer MacKellar het voornemen koesterde om een werkbezoek aan Engeland en enkele landen op het continent te brengen.\n\nHedenmorgen werd de Tijdelijk Zaakgelastigde, de heer Pesch, benaderd door de heer MacKellar, met de mededeling dat de eerste minister zijn goedkeuring aan een dergelijk bezoek heeft gehecht, hetgeen in juni plaats zal vinden en dat ons land daarbij zal worden betrokken.\n\nDe Minister van Buitenlandse Zaken werd inmiddels telexgewijs in kennis gesteld van deze bezoekplannen, met het verzoek zijn ambtgenoot van Sociale Zaken hiervan in kennis te stellen.\n\nHet reisplan voorziet voor zover het bezoek aan Nederland betreft in het navolgende reisschema:\n\n- 8 juni 10.30 aankomst uit Londen per BE 206\n- 10 juni 20.15 vertrek naar Geneve per SR 795\n\nDe Minister zal worden vergezeld door mevrouw MacKellar, alsmede de heren Lloyd F. Bott, secretary Department of Immigration and Ethnic Affairs (leeftijd 59 jaar) en Wayne J. Gibbons, de (jonge) privé sekretaris van de Minister.\n\nDe heer Pesch heeft met zijn berichtgeving aan de Minister van Buitenlandse Zaken verzocht om samenstelling van een bezoekprogramma en suggesties voor gesprekspunten.\n\n---\n\n- **Documenttype:** Brief\n- **Documentmaker:** Royal Netherlands Embassy, Office of the Emigration Attache\n- **Documentdatum:** 6 mei 1976\n\n---\n\n### Actoren genoemd:\n\n- **Ministerie van Sociale Zaken en Werkgelegenheid: Directie voor de Emigratie - SZW / Emigratie**\n  - Genoemd: Ja\n  - Uitleg: Het document is gericht aan de Directeur voor de Emigratie, die valt onder het Ministerie van Sociale Zaken en Werkgelegenheid, Directie voor de Emigratie. Tevens wordt vermeld dat de Minister van Buitenlandse Zaken verzocht is zijn ambtgenoot van Sociale Zaken in kennis te stellen.\n\n---\n\n### Annotaties:\n\n- Stempel \"DIRECTIE EMIGRATIE\" met nummer 70777 en datum 11 MEI 1976, rechtsboven op de pagina\n  - Vertrouwensscore: 0.95\n  - Locatie: ongeveer rechtsboven, binnen een rechthoekige stempel\n\n- Handgeschreven notitie boven stempel: \"-107.23. Ausb.\"\n  - Vertrouwensscore: 0.85\n  - Locatie: direct boven de stempel\n\n- Handgeschreven correctie in het stempel (rode pen): cijfer 3 over het nummer 7\n  - Vertrouwensscore: 0.9\n  - Locatie: binnen het stempel\n\n- Typografische markeringen zoals onderstreping van \"Onderwerp:\" en adresregel \"'s-GRAVENHAGE\"\n  - Vertrouwensscore: 0.9\n  - Locatie: in de tekst\n\n---\n\n### Belang van het document:\n\nHet document is van belang (score 0.8) omdat het een officiële brief betreft van de Nederlandse ambassade in Canberra aan de Directeur voor de Emigratie, waarin een werkbezoek van een buitenlandse minister aan Nederland wordt aangekondigd en voorbereid. Dit heeft implicaties voor de emigratie- en sociale zaken, waarbij de genoemde actor een rol speelt.",
+            "document_date": "1976-05-06",
+            "annotations": [
+                {
+                    "type": "stamp",
+                    "text": "DIRECTIE EMIGRATIE Nr. 70777 ING. dd. 11 MEI 1976 Ter beh.",
+                    "confidence": 0.95,
+                    "bounding_box": {
+                        "x": 580,
+                        "y": 210,
+                        "width": 140,
+                        "height": 120
+                    }
+                },
+                {
+                    "type": "text",
+                    "text": "-107.23. Ausb.",
+                    "confidence": 0.85,
+                    "bounding_box": {
+                        "x": 580,
+                        "y": 190,
+                        "width": 120,
+                        "height": 30
+                    }
+                },
+                {
+                    "type": "text",
+                    "text": "correctie cijfer 3 in rood in stempel",
+                    "confidence": 0.9,
+                    "bounding_box": {
+                        "x": 600,
+                        "y": 230,
+                        "width": 30,
+                        "height": 30
+                    }
+                },
+                {
+                    "type": "text",
+                    "text": "onderstreping 's-GRAVENHAGE en Onderwerp:",
+                    "confidence": 0.9,
+                    "bounding_box": {
+                        "x": 100,
+                        "y": 150,
+                        "width": 300,
+                        "height": 50
+                    }
+                }
+            ]
+        }
+    ]
+}

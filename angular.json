@@ -4,7 +4,6 @@
   "newProjectRoot": "projects",
   "schematics": {
     "@schematics/angular:component": {
-      "skipTests": true,
       "inlineStyle": true
     }
   },
@@ -104,6 +103,7 @@
             ],
             "tsConfig": "tsconfig.spec.json",
             "assets": [
+              "src/assets",
               {
                 "glob": "**/*",
                 "input": "public"
