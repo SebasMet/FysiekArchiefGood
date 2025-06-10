@@ -56,8 +56,6 @@ export class ProjectConfigComponent   {
         }
       })
 
-
-
     } else {
       console.error('One or more forms are invalid. Please check the highlighted fields.');
     }

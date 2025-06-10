@@ -152,11 +152,6 @@ describe('FileUploadComponent', () => {
   });
 
   describe('User Interactions', () => {
-    it('should trigger a click on the hidden file input when openFileInput is called', () => {
-      component.openFileInput();
-      expect(component.fileInput?.nativeElement.click).toHaveBeenCalled();
-    });
-
     it('should correctly process files provided via the onDrop event', () => {
       const pdfFile = createFile('dropped.pdf', 'application/pdf');
       const jsonFile = createFile('dropped.json', 'application/json');

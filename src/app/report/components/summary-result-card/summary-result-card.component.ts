@@ -10,7 +10,7 @@ import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 export class SummaryResultCardComponent implements OnChanges {
   @Input() beschrijving: any = {};
 
-  public beschrijvingData: any = {};
+  public beschrijvingData: any = '';
 
     ngOnChanges(changes: SimpleChanges): void {
       console.log('Changes detected:', changes);

@@ -4,7 +4,6 @@ import { ProjectConfigComponent } from './containers/project-config/project-conf
 import { ConfigGeneralInformationComponent } from './components/config-general-information/config-general-information.component';
 import { HlmInputDirective } from '@spartan-ng/ui-input-helm';
 import { ConfigActorInformationComponent } from './components/config-actor-information/config-actor-information.component';
-import { ConfigActorFormComponent } from './components/config-actor-form/config-actor-form.component';
 import { HlmLabelDirective } from '@spartan-ng/ui-label-helm';
 import { HlmButtonDirective } from '@spartan-ng/ui-button-helm';
 import { NgIconsModule } from '@ng-icons/core';
@@ -29,7 +28,6 @@ import { ProjectViewSidebarComponent } from './components/project-view-sidebar/p
     ProjectConfigComponent,
     ConfigGeneralInformationComponent,
     ConfigActorInformationComponent,
-    ConfigActorFormComponent,
     ConfigSelectionListUploadComponent,
     ProjectListOverviewComponent,
     ProjectListCardComponent,

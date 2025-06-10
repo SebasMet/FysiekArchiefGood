@@ -13,8 +13,6 @@ export class TimelineResultCardComponent implements OnChanges {
   public firstDateData: any = {};
   public lastDateData:  any = {};
 
-  //scuffed?
-
   ngOnChanges(changes: SimpleChanges): void {
     console.log('Changes detected:', changes);
     if (changes['dateringen'] && this.dateringen?.first_date) {
