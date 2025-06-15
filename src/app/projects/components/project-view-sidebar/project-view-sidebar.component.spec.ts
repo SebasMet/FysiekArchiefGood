@@ -8,6 +8,7 @@ describe('ProjectViewSidebarComponent', () => {
   let fixture: ComponentFixture<ProjectViewSidebarComponent>;
 
   beforeEach(async () => {
+    // Arrange
     await TestBed.configureTestingModule({
       declarations: [ ProjectViewSidebarComponent ],
       imports: [ProjectsModule]
@@ -16,10 +17,14 @@ describe('ProjectViewSidebarComponent', () => {
 
     fixture = TestBed.createComponent(ProjectViewSidebarComponent);
     component = fixture.componentInstance;
+    // Act
     fixture.detectChanges();
   });
 
   it('should create', () => {
+    // Act
+    // Already done in beforeeach
+    // Assert
     expect(component).toBeTruthy();
   });
 });

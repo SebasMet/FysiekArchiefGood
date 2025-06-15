@@ -22,7 +22,7 @@ describe('ReportOptionsComponent', () => {
           useValue: {
             snapshot: {
               paramMap: {
-                get: (key: string) => 'test-uuid' // or whatever value you want to test with
+                get: (key: string) => 'test-uuid' 
               }
             }
           }

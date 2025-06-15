@@ -8,6 +8,7 @@ describe('ProjectUpdateCardComponent', () => {
   let fixture: ComponentFixture<ProjectUpdateCardComponent>;
 
   beforeEach(async () => {
+    // Arrange
     await TestBed.configureTestingModule({
       declarations: [ ProjectUpdateCardComponent ],
       imports: [ProjectsModule]
@@ -16,10 +17,14 @@ describe('ProjectUpdateCardComponent', () => {
 
     fixture = TestBed.createComponent(ProjectUpdateCardComponent);
     component = fixture.componentInstance;
+    // Act
     fixture.detectChanges();
   });
 
   it('should create', () => {
+    // Act
+    // Already done in beforEeach
+    // Assert
     expect(component).toBeTruthy();
   });
 });

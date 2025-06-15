@@ -29,6 +29,7 @@ describe('ReportViewComponent', () => {
   };
 
   beforeEach(async () => {
+    // Arrange
     dataServiceSpy = jasmine.createSpyObj('DataService', ['getAnalysisVersionsByDossier', 'startAnalysis']);
     
     dataServiceSpy.getAnalysisVersionsByDossier.and.returnValue(of([]));
@@ -54,21 +55,25 @@ describe('ReportViewComponent', () => {
   });
 
   it('should create', () => {
+    // Act
     fixture.detectChanges();
+    // Assert
     expect(component).toBeTruthy();
   });
 
   it('should display loading state, then load the latest existing analysis version', fakeAsync(() => {
+    // Arrange
     expect(component.initialized).toBeFalse();
 
     dataServiceSpy.getAnalysisVersionsByDossier.and.returnValue(of([MOCK_EXISTING_VERSION]));
     
-
+    // Act
     fixture.detectChanges();
     
     tick();
     fixture.detectChanges();
 
+    // Assert
     expect(dataServiceSpy.getAnalysisVersionsByDossier).toHaveBeenCalledWith('test-uuid-123');
     expect(dataServiceSpy.startAnalysis).not.toHaveBeenCalled();
     expect(component.initialized).toBeTrue();
@@ -77,13 +82,16 @@ describe('ReportViewComponent', () => {
   }));
 
   it('should start a new analysis if no existing versions are found', fakeAsync(() => {
+    // Arrange
     dataServiceSpy.getAnalysisVersionsByDossier.and.returnValue(of([]));
     dataServiceSpy.startAnalysis.and.returnValue(of(MOCK_NEW_ANALYSIS_RESULT));
 
+    // Act
     fixture.detectChanges();
     tick();
     fixture.detectChanges();
 
+    // Assert
     expect(dataServiceSpy.getAnalysisVersionsByDossier).toHaveBeenCalledWith('test-uuid-123');
     expect(dataServiceSpy.startAnalysis).toHaveBeenCalledWith('test-uuid-123');
     expect(component.initialized).toBeTrue();

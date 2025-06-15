@@ -1,4 +1,3 @@
-// // src/app/services/data.service.ts
 import { Injectable } from '@angular/core';
 import {
   AuthChangeEvent,

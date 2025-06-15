@@ -14,6 +14,7 @@ describe('ProjectListOverviewComponent', () => {
   let routerSpy: jasmine.SpyObj<Router>;
 
   beforeEach(async () => {
+    // Arrange
     dataServiceSpy = jasmine.createSpyObj('DataService', ['getProjects']);
     dataServiceSpy.getProjects.and.returnValue(of([]));
     routerSpy = jasmine.createSpyObj('Router', ['navigate']);
@@ -34,36 +35,49 @@ describe('ProjectListOverviewComponent', () => {
   });
 
   it('should create', () => {
+    // Act
     fixture.detectChanges();
+    // Assert
     expect(component).toBeTruthy();
   });
 
   it('should load projects on init', () => {
+    // Arrange
     const mockProjects = [
       { generalInformation: { projectName: 'A', projectPeriodFrom: '', projectPeriodTo: '' }, actorInformation: [] }
     ];
     dataServiceSpy.getProjects.and.returnValue(of(mockProjects));
+    // Act
     fixture.detectChanges();
+    // Assert
     expect(component.projects).toEqual(mockProjects);
   });
 
   it('should handle error when loading projects', () => {
+    // Arrange
     dataServiceSpy.getProjects.and.returnValue(throwError(() => new Error('fail')));
     spyOn(console, 'error');
+    // Act
     fixture.detectChanges();
+    // Assert
     expect(console.error).toHaveBeenCalledWith('Failed to load projects:', jasmine.any(Error));
   });
 
   it('should navigate to create project page', () => {
+    // Act
     component.navigateToCreateProjectPage();
+    // Assert
     expect(routerSpy.navigate).toHaveBeenCalledWith(['projects/create-new']);
   });
 
   it('should unsubscribe on destroy', () => {
+    // Arrange
     dataServiceSpy.getProjects.and.returnValue(of([]));
     fixture.detectChanges();
     const spy = spyOn(component['projectsSubscription'], 'unsubscribe');
+    // Act
     component.ngOnDestroy();
+    // Assert
     expect(spy).toHaveBeenCalled();
   });
 });

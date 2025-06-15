@@ -16,6 +16,7 @@ describe('ProjectListCardComponent', () => {
   } as any;
 
   beforeEach(async () => {
+    // Arrange
     routerSpy = jasmine.createSpyObj('Router', ['navigate']);
 
     await TestBed.configureTestingModule({
@@ -29,27 +30,39 @@ describe('ProjectListCardComponent', () => {
     fixture = TestBed.createComponent(ProjectListCardComponent);
     component = fixture.componentInstance;
     component.projectData = mockProjectData;
+    // Act
     fixture.detectChanges();
   });
 
   it('should create', () => {
+    // Act
+    // Already done in beforEeach
+    // Assert
     expect(component).toBeTruthy();
   });
 
   it('should display the project name', () => {
+    // Arrange
     const title = fixture.nativeElement.querySelector('h1');
+
+    // Assert
     expect(title.textContent).toContain('Test Project');
   });
 
   it('should call navigateToProject and navigate to the correct route', () => {
+    // Act
     component.navigateToProject();
-    expect(routerSpy.navigate).toHaveBeenCalledWith(['project/123']);
+    // Assert
+    expect(routerSpy.navigate).toHaveBeenCalledWith(['projects/project/123']);
   });
 
   it('should call navigateToProject when button is clicked', () => {
+    // Arrange
     spyOn(component, 'navigateToProject');
     const button = fixture.nativeElement.querySelector('button');
+    // Act
     button.click();
+    // Assert
     expect(component.navigateToProject).toHaveBeenCalled();
   });
 });

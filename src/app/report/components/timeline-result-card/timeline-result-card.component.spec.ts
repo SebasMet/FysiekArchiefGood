@@ -13,6 +13,7 @@ describe('TimelineResultCardComponent', () => {
   };
 
   beforeEach(async () => {
+    // Arrange
     await TestBed.configureTestingModule({
       declarations: [TimelineResultCardComponent],
       schemas: [NO_ERRORS_SCHEMA],
@@ -24,14 +25,17 @@ describe('TimelineResultCardComponent', () => {
   });
 
   it('should display first and last event data when input is provided', () => {
+    // Arrange
     component.dateringen = MOCK_DATERINGEN;
     component.ngOnChanges({
       dateringen: new SimpleChange(null, component.dateringen, true)
     });
+    // Act
     fixture.detectChanges();
 
     const dataElements = nativeElement.querySelectorAll('h3.text-muted-foreground');
     
+    // Assert
     expect(dataElements[0].textContent?.trim()).toBe(MOCK_DATERINGEN.first_date.date);
     expect(dataElements[1].textContent?.trim()).toBe(MOCK_DATERINGEN.first_date.event);
     expect(dataElements[2].textContent?.trim()).toBe(MOCK_DATERINGEN.last_date.date);
@@ -39,14 +43,17 @@ describe('TimelineResultCardComponent', () => {
   });
 
   it('should not display event data if input has an invalid structure', () => {
+    // Arrange
     component.dateringen = { some_other_prop: 'value' }; 
     component.ngOnChanges({
       dateringen: new SimpleChange(null, component.dateringen, true)
     });
+    // Act
     fixture.detectChanges();
 
     const dataElements = nativeElement.querySelectorAll('h3.text-muted-foreground');
 
+    // Assert
     expect(dataElements[0].textContent?.trim()).toBe('');
     expect(dataElements[1].textContent?.trim()).toBe('');
     expect(dataElements[2].textContent?.trim()).toBe('');

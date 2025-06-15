@@ -13,10 +13,11 @@ describe('ProjectViewComponent', () => {
   let dataServiceSpy: jasmine.SpyObj<DataService>;
 
   beforeEach(async () => {
-    dataServiceSpy = jasmine.createSpyObj('DataService', ['getDossiersByProjectId']);
+    // Arrange
+    dataServiceSpy = jasmine.createSpyObj('DataService', ['getDossiersByProjectId', 'getAnalysisVersionsByDossier']);
 
     await TestBed.configureTestingModule({
-      declarations: [ ProjectViewComponent ],
+      declarations: [ProjectViewComponent],
       imports: [ProjectsModule],
       providers: [
         {
@@ -32,38 +33,57 @@ describe('ProjectViewComponent', () => {
         provideHttpClient()
       ]
     })
-    .compileComponents();
+      .compileComponents();
 
     fixture = TestBed.createComponent(ProjectViewComponent);
     component = fixture.componentInstance;
   });
 
   it('should create', () => {
-    fixture.detectChanges();
+    // Assert
     expect(component).toBeTruthy();
   });
 
   it('should set projectId from route and call loadDossiers', () => {
+    // Arrange
     spyOn<any>(component, 'loadDossiers').and.callThrough();
-    dataServiceSpy.getDossiersByProjectId.and.returnValue(of([{ id: 1 }]));
+    dataServiceSpy.getDossiersByProjectId.and.returnValue(of([]));
+    
+    // Act
     fixture.detectChanges();
+    
+    // Assert
     expect(component.projectId).toBe('test-uuid');
     expect(component['loadDossiers']).toHaveBeenCalled();
   });
 
-  it('should set dossiersInfo$ observable when loadDossiers is called', () => {
+  it('should set dossiersInfo$ observable when loadDossiers is called', (done) => {
+    // Arrange
     dataServiceSpy.getDossiersByProjectId.and.returnValue(of([{ id: 1, name: 'Dossier 1' }]));
+    dataServiceSpy.getAnalysisVersionsByDossier.and.returnValue(of([]));
     component.projectId = 'test-uuid';
+    
+    // Act
     (component as any).loadDossiers();
+    
+    // Assert
     expect(dataServiceSpy.getDossiersByProjectId).toHaveBeenCalledWith('test-uuid');
     component.dossiersInfo$.subscribe(data => {
-      expect(data).toEqual([{ id: 1, name: 'Dossier 1' }]);
+      setTimeout(() => {
+        expect(data).toEqual([{ id: 1, name: 'Dossier 1', scanCompleted: false }]);
+        done();
+      }, 0);
     });
   });
 
   it('should not call getDossiersByProjectId if projectId is empty', () => {
+    // Arrange
     component.projectId = '';
+    
+    // Act
     (component as any).loadDossiers();
+    
+    // Assert
     expect(dataServiceSpy.getDossiersByProjectId).not.toHaveBeenCalled();
   });
 });

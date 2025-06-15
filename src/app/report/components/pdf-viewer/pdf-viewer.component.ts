@@ -13,7 +13,7 @@ import * as pdfjsLib from 'pdfjs-dist';
 import {
   PDFDocumentProxy,
   PDFPageProxy,
-} from 'pdfjs-dist/types/src/display/api'; // Import types
+} from 'pdfjs-dist/types/src/display/api';
 import { Observable, of } from 'rxjs';
 
 interface PdfShape {
@@ -66,7 +66,6 @@ export class PdfViewerComponent implements OnInit, AfterViewInit, OnDestroy {
       lineWidth: 3,
     },
   ];
-  // -------------------------------------------
 
   constructor(private dataService: DataService) {
 
@@ -75,7 +74,7 @@ export class PdfViewerComponent implements OnInit, AfterViewInit, OnDestroy {
   ngOnInit(): void {
     try {
       const pdfjs = pdfjsLib as any;
-      pdfjs.GlobalWorkerOptions.workerSrc = 'assets/pdf.worker.min.mjs'; // Ensure this path is correct relative to your deployed assets
+      pdfjs.GlobalWorkerOptions.workerSrc = 'assets/pdf.worker.min.mjs'; 
     } catch (error) {
       console.error('Error setting up PDF.js worker:', error);
     }
@@ -122,14 +121,13 @@ export class PdfViewerComponent implements OnInit, AfterViewInit, OnDestroy {
   // }
   //  }
 
-  // Render a specific page of the PDF.
   async renderPage(pageNumber: number) {
     if (!this.pdfDocument) {
       return;
     }
 
     try {
-      this.pdfPage = await this.pdfDocument.getPage(pageNumber); // Store the page
+      this.pdfPage = await this.pdfDocument.getPage(pageNumber);
       const viewport = this.pdfPage.getViewport({ scale: this.scale });
 
       const pdfCanvas = this.pdfCanvasRef.nativeElement;
@@ -161,11 +159,11 @@ export class PdfViewerComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   drawOverlay() {
-    if (!this.pdfPage || !this.overlayCanvasRef) return; // Ensure page and canvas are available
+    if (!this.pdfPage || !this.overlayCanvasRef) return;
 
     const overlayCanvas = this.overlayCanvasRef.nativeElement;
     const overlayCtx = overlayCanvas.getContext('2d');
-    const viewport = this.pdfPage.getViewport({ scale: this.scale }); // Get current viewport
+    const viewport = this.pdfPage.getViewport({ scale: this.scale }); 
 
     if (!overlayCtx) {
       console.error('Failed to get overlay canvas context');
@@ -174,7 +172,7 @@ export class PdfViewerComponent implements OnInit, AfterViewInit, OnDestroy {
 
     overlayCanvas.width = viewport.width;
     overlayCanvas.height = viewport.height;
-    overlayCanvas.style.width = `${viewport.width}px`; // Keep CSS size in sync too
+    overlayCanvas.style.width = `${viewport.width}px`; 
     overlayCanvas.style.height = `${viewport.height}px`;
 
     overlayCtx.clearRect(0, 0, overlayCanvas.width, overlayCanvas.height);

@@ -14,6 +14,7 @@ describe('ProjectConfigComponent', () => {
   let routerSpy: jasmine.SpyObj<Router>;
 
   beforeEach(async () => {
+    // Arrange
     dataServiceSpy = jasmine.createSpyObj('DataService', ['createProject']);
     routerSpy = jasmine.createSpyObj('Router', ['navigate']);
 
@@ -30,31 +31,42 @@ describe('ProjectConfigComponent', () => {
 
     fixture = TestBed.createComponent(ProjectConfigComponent);
     component = fixture.componentInstance;
+    // Act
     fixture.detectChanges();
   });
 
   it('should create', () => {
+    // Act
+    // Already done in beforeEach
+    // Assert
     expect(component).toBeTruthy();
   });
 
   it('should not submit if child components are not available', () => {
+    // Arrange
     component['generalInfoComponent'] = undefined as any;
     component['actorInfoComponent'] = undefined as any;
     spyOn(window, 'alert');
+    // Act
     component.submitAllForms();
+    // Assert
     expect(window.alert).toHaveBeenCalledWith('Forms are not ready. Please try again in a moment.');
   });
 
   it('should not submit if forms are invalid', () => {
+    // Arrange
     const generalInfoStub = { getFormData: () => null };
     const actorInfoStub = { getActorsData: () => null };
     component['generalInfoComponent'] = generalInfoStub as any;
     component['actorInfoComponent'] = actorInfoStub as any;
+    // Act
     component.submitAllForms();
+    // Assert
     expect(dataServiceSpy.createProject).not.toHaveBeenCalled();
   });
 
   it('should call dataService.createProject and navigate on success', () => {
+    // Arrange
     const generalInfoStub = { 
       getFormData: () => ({
         projectName: 'Test Project',
@@ -67,8 +79,10 @@ describe('ProjectConfigComponent', () => {
     component['actorInfoComponent'] = actorInfoStub as any;
     dataServiceSpy.createProject.and.returnValue(of('new-id'));
 
+    // Act
     component.submitAllForms();
 
+    // Assert
     expect(dataServiceSpy.createProject).toHaveBeenCalledWith({
       generalInformation: {
         projectName: 'Test Project',
@@ -81,6 +95,7 @@ describe('ProjectConfigComponent', () => {
   });
 
   it('should log error if dataService.createProject errors', () => {
+    // Arrange
     const generalInfoStub = { 
       getFormData: () => ({
         projectName: 'Test Project',
@@ -94,8 +109,10 @@ describe('ProjectConfigComponent', () => {
     dataServiceSpy.createProject.and.returnValue(throwError(() => new Error('fail')));
     spyOn(console, 'error');
 
+    // Act
     component.submitAllForms();
 
+    // Assert
     expect(console.error).toHaveBeenCalledWith('Error creating project:', jasmine.any(Error));
   });
 });

@@ -9,6 +9,7 @@ describe('ChatWindowComponent', () => {
   let fixture: ComponentFixture<ChatWindowComponent>;
 
   beforeEach(async () => {
+    // Arrange
     await TestBed.configureTestingModule({
       declarations: [ChatWindowComponent],
       imports: [ReportModule],
@@ -33,11 +34,15 @@ describe('ChatWindowComponent', () => {
     }).compileComponents();
 
     fixture = TestBed.createComponent(ChatWindowComponent);
+    // Act
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
 
   it('should create', () => {
+    // Act
+    // Already done in beforeEach
+    // Assert
     expect(component).toBeTruthy();
   });
 });

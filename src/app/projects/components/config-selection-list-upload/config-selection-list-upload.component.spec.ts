@@ -8,18 +8,21 @@ describe('ConfigSelectionListUploadComponent', () => {
   let fixture: ComponentFixture<ConfigSelectionListUploadComponent>;
 
   beforeEach(async () => {
+    // Arrange
     await TestBed.configureTestingModule({
       declarations: [ ConfigSelectionListUploadComponent ],
       imports: [ProjectsModule]
     })
     .compileComponents();
 
+    // Act
     fixture = TestBed.createComponent(ConfigSelectionListUploadComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
 
   it('should create', () => {
+    // Assert
     expect(component).toBeTruthy();
   });
 });

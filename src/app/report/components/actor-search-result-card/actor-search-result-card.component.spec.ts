@@ -29,6 +29,7 @@ describe('ActorSearchResultCardComponent', () => {
   let nativeElement: HTMLElement;
 
   beforeEach(async () => {
+    // Arrange
     await TestBed.configureTestingModule({
       declarations: [ActorSearchResultCardComponent],
       schemas: [NO_ERRORS_SCHEMA],
@@ -40,7 +41,9 @@ describe('ActorSearchResultCardComponent', () => {
   });
 
   it('should display actor data, 3 thumbnails, and a "more" message for more than 3 pages', () => {
+    // Arrange
     component.actorGroupData = MOCK_ACTOR_GROUP_DATA_5_PAGES;
+    // Act
     fixture.detectChanges();
 
     const headerElement = nativeElement.querySelector('h1');
@@ -48,6 +51,7 @@ describe('ActorSearchResultCardComponent', () => {
     const thumbnailElements = nativeElement.querySelectorAll('[hlmCardFooter] button');
     const moreMessageElement = nativeElement.querySelector('[hlmCardFooter] div.text-gray-500');
 
+    // Assert
     expect(headerElement?.textContent?.trim()).toBe(MOCK_ACTOR_GROUP_DATA_5_PAGES.name);
     expect(paragraphElement?.textContent?.trim()).toBe(MOCK_ACTOR_GROUP_DATA_5_PAGES.whatDidTheyDo);
     expect(thumbnailElements.length).toBe(3);
@@ -55,12 +59,15 @@ describe('ActorSearchResultCardComponent', () => {
   });
 
   it('should display correct thumbnails and no "more" message for 3 or fewer pages', () => {
+    // Arrange
     component.actorGroupData = MOCK_ACTOR_GROUP_DATA_2_PAGES;
+    // Act
     fixture.detectChanges();
 
     const thumbnailElements = nativeElement.querySelectorAll('[hlmCardFooter] button');
     const moreMessageElement = nativeElement.querySelector('[hlmCardFooter] div.text-gray-500');
 
+    // Assert
     expect(thumbnailElements.length).toBe(2);
     expect(moreMessageElement).toBeFalsy();
   });
