@@ -257,12 +257,14 @@ public getAnalysisVersionsByDossier(dossierId: string)  {
  public startAnalysis(dossierId: string): Observable<any> {
 
     return new Observable<any>((observer) => {
+      console.log('Starting analysis for dossier:', dossierId);
       const channel = this.supabase.channel(`dossier-analysis-${dossierId}`)
         .on('broadcast', { event: 'dossier-analysis' }, async (payload) => {
           const status = payload?.['payload']?.status;
           console.log('status update Dservice', status);
 
           if (status === 'completed') {
+            console.log('Analysis completed for dossier:', dossierId);
             channel.unsubscribe();
 
             try {

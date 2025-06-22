@@ -30,7 +30,7 @@
       <app-dossier-info-card *ngFor="let dossierInfo of dossiersInfo" [dossierInfo]="dossierInfo">
       </app-dossier-info-card>
 
-      <div *ngIf="!dossiersInfo || dossiersInfo.length === 0">
+      <div *ngIf="!dossiersInfo || dossiersInfo.length < 4">
           <app-file-upload [projectId]="projectId"></app-file-upload>
       </div>
     </div>

@@ -12,7 +12,7 @@ const routes: Routes = [
   { path: '', component: HomePageComponent },
   { path: 'options/:uuid', component: ReportOptionsComponent },
   { path: 'report/:uuid', component: ReportViewComponent },
-  { path: 'projects/overview', component: ProjectListOverviewComponent },
+  { path: 'projects', component: ProjectListOverviewComponent },
   { path: 'projects/project/:uuid', component: ProjectViewComponent },
   { path: 'projects/create-new', component: ProjectConfigComponent }, 
   { path: 'config', component: ProjectConfigComponent }, 

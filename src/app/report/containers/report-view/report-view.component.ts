@@ -11,6 +11,14 @@ export interface GroupedActor {
   pages: AnalyzedDocument[];
 }
 
+export interface ActorenData {
+  actoren: {
+    name: string;
+    activiteiten: string;
+    locaties: any[]; 
+  }[];
+}
+
 @Component({
   selector: 'app-report-view',
   standalone: false,
@@ -23,17 +31,10 @@ export class ReportViewComponent {
   public _uuid: string = '';
 
   public initialized: boolean = false;
-  public actoren: any= []
-  public dateringen: any = []
-  public beschrijving: any = []
-  // public analyzedResults$: Observable<
-  //   { data: AnalyzedDocument[] } | any | null
-  // >;
-  // public groupedActorData: GroupedActor[] = [];
-  // importantPeople: string[] = [];
-  // importantDates: string[] = [];
-  // isInitialized: boolean = false;
-  // private resultsSubscription: Subscription | null = null;
+  public actoren: any 
+  public dateringen: any
+  public beschrijving: any
+  public handelingen: any
 
   constructor(
     private route: ActivatedRoute,
@@ -57,91 +58,36 @@ ngOnInit(): void {
       if (!latest) {
         this.dataService.startAnalysis(this._uuid).subscribe({
           next: (result) => {
-            this.actoren      = result.actoren;
+            console.log(result)
+            const actorenData = result.actoren as unknown as ActorenData
+
+            this.actoren      = actorenData.actoren;
             this.dateringen   = result.datering;
             this.beschrijving = result.beschrijving;
+            this.handelingen = result.handeling
+
+            console.log('Actoren:', this.actoren);
+            console.log('Dateringen:', this.dateringen);
+            console.log('Beschrijving:', this.beschrijving);
+                    
+
             this.initialized = true;
           }
         });
       } else {
-        this.actoren      = latest.actoren;
+        const actorenData = latest.actoren as unknown as ActorenData
+
+        this.actoren      = actorenData.actoren;
         this.dateringen   = latest.datering;
         this.beschrijving = latest.beschrijving;
+        this.handelingen = latest.handeling
+        console.log('Actoren:', this.actoren);
+        console.log('Dateringen:', this.dateringen);
+        console.log('Beschrijving:', this.beschrijving);
         this.initialized = true;
       }
     },
     error: console.error
   });
 }
-  //   this.analyzedResults$ = this.dataService.analyzeResult$;
-  //   this.resultsSubscription?.unsubscribe();
-
-  //   this.resultsSubscription = this.analyzedResults$.subscribe({
-  //     next: (results) => {
-  //       this.groupedActorData = [];
-  //       this.isInitialized = false;
-
-  //       if (!results || !results.data || !Array.isArray(results.data)) {
-  //         console.warn(
-  //           'Received invalid or empty results for grouping. Structure:',
-  //           results
-  //         );
-  //         return;
-  //       }
-
-  //       // Grouping Logic
-  //       const actorPageMap = new Map<string, AnalyzedDocument[]>();
-  //       results.data.forEach((doc: AnalyzedDocument) => {
-  //         if (doc.actors_mentioned && Array.isArray(doc.actors_mentioned)) {
-  //           doc.actors_mentioned.forEach((actor: ActorMentioned) => {
-  //             if (actor.mentioned === true) {
-  //               const currentActorName = actor.actorName;
-  //               const pagesForThisActor = actorPageMap.get(currentActorName);
-  //               if (pagesForThisActor) {
-  //                 if (!pagesForThisActor.some((p) => p === doc)) {
-  //                   pagesForThisActor.push(doc);
-  //                 }
-  //               } else {
-  //                 actorPageMap.set(currentActorName, [doc]);
-  //               }
-  //             }
-  //           });
-  //         }
-  //       });
-
-  //       // Convert map to array
-  //       const groupedArray: GroupedActor[] = [];
-  //       actorPageMap.forEach((pages, actorName) => {
-  //         groupedArray.push({ actorName: actorName, pages: pages });
-  //       });
-
-  //       // Optional sort
-  //       // groupedArray.sort((a, b) => a.actorName.localeCompare(b.actorName));
-
-  //       // Update component state
-  //       this.groupedActorData = groupedArray;
-  //       this.isInitialized = true;
-
-  //       this.groupedActorData.forEach((group) => {
-  //         const replacer = (key: string, value: any) =>
-  //           key === 'base64Image' ? undefined : value;
-  //         console.log(JSON.stringify(group, replacer, 2));
-  //       });
-  //     },
-  //     error: (error) => {
-  //       console.error('Error receiving or processing analyzed results:', error);
-  //       this.groupedActorData = []; // Reset on error
-  //       this.isInitialized = true; // Mark as initialized even on error
-  //     },
-  //     complete: () => {
-  //       // Optional: Logic when the observable completes normally
-  //       // console.log("Analyzed results stream completed.");
-  //     },
-  //   });
-  // }
-
-  // ngOnDestroy(): void {
-  //   console.log('ReportViewComponent destroyed, unsubscribing...');
-  //   this.resultsSubscription?.unsubscribe();
-  // }
 }

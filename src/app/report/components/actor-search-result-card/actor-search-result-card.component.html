@@ -5,35 +5,36 @@
 
     <div hlmCardContent>
       <p>
-        {{actorGroupData?.whatDidTheyDo}}
+        {{actorGroupData?.activiteiten}}
       </p>
     </div>
 
     <hlm-dialog>
       <hlm-dialog-content class="max-w-fit" *brnDialogContent="let ctx">
-        <app-pdf-viewer [actorGroupData]="actorGroupData?.pages"></app-pdf-viewer>
+        <app-pdf-viewer [actorGroupData]="actorGroupData?.locaties"></app-pdf-viewer>
       </hlm-dialog-content>
 
       <div class="gap-x-4 flex flex-wrap" hlmCardFooter>
-        <div
+        <!-- <div
           class=" h-33 w-24 rounded-lg overflow-hidden cursor-pointer hover:outline-blue-500 flex"
-          *ngFor="let thumbnail of actorGroupData?.pages | slice:0:3"
+          *ngFor="let thumbnail of actorGroupData?.locaties | slice:0:3"
           >
           <button
             brnDialogTrigger
             hlmBtn
             class="h-full w-full p-0 m-0 border-none bg-transparent flex"
           >
-            <!-- <img
+            <img
               class="object-cover h-full w-full align-top"
               alt="thumbnail"
-              [src]="thumbnail?.base64Image | safeBase64Image:'png'"
-            /> -->
+              [src]="$any(thumbnail).pageUrl"
+            />
           </button>
+          {{$any(thumbnail).pageUrl}}
         </div>
-        <div *ngIf="actorGroupData && actorGroupData.pages && actorGroupData.pages.length > 3" class="flex items-center text-sm text-gray-500 pl-2">
-          ... and {{ actorGroupData.pages.length - 3 }} more
-        </div>
+        <div *ngIf="actorGroupData && actorGroupData.locaties && actorGroupData.locaties.length > 3" class="flex items-center text-sm text-gray-500 pl-2">
+          ... and {{ actorGroupData.locaties.length - 3 }} more
+        </div> -->
 
       </div>
     </hlm-dialog>

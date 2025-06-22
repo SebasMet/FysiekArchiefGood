@@ -23,6 +23,10 @@ import {
   heroCalendarDays,
   heroUsers,
   heroDocumentText,
+  heroExclamationTriangle,
+  heroArchiveBox,
+  heroClock,
+  heroShieldCheck,
 } from '@ng-icons/heroicons/outline';
 import { ReportOptionsComponent } from './containers/report-options/report-options.component';
 import { ActorSearchResultCardComponent } from './components/actor-search-result-card/actor-search-result-card.component';
@@ -52,6 +56,9 @@ import { TimelineComponent } from './components/timeline/timeline.component';
 import { SummaryResultCardComponent } from './components/summary-result-card/summary-result-card.component';
 import { ChatWindowComponent } from './components/chat-window/chat-window.component';
 import { FormsModule } from '@angular/forms';
+import { HandelingResultHeaderComponent } from './components/handeling-result-header/handeling-result-header.component';
+import { HandelingRankingComponent } from './components/handeling-ranking/handeling-ranking.component';
+import { HlmBadgeDirective, HlmBadgeModule } from '@spartan-ng/ui-badge-helm';
 
 // Please note, you must manually Copy node_modules\ng2-pdfjs-viewer\pdfjs to your public or asset folder or use any copy script as part of your build process.
 //  Another method could be to use TransferWebpackPlugin if you are using webpack(https://github.com/dkokorev90/transfer-webpack-plugin).
@@ -68,6 +75,8 @@ import { FormsModule } from '@angular/forms';
     TimelineComponent,
     SummaryResultCardComponent,
     ChatWindowComponent,
+    HandelingResultHeaderComponent,
+    HandelingRankingComponent,
   ],
   imports: [
     CommonModule,
@@ -81,6 +90,8 @@ import { FormsModule } from '@angular/forms';
     HlmInputDirective,
     HlmButtonDirective,
     HlmCheckboxComponent,
+    HlmBadgeModule,
+    HlmBadgeDirective,
     HlmLabelDirective,
     HlmSpinnerComponent,
     BrnTableModule,
@@ -109,7 +120,7 @@ import { FormsModule } from '@angular/forms';
     HlmTabsListComponent,
     HlmTabsTriggerDirective,
     HlmTabsContentDirective,
-    NgIconsModule.withIcons({ heroDocumentText, heroUsers, heroCalendarDays }),
+    NgIconsModule.withIcons({ heroDocumentText, heroUsers, heroCalendarDays, heroExclamationTriangle, heroArchiveBox, heroClock, heroShieldCheck }),
   ],
 })
 export class ReportModule {}

@@ -91,7 +91,7 @@ describe('ProjectConfigComponent', () => {
       },
       actorInformation: ['actor1', 'actor2']
     });
-    expect(routerSpy.navigate).toHaveBeenCalledWith(['/projects/overview']);
+    expect(routerSpy.navigate).toHaveBeenCalledWith(['/projects']);
   });
 
   it('should log error if dataService.createProject errors', () => {

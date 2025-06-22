@@ -114,7 +114,7 @@ export type Database = {
           beschrijving: Json
           created_at: string
           datering: Json
-          id: string
+          handeling: Json | null
           version_number: number
         }
         Insert: {
@@ -124,7 +124,7 @@ export type Database = {
           beschrijving: Json
           created_at?: string
           datering: Json
-          id?: string
+          handeling?: Json | null
           version_number?: number
         }
         Update: {
@@ -134,14 +134,14 @@ export type Database = {
           beschrijving?: Json
           created_at?: string
           datering?: Json
-          id?: string
+          handeling?: Json | null
           version_number?: number
         }
         Relationships: [
           {
             foreignKeyName: "analysis_versions_analysis_id_fkey"
             columns: ["analysis_id"]
-            isOneToOne: false
+            isOneToOne: true
             referencedRelation: "analysis"
             referencedColumns: ["id"]
           },
@@ -289,6 +289,71 @@ export type Database = {
           },
         ]
       }
+      handelingen: {
+        Row: {
+          actor: string
+          created_at: string
+          embeddings: string | null
+          grondslag: string | null
+          id: string
+          laatst_gewijzigd_op: string | null
+          nummer: number | null
+          omschrijving: string
+          opmerking: string | null
+          periode: string
+          product: string | null
+          selectielijst_id: string
+          status: string | null
+          vaststellingsdatum: string | null
+          waardering: string | null
+          waardering_uitgebreid: string | null
+        }
+        Insert: {
+          actor: string
+          created_at?: string
+          embeddings?: string | null
+          grondslag?: string | null
+          id?: string
+          laatst_gewijzigd_op?: string | null
+          nummer?: number | null
+          omschrijving: string
+          opmerking?: string | null
+          periode: string
+          product?: string | null
+          selectielijst_id: string
+          status?: string | null
+          vaststellingsdatum?: string | null
+          waardering?: string | null
+          waardering_uitgebreid?: string | null
+        }
+        Update: {
+          actor?: string
+          created_at?: string
+          embeddings?: string | null
+          grondslag?: string | null
+          id?: string
+          laatst_gewijzigd_op?: string | null
+          nummer?: number | null
+          omschrijving?: string
+          opmerking?: string | null
+          periode?: string
+          product?: string | null
+          selectielijst_id?: string
+          status?: string | null
+          vaststellingsdatum?: string | null
+          waardering?: string | null
+          waardering_uitgebreid?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "handelingen_selectielijst_id_fkey"
+            columns: ["selectielijst_id"]
+            isOneToOne: false
+            referencedRelation: "selectielijsten"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       projects: {
         Row: {
           actors: string[]
@@ -326,6 +391,45 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      selectielijsten: {
+        Row: {
+          actoren: string | null
+          created_at: string
+          id: string
+          nummer: string | null
+          periode: string
+          status: string | null
+          titel: string | null
+          vaststellingsdatum: string | null
+          versie: string | null
+          zorgdrager: string | null
+        }
+        Insert: {
+          actoren?: string | null
+          created_at?: string
+          id?: string
+          nummer?: string | null
+          periode: string
+          status?: string | null
+          titel?: string | null
+          vaststellingsdatum?: string | null
+          versie?: string | null
+          zorgdrager?: string | null
+        }
+        Update: {
+          actoren?: string | null
+          created_at?: string
+          id?: string
+          nummer?: string | null
+          periode?: string
+          status?: string | null
+          titel?: string | null
+          vaststellingsdatum?: string | null
+          versie?: string | null
+          zorgdrager?: string | null
+        }
+        Relationships: []
       }
     }
     Views: {
@@ -401,7 +505,11 @@ export type Database = {
         Returns: string
       }
       match_archive_pages: {
-        Args: { query_embedding: string; match_threshold: number }
+        Args: {
+          query_embedding: string
+          match_threshold: number
+          filter_dossier_id?: string
+        }
         Returns: {
           chunk_id: string
           dossier_page_id: string

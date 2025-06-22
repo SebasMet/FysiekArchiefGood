@@ -9,8 +9,8 @@
           aria-label="tabs example"
         >
           <button class="px-6 py-2" hlmTabsTrigger="overview">Overview</button>
-          <button class="px-6 py-2" hlmTabsTrigger="headings">Rubrieken</button>
-          <button class="px-6 py-2" hlmTabsTrigger="retention_schedule">
+          <button [disabled]="!initialized" class="px-6 py-2" hlmTabsTrigger="selectionlist">Rubrieken</button>
+          <button [disabled]="!initialized" class="px-6 py-2" hlmTabsTrigger="retention_schedule">
             Selectielijsten
           </button>
         </hlm-tabs-list>
@@ -46,7 +46,12 @@
           </div>
         </div>
 
-        <div hlmTabsContent="headings">Comming soon!</div>
+        <div hlmTabsContent="selectionlist">
+          <div class="flex flex-col gap-4">
+            <app-handeling-result-header></app-handeling-result-header>
+            <app-handeling-ranking [handelingen]="handelingen"></app-handeling-ranking>
+          </div>
+        </div>
 
         <div hlmTabsContent="retention_schedule">Comming soon!</div>
       </hlm-tabs>

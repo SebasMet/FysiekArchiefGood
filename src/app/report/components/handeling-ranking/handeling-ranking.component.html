@@ -1,0 +1,140 @@
+<div hlmCard>
+  <div hlmCardHeader>
+    <h1 hlmCardTitle>Handelingen Overzicht</h1>
+    <p hlmCardDescription>Klik op een rij voor meer details. Selecteer de meest passende handeling.</p>
+  </div>
+  <div hlmCardContent>
+
+    @if (initalized && handelingen && handelingen.relevanteHandelingen) {
+
+      <div class="overflow-x-auto">
+
+        <hlm-table class="w-full min-w-[1024px]">
+          <hlm-caption>Een lijst van alle gekozen handelingen</hlm-caption>
+          <hlm-trow>
+            <hlm-th class="w-12"></hlm-th>
+            <hlm-th class="w-1/12">Handeling</hlm-th>
+            <hlm-th class="w-1/12">Selectielijst</hlm-th>
+            <hlm-th class="w-5/12">Titel</hlm-th> 
+            <hlm-th class="w-1/12">Status</hlm-th>
+            <hlm-th class="w-2/12">Bewaartermijn</hlm-th>
+            <hlm-th class="w-2/12">Selecteren</hlm-th>
+          </hlm-trow>
+          
+          @for (handeling of handelingen.relevanteHandelingen; track handeling.handelingId) {
+            <hlm-trow 
+              class="cursor-pointer transition-colors"
+              [class.bg-blue-50]="isRowExpanded(handeling.handelingId)"
+              [class.hover:bg-gray-50]="!isRowExpanded(handeling.handelingId)"
+              [class.ring-2]="isSelected(handeling.handelingId)"
+              [class.ring-green-500]="isSelected(handeling.handelingId)"
+              [class.ring-inset]="isSelected(handeling.handelingId)"
+              (click)="toggleRowExpansion(handeling.handelingId)">
+              
+              <hlm-td class="w-12">
+                @if (isRowExpanded(handeling.handelingId)) {
+                  <svg class="h-4 w-4 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                  </svg>
+                } @else {
+                  <svg class="h-4 w-4 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                  </svg>
+                }
+              </hlm-td>
+              
+              <hlm-td truncate class="w-1/12">
+                <span hlmBadge variant="outline" class="font-mono">{{ handeling.handelingId.slice(0, 3) }}</span>
+              </hlm-td>
+              <hlm-td class="w-1/12">
+                <span hlmBadge variant="outline" class="font-mono">{{ handeling.selectielijstId.slice(0, 3) }}</span>
+              </hlm-td>
+              <hlm-td class="w-5/12">
+                <div>
+                  <p class="font-medium text-gray-900 mb-1 line-clamp-2">{{ handeling.handelingBeschrijving }}</p>
+                </div>
+              </hlm-td>
+              <hlm-td class="w-1/12">
+                @if (handeling.bewaarStatus === 'B') {
+                  <span hlmBadge class="bg-green-100 text-green-800 hover:bg-green-100">
+                    Bewaren
+                  </span>
+                } @else {
+                  <span hlmBadge variant="secondary" class="bg-red-100 text-red-800 hover:bg-red-100">
+                    Vernietigen
+                  </span>
+                }
+              </hlm-td>
+              <hlm-td class="w-2/12">
+                <span class="text-sm font-medium text-gray-900">TEST</span>
+              </hlm-td>
+              <hlm-td class="w-2/12 text-center">
+                <button 
+                  hlmBtn 
+                  [variant]="isSelected(handeling.handelingId) ? 'default' : 'outline'" 
+                  size="sm"
+                  [class.bg-green-600]="isSelected(handeling.handelingId)"
+                  [class.hover:bg-green-700]="isSelected(handeling.handelingId)"
+                  (click)="selectHandeling(handeling.handelingId, $event)">
+                  @if (isSelected(handeling.handelingId)) {
+                    <svg class="h-3 w-3 mr-1 inline" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                    </svg>
+                    Geselecteerd
+                  } @else {
+                    Selecteer
+                  }
+                </button>
+              </hlm-td>
+            </hlm-trow>
+            
+            @if (isRowExpanded(handeling.handelingId)) {
+              <hlm-trow class="bg-blue-50">
+                <hlm-td [attr.colspan]="7" class="p-0">
+                  <div class="p-6 space-y-4 border-t border-blue-200">
+                    <div>
+                <h4 class="text-sm font-semibold text-gray-900 mb-2">Volledige Beschrijving</h4>
+                <p class="text-sm text-gray-700 leading-relaxed">TEST</p>
+              </div>
+              
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                  <h4 class="text-sm font-semibold text-gray-900 mb-2">Bewaartermijn Details</h4>
+                  <p class="text-sm text-gray-700">TEST</p>
+                  <p class="text-xs text-gray-500 mt-1">
+                    <!-- Status: {{ invoice.totalAmount === 'B' ? 'Bewaren (Permanent)' : 'Vernietigen na termijn' }} -->
+                  </p>
+                </div>
+                
+                <div>
+                  <h4 class="text-sm font-semibold text-gray-900 mb-2">Selectielijst Informatie</h4>
+                  <!-- <p class="text-sm text-gray-700">Selectielijstnummer: {{ invoice.paymentStatus }}</p>
+                  <p class="text-sm text-gray-700">Handeling nummer: {{ invoice.invoice }}</p> -->
+                </div>
+              </div>
+              
+              <div>
+                <h4 class="text-sm font-semibold text-gray-900 mb-2">Verantwoording & Relevantie</h4>
+                <p class="text-sm text-gray-700 leading-relaxed">TEST</p>
+              </div>
+
+                  </div>
+                </hlm-td>
+              </hlm-trow>
+            }
+          }
+        </hlm-table>
+
+      </div> 
+
+    } @else {
+      <div class="flex items-center justify-center p-8">
+        @if (!initalized) {
+          <p class="text-gray-500">Laden van handelingen...</p>
+        } @else {
+          <p class="text-gray-500">Geen handelingen gevonden.</p>
+        }
+      </div>
+    }
+  </div>
+</div>

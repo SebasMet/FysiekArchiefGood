@@ -46,7 +46,7 @@ export class ProjectConfigComponent   {
       this.dataService.createProject(projectData).subscribe({
         next: (response) => {
           console.log('Project created successfully:', response);
-          this.router.navigate(['/projects/overview']);
+          this.router.navigate(['/projects']);
         },
         error: (error) => {
           console.error('Error creating project:', error);
