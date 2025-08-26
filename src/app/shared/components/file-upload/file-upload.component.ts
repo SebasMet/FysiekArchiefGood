@@ -1,6 +1,7 @@
 import { Component, ElementRef, Input, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { DataService } from '@core/services/data.service';
+import { v4 as uuidv4 } from 'uuid';
 
 @Component({
   selector: 'app-file-upload',
@@ -75,7 +76,7 @@ export class FileUploadComponent {
     this.uploadSuccess = false;
     this.uploadProgress = 0;
 
-    const uuid = crypto.randomUUID();
+    const uuid = uuidv4(); 
     console.log(this.selectedFiles);
 
     try {

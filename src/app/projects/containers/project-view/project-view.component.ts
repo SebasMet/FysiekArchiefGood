@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { DataService } from '@core/services/data.service';
 import { map, Observable } from 'rxjs';
+import { ProjectData } from '@core/models/project.model';
 
 @Component({
   selector: 'app-project-view',
@@ -13,20 +14,23 @@ import { map, Observable } from 'rxjs';
 export class ProjectViewComponent implements OnInit {
   public projectId: string;
   public dossiersInfo$: Observable<any>;
+  public projectData$: Observable<ProjectData | null>;
 
   constructor(private route: ActivatedRoute, private dataService: DataService) {
   }
-
-
 
   ngOnInit() {
     this.route.paramMap.subscribe(params => {
       this.projectId = params.get('uuid') || '';
       console.log('Project ID:', this.projectId);
       this.loadDossiers();
+      this.loadProjectData();
     });
   }
 
+  private loadProjectData() {
+    this.projectData$ = this.dataService.getProjectById(this.projectId);
+  }
 
   private loadDossiers() {
     if (!this.projectId) return;
@@ -57,5 +61,4 @@ export class ProjectViewComponent implements OnInit {
       })
     )
   }
-
 }

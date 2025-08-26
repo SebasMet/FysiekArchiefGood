@@ -6,11 +6,8 @@
 
     <div class="flex flex-col gap-y-4">
       <h2 class="text-xl font-semibold">Actoren</h2>
-      <div hlmCard class="p-4">
-        <p class="font-medium">Ministerie van Buitenlandse Zaken, Afdeling Verbindingen</p>
-      </div>
-      <div hlmCard class="p-4">
-        <p class="font-medium">Ministerie van Sociale Zaken en Werkgelegenheid: Directie voor de Emigratie</p>
+      <div hlmCard class="p-4" *ngFor="let actor of projectData?.actorInformation">
+        <p class="font-medium">{{ actor }}</p>
       </div>
     </div>
 

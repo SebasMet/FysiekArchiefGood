@@ -19,7 +19,8 @@ describe('ReportViewComponent', () => {
     version_number: 1, 
     actoren: [{ name: 'Existing Actor' }] as any,
     datering: { first_date: '2023-01-01' } as any,
-    beschrijving: { beschrijving: 'Existing description' } as any
+    beschrijving: { beschrijving: 'Existing description' } as any,
+    handeling: {} as any
   };
 
   const MOCK_NEW_ANALYSIS_RESULT = { 

@@ -285,6 +285,47 @@ public getAnalysisVersionsByDossier(dossierId: string)  {
     });
   }
 
+  public getProjectById(projectId: string): Observable<ProjectData | null> {
+  return defer(() =>
+    this.supabase
+      .from('projects')
+      .select(`
+        id,
+        name,
+        period_from,
+        period_to,
+        actors
+      `)
+      .eq('id', projectId)
+      .single()
+  ).pipe(
+    map((response: any) => {
+      if (response.error) {
+        console.error('Supabase error fetching project:', response.error);
+        return null;
+      }
+      
+      if (!response.data) {
+        return null;
+      }
+
+      return {
+        generalInformation: {
+          projectName: response.data.name,
+          projectPeriodFrom: response.data.period_from,
+          projectPeriodTo: response.data.period_to,
+        },
+        actorInformation: response.data.actors || [],
+        projectId: response.data.id
+      } as ProjectData;
+    }),
+    catchError((error) => {
+      console.error('Error fetching project:', error);
+      return of(null);
+    })
+  );
+}
+
 
   // public getArchiveAnalyzeResults(uuid: string): Observable<any> {
   //   // const url = new URL(`${environment.SUPABASE_URL}/storage/v1/object/public/archives/${uuid}`);

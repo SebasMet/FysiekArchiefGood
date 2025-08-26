@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
+import { ProjectData } from '@core/models/project.model';
 
 @Component({
   selector: 'app-project-view-sidebar',
@@ -8,5 +9,5 @@ import { Component } from '@angular/core';
   styles: ``
 })
 export class ProjectViewSidebarComponent {
-
+  @Input() projectData: ProjectData | null;
 }

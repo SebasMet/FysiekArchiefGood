@@ -10,7 +10,8 @@ import { ProjectData } from '@core/models/project.model';
   styles: ``
 })
 export class ProjectListCardComponent {
-  @Input() projectData: ProjectData ;
+  @Input() projectData: ProjectData;
+  @Input() projectStats: { dossierCount: number; scanPercentage: number } | null;
 
   constructor(private router: Router) {}
 

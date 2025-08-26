@@ -12,7 +12,7 @@
     </div>
   </div>
   <div class="flex flex-wrap gap-4">
-    <app-project-list-card [projectData]="project"  *ngFor="let project of projects">
+    <app-project-list-card [projectData]="project" [projectStats]="project.projectId ? projectStats[project.projectId] : null" *ngFor="let project of projects">
     </app-project-list-card>
   </div>
 </div>

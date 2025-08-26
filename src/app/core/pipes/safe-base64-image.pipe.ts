@@ -1,4 +1,3 @@
-// safe-base64-image.pipe.ts
 import { Pipe, PipeTransform } from '@angular/core';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 

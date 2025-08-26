@@ -1,6 +1,6 @@
 <div class="w-full flex justify-between items-center mb-12">
   <div>
-    <h1 class="text-3xl font-semibold mb-2.5">Project Title</h1>
+    <h1 class="text-3xl font-semibold mb-2.5">{{ (projectData$ | async)?.generalInformation?.projectName || 'Project Title' }}</h1>
   </div>
   <div class="space-x-3 ">
     <button variant="outline" hlmBtn>
@@ -38,7 +38,7 @@
   </div>
 
   <div class="w-full lg:w-1/3 p-4">
-    <app-project-view-sidebar></app-project-view-sidebar>
+    <app-project-view-sidebar [projectData]="projectData$ | async"></app-project-view-sidebar>
   </div>
 
 </div>
