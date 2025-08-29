@@ -6,8 +6,6 @@ import { HlmButtonDirective } from '@spartan-ng/ui-button-helm';
 import { heroPlus } from '@ng-icons/heroicons/outline';
 import { SharedModule } from '../shared/shared.module';
 
-
-
 @NgModule({
   declarations: [
     TeamsOverviewComponent,
@@ -17,7 +15,6 @@ import { SharedModule } from '../shared/shared.module';
     HlmButtonDirective,
     SharedModule,
     NgIconsModule.withIcons({ heroPlus}),
-
   ]
 })
 export class TeamsModule { }

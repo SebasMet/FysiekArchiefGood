@@ -3,16 +3,16 @@ import { Router } from '@angular/router';
 import { DataService } from '@core/services/data.service';
 import { ProjectData } from '@core/models/project.model';
 import { Subscription } from 'rxjs';
+import { mockProjectData } from '@core/mock-data/mock-projects';
 
 @Component({
   selector: 'app-project-list-overview',
   standalone: false,
-
   templateUrl: './project-list-overview.component.html',
   styles: ``
 })
 export class ProjectListOverviewComponent implements OnInit {
-  public projects: ProjectData[] = [];
+  public projects: ProjectData[] = mockProjectData;
   public projectStats: { [key: string]: { dossierCount: number; scanPercentage: number } } = {};
   private projectsSubscription: Subscription;
 
@@ -22,7 +22,6 @@ export class ProjectListOverviewComponent implements OnInit {
     this.projectsSubscription = this.dataService.getProjects().subscribe({
       next: (projects: ProjectData[]) => {
         this.projects = projects;
-        console.log('Projects loaded:', this.projects);
         projects.forEach(project => {
           if (project.projectId) {
             this.loadProjectStats(project.projectId);
@@ -39,33 +38,34 @@ export class ProjectListOverviewComponent implements OnInit {
     });
   }
 
-  private loadProjectStats(projectId: string) {
-    this.dataService.getDossiersByProjectId(projectId).subscribe(dossiers => {
-      const dossierCount = dossiers.length;
-      if (dossierCount === 0) {
-        this.projectStats[projectId] = { dossierCount: 0, scanPercentage: 0 };
-        return;
-      }
-      
-      let scanned = 0;
-      let checked = 0;
-      
-      dossiers.forEach(dossier => {
-        this.dataService.getAnalysisVersionsByDossier(dossier.id).subscribe(versions => {
-          checked++;
-          if (versions && versions.length > 0) {
-            scanned++;
-          }
-          if (checked === dossierCount) {
-            this.projectStats[projectId] = {
-              dossierCount: dossierCount,
-              scanPercentage: Math.round((scanned / dossierCount) * 100)
-            };
-          }
-        });
-      });
-    });
-  }
+   // Loads stats for a project: gets dossiers, checks each for analysis versions, calculates scan percentage
+   private loadProjectStats(projectId: string) {
+     this.dataService.getDossiersByProjectId(projectId).subscribe(dossiers => {
+       const dossierCount = dossiers.length;
+       if (dossierCount === 0) {
+         this.projectStats[projectId] = { dossierCount: 0, scanPercentage: 0 };
+         return;
+       }
+
+       let scanned = 0;
+       let checked = 0;
+
+       dossiers.forEach(dossier => {
+         this.dataService.getAnalysisVersionsByDossier(dossier.id).subscribe(versions => {
+           checked++;
+           if (versions && versions.length > 0) {
+             scanned++;
+           }
+           if (checked === dossierCount) {
+             this.projectStats[projectId] = {
+               dossierCount: dossierCount,
+               scanPercentage: Math.round((scanned / dossierCount) * 100)
+             };
+           }
+         });
+       });
+     });
+   }
 
   public navigateToCreateProjectPage() {
     this.router.navigate(['projects/create-new']);

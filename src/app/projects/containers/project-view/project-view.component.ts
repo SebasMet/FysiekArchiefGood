@@ -32,33 +32,34 @@ export class ProjectViewComponent implements OnInit {
     this.projectData$ = this.dataService.getProjectById(this.projectId);
   }
 
-  private loadDossiers() {
-    if (!this.projectId) return;
+   // Loads dossiers for the project and checks each for scan completion by fetching analysis versions
+   private loadDossiers() {
+     if (!this.projectId) return;
 
-    this.dossiersInfo$ = this.dataService.getDossiersByProjectId(this.projectId).pipe(
-      map(dossiers => {
-        dossiers.forEach(dossier => {
-          this.dataService.getAnalysisVersionsByDossier(dossier.id).subscribe({
-            next: (data) => {
-              if (data && data.length > 0) {
-                console.log('Analysis versions fetched successfully for dossier:', dossier.id);
-                dossier.scanCompleted = true;
-              } else {
-                console.log('No analysis versions found for dossier:', dossier.id);
-                dossier.scanCompleted = false;
-              }
-            },
-            error: (error) => {
-              console.error('Error fetching analysis versions for dossier:', dossier.id, error);
-              dossier.scanCompleted = false;
-            },
-            complete: () => {
-              console.log('Analysis versions fetch completed for dossier:', dossier.id);
-            }
-          });
-        });
-        return dossiers;
-      })
-    )
-  }
+     this.dossiersInfo$ = this.dataService.getDossiersByProjectId(this.projectId).pipe(
+       map(dossiers => {
+         dossiers.forEach(dossier => {
+           this.dataService.getAnalysisVersionsByDossier(dossier.id).subscribe({
+             next: (data) => {
+               if (data && data.length > 0) {
+                 console.log('Analysis versions fetched successfully for dossier:', dossier.id);
+                 dossier.scanCompleted = true;
+               } else {
+                 console.log('No analysis versions found for dossier:', dossier.id);
+                 dossier.scanCompleted = false;
+               }
+             },
+             error: (error) => {
+               console.error('Error fetching analysis versions for dossier:', dossier.id, error);
+               dossier.scanCompleted = false;
+             },
+             complete: () => {
+               console.log('Analysis versions fetch completed for dossier:', dossier.id);
+             }
+           });
+         });
+         return dossiers;
+       })
+     )
+   }
 }

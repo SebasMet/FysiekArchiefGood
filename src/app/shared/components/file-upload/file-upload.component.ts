@@ -65,43 +65,40 @@ export class FileUploadComponent {
   }
 
 
-  private async uploadFiles() {
-    console.log('Uploading files:', this.selectedFiles);
-    if (!this.selectedFiles.pdf || !this.selectedFiles.json) {
-      this.uploadError = 'Both PDF and JSON files are required.';
-      return;
-    }
+   // Uploads PDF and JSON files, generates UUID, calls dataService.uploadFile, navigates to report on success
+   private async uploadFiles() {
+     console.log('Uploading files:', this.selectedFiles);
+     if (!this.selectedFiles.pdf || !this.selectedFiles.json) {
+       this.uploadError = 'Both PDF and JSON files are required.';
+       return;
+     }
 
-    this.uploadError = null;
-    this.uploadSuccess = false;
-    this.uploadProgress = 0;
+     this.uploadError = null;
+     this.uploadSuccess = false;
+     this.uploadProgress = 0;
 
-    const uuid = uuidv4(); 
-    console.log(this.selectedFiles);
+     const uuid = uuidv4();
+     console.log(this.selectedFiles);
 
-    try {
-;
+     try {
 
-      this.dataService.uploadFile(this.selectedFiles.pdf, this.selectedFiles.json, uuid, this.projectId).subscribe({
-        next: (dossierUUID) => {
-          console.log('File uploaded successfully:', dossierUUID);
-          this.router.navigate(['/report', dossierUUID]);
-          this.uploadSuccess = true;
-        },
-        error: (error) => {
-          console.error('Error during file upload:', error);
-          this.uploadError = 'An error occurred during file upload.';
-        }
-      });
+       this.dataService.uploadFile(this.selectedFiles.pdf, this.selectedFiles.json, uuid, this.projectId).subscribe({
+         next: (dossierUUID) => {
+           console.log('File uploaded successfully:', dossierUUID);
+           this.router.navigate(['/report', dossierUUID]);
+           this.uploadSuccess = true;
+         },
+         error: (error) => {
+           console.error('Error during file upload:', error);
+           this.uploadError = 'An error occurred during file upload.';
+         }
+       });
 
-
-
-
-    } catch (error) {
-      console.error('Error during file upload:', error);
-      this.uploadError = 'An error occurred during file upload.';
-    }
-  }
+     } catch (error) {
+       console.error('Error during file upload:', error);
+       this.uploadError = 'An error occurred during file upload.';
+     }
+   }
 
   resetState() {
     this.selectedFiles = { pdf: null, json: null };

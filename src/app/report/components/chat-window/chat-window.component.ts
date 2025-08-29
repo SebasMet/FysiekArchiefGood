@@ -51,7 +51,7 @@ export class ChatWindowComponent implements OnInit {
   public formatRole(role: string): string {
     switch (role) {
       case 'user':
-        return 'Manuelito 😀';
+        return 'User 😀';
       case 'assistant':
         return 'RvIHH Assistent 🤖';
       case 'system':

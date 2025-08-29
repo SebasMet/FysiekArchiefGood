@@ -23,7 +23,6 @@ export function dateRangeValidator(fromControlName: string, toControlName: strin
         toDateControl.setErrors(null);
       }
 
-
       if (fromDateObj > toDateObj) {
         toDateControl.setErrors({ ...toDateControl.errors, dateOrderInvalid: true });
         return { dateOrderInvalid: true };

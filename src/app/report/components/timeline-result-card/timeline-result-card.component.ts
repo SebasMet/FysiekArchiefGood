@@ -13,10 +13,11 @@ export class TimelineResultCardComponent implements OnChanges {
   public dateringenData: any = {};
   public initalized: boolean
 
+  // Get list of dateringen and calculate first and last date
   ngOnChanges(changes: SimpleChanges): void {
-    console.log('Changes detected:', this.dateringen);
     if (changes['dateringen'] && this.dateringen.extracted_or_validated_data) {
       this.dateringenData = this.dateringen.extracted_or_validated_data;
+
       if (this.dateringenData.events || this.dateringenData.dates) {
         this.dateringenData.first_date = this.dateringenData.events?.[0] || this.dateringenData.dates?.[0];
         this.dateringenData.last_date = this.dateringenData.events?.slice(-1)[0] || this.dateringenData.dates?.slice(-1)[0];

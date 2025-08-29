@@ -28,6 +28,10 @@ const test_user = {
   password: 'Password',
 };
 
+/**
+ * Service for interacting with the Supabase backend.
+ * Handles data operations for projects, dossiers, and analysis.
+ */
 @Injectable({
   providedIn: 'root',
 })
@@ -45,6 +49,7 @@ export class DataService {
       environment.SUPABASE_URL,
       environment.SUPABASE_ANON_KEY
     );
+    // Automatically logs in a test user upon service initialization.
     this.login();
   }
 
@@ -55,43 +60,38 @@ export class DataService {
     return this._session;
   }
 
-public getAnalysisVersionsByDossier(dossierId: string)  {
-  console.log
-  return defer(() =>
-    from(
-      this.supabase
-          .from('analysis')
-          .select('id')
-          .eq('dossier_id', dossierId)
-    )
-  ).pipe(
-    switchMap(({ data: analysisRows, error }) => {
-      if (error) {
-        throw error;
-      }
+  /**
+   * Fetches all analysis versions linked to a specific dossier.
+   */
+  public getAnalysisVersionsByDossier(dossierId: string) {
+    return defer(() =>
+      from(
+        this.supabase.from('analysis').select('id').eq('dossier_id', dossierId)
+      )
+    ).pipe(
+      switchMap(({ data: analysisRows, error }) => {
+        if (error) throw error;
+        const analysisIds = (analysisRows ?? []).map((r) => r.id);
+        if (!analysisIds.length) return of({ data: [], error: null });
 
-      const analysisIds = (analysisRows ?? []).map(r => r.id);
-
-      if (!analysisIds.length) {
-        return of({ data: [], error: null });
-      }
-
-      return from(
-        this.supabase
+        return from(
+          this.supabase
             .from('analysis_versions')
             .select('*')
             .in('analysis_id', analysisIds)
-      );
-    }),
-    map(({ data }) => data ?? []),
+        );
+      }),
+      map(({ data }) => data ?? []),
+      catchError((err) => {
+        console.error('Error fetching analysis_versions:', err);
+        return of([]);
+      })
+    );
+  }
 
-    catchError(err => {
-      console.error('Error fetching analysis_versions:', err);
-      return of([]);
-    })
-  );
-}
-
+  /**
+   * Uploads a file to storage and creates a corresponding dossier record.
+   */
   public uploadFile(
     file: File,
     jsonFile: File,
@@ -109,9 +109,7 @@ public getAnalysisVersionsByDossier(dossierId: string)  {
       )
     ).pipe(
       tap(({ error }) => {
-        if (error) {
-          throw error;
-        }
+        if (error) throw error;
       }),
       switchMap(({ data }) => {
         if (data?.id) {
@@ -120,7 +118,6 @@ public getAnalysisVersionsByDossier(dossierId: string)  {
         }
         return of(null);
       }),
-
       catchError((err) => {
         console.error('smth went wrong uploading the file', err);
         return of(null);
@@ -128,21 +125,16 @@ public getAnalysisVersionsByDossier(dossierId: string)  {
     );
   }
 
+  /**
+   * Creates a dossier record in the database.
+   */
   private createDossier(
     projectId: string,
     storageObjectId: string,
     jsonFile: File
   ): Observable<string | null> {
     return defer(() => from(jsonFile.text())).pipe(
-      map((rawText) => {
-        try {
-          return JSON.parse(rawText);
-        } catch (error) {
-          console.error('Invalid JSON file', error);
-          throw error;
-        }
-      }),
-
+      map((rawText) => JSON.parse(rawText)),
       switchMap((parsedContent) =>
         from(
           this.supabase
@@ -157,14 +149,7 @@ public getAnalysisVersionsByDossier(dossierId: string)  {
             .single()
         )
       ),
-      tap((resp) => {
-        if (resp.error) {
-          throw resp.error;
-        }
-        console.log('Dossier created with ID:', resp.data?.id);
-      }),
       map((resp) => resp.data?.id ?? null),
-
       catchError((err) => {
         console.error('Error creating dossier:', err);
         return of(null);
@@ -172,14 +157,13 @@ public getAnalysisVersionsByDossier(dossierId: string)  {
     );
   }
 
+  /**
+   * Fetches all projects and maps them to the ProjectData interface.
+   */
   public getProjects(): Observable<ProjectData[]> {
     return defer(() =>
       this.supabase.from('projects').select(`
-        id,
-        name,
-        period_from,
-        period_to,
-        actors
+        id, name, period_from, period_to, actors
       `)
     ).pipe(
       map((response: any) => {
@@ -189,15 +173,15 @@ public getAnalysisVersionsByDossier(dossierId: string)  {
         }
         return (response.data || []).map(
           (item: any) =>
-          ({
-            generalInformation: {
-              projectName: item.name,
-              projectPeriodFrom: item.period_from,
-              projectPeriodTo: item.period_to,
-            },
-            actorInformation: item.actors || [],
-            projectId: item.id
-          } as ProjectData)
+            ({
+              generalInformation: {
+                projectName: item.name,
+                projectPeriodFrom: item.period_from,
+                projectPeriodTo: item.period_to,
+              },
+              actorInformation: item.actors || [],
+              projectId: item.id,
+            } as ProjectData)
         );
       }),
       catchError((error) => {
@@ -207,6 +191,9 @@ public getAnalysisVersionsByDossier(dossierId: string)  {
     );
   }
 
+  /**
+   * Fetches all dossiers associated with a specific project ID.
+   */
   public getDossiersByProjectId(projectId: string): Observable<any[]> {
     return defer(() =>
       this.supabase
@@ -215,11 +202,7 @@ public getAnalysisVersionsByDossier(dossierId: string)  {
         .eq('project_id', projectId)
     ).pipe(
       map((response: any) => {
-        if (response.error) {
-          console.error('Supabase error fetching dossiers:', response.error);
-          return [];
-        }
-        console.log('Fetched dossiers:', response.data);
+        if (response.error) return [];
         return response.data || [];
       }),
       catchError((error) => {
@@ -229,6 +212,9 @@ public getAnalysisVersionsByDossier(dossierId: string)  {
     );
   }
 
+  /**
+   * Creates a new project in the database.
+   */
   public createProject(projectData: ProjectData): Observable<string | null> {
     const projectDataPayload = {
       actors: projectData.actorInformation,
@@ -254,23 +240,23 @@ public getAnalysisVersionsByDossier(dossierId: string)  {
     );
   }
 
- public startAnalysis(dossierId: string): Observable<any> {
-
+  /**
+   * Listens for real-time analysis updates for a dossier via Supabase Channels.
+   * Completes when it receives a 'completed' status.
+   */
+  public startAnalysis(dossierId: string): Observable<any> {
     return new Observable<any>((observer) => {
-      console.log('Starting analysis for dossier:', dossierId);
-      const channel = this.supabase.channel(`dossier-analysis-${dossierId}`)
+      const channel = this.supabase
+        .channel(`dossier-analysis-${dossierId}`)
         .on('broadcast', { event: 'dossier-analysis' }, async (payload) => {
           const status = payload?.['payload']?.status;
-          console.log('status update Dservice', status);
 
           if (status === 'completed') {
-            console.log('Analysis completed for dossier:', dossierId);
             channel.unsubscribe();
-
             try {
-              const { data, error } = await this.fetchLatestAnalysisVersion(dossierId);
+              const { data, error } =
+                await this.fetchLatestAnalysisVersion(dossierId);
               if (error) throw error;
-
               observer.next(data);
               observer.complete();
             } catch (err) {
@@ -280,91 +266,64 @@ public getAnalysisVersionsByDossier(dossierId: string)  {
         })
         .subscribe();
 
-      // Teardown if caller unsubscribes early
+      // Teardown logic
       return () => channel.unsubscribe();
     });
   }
 
+  /**
+   * Fetches a single project by its ID.
+   */
   public getProjectById(projectId: string): Observable<ProjectData | null> {
-  return defer(() =>
-    this.supabase
-      .from('projects')
-      .select(`
-        id,
-        name,
-        period_from,
-        period_to,
-        actors
-      `)
-      .eq('id', projectId)
-      .single()
-  ).pipe(
-    map((response: any) => {
-      if (response.error) {
-        console.error('Supabase error fetching project:', response.error);
-        return null;
-      }
-      
-      if (!response.data) {
-        return null;
-      }
-
-      return {
-        generalInformation: {
-          projectName: response.data.name,
-          projectPeriodFrom: response.data.period_from,
-          projectPeriodTo: response.data.period_to,
-        },
-        actorInformation: response.data.actors || [],
-        projectId: response.data.id
-      } as ProjectData;
-    }),
-    catchError((error) => {
-      console.error('Error fetching project:', error);
-      return of(null);
-    })
-  );
-}
-
-
-  // public getArchiveAnalyzeResults(uuid: string): Observable<any> {
-  //   // const url = new URL(`${environment.SUPABASE_URL}/storage/v1/object/public/archives/${uuid}`);
-  //   console.log("called")
-  //   const url = `http://localhost:3000/data`
-  //   return this.http.get<any>(url.toString())
-
-  // }
-
-private fetchLatestAnalysisVersion(dossierId: string) {
-  return this.supabase
-    .from('analysis_versions')
-    .select('*, analysis!inner(id, dossier_id)')
-    .eq('analysis.dossier_id', dossierId)
-    .order('version_number', { ascending: false })
-    .limit(1)
-    .maybeSingle();
-}
-
-  private async login() {
-    const session = await this.supabase.auth.signInWithPassword({
-      ...test_user,
-    });
-    if (session.error) {
-      throw new Error('Failed to generate access token', {
-        cause: session.error,
-      });
-    } else {
-      this._session = session.data.session;
-      console.log('pogchamp');
-      console.log(session.data.user.id);
-    }
+    return defer(() =>
+      this.supabase
+        .from('projects')
+        .select(`id, name, period_from, period_to, actors`)
+        .eq('id', projectId)
+        .single()
+    ).pipe(
+      map((response: any) => {
+        if (response.error || !response.data) return null;
+        return {
+          generalInformation: {
+            projectName: response.data.name,
+            projectPeriodFrom: response.data.period_from,
+            projectPeriodTo: response.data.period_to,
+          },
+          actorInformation: response.data.actors || [],
+          projectId: response.data.id,
+        } as ProjectData;
+      }),
+      catchError((error) => {
+        console.error('Error fetching project:', error);
+        return of(null);
+      })
+    );
   }
 
-  // public async uploadFile(file: File, uuid: string) {
-  //   const response = this.supabase.storage.from('archives').upload(`${file.name}_${uuid}`, file)
+  /**
+   * Helper to get the most recent analysis version for a dossier.
+   */
+  private fetchLatestAnalysisVersion(dossierId: string) {
+    return this.supabase
+      .from('analysis_versions')
+      .select('*, analysis!inner(id, dossier_id)')
+      .eq('analysis.dossier_id', dossierId)
+      .order('version_number', { ascending: false })
+      .limit(1)
+      .maybeSingle();
+  }
 
-  // }
-
-  //https://www.learnrxjs.io/learn-rxjs/recipes/http-polling
-  //https://ui.dev/imperative-vs-declarative-programming
+  /**
+   * Authenticates using hardcoded test user credentials.
+   */
+  private async login() {
+    const { data, error } = await this.supabase.auth.signInWithPassword({
+      ...test_user,
+    });
+    if (error) {
+      throw new Error('Failed to generate access token', { cause: error });
+    }
+    this._session = data.session;
+  }
 }

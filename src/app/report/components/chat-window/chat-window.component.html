@@ -1,67 +1,38 @@
+<!-- Chat window card with messages and input -->
 <div hlmCard class="flex flex-col w-full bg-white overflow-hidden max-h-[60vh]">
-  <!-- Chat messages area -->
+  <!-- Messages display area -->
   <div hlmCardContent class="flex-1 overflow-y-auto p-4">
     <ng-container *ngFor="let m of messages">
       <div *ngIf="m.role !== 'system'" class="flex items-start space-x-3">
-        <!-- Avatar -->
-        <img
-          *ngIf="m.role === 'user'; else assistantAvatar"
-          src="/assets/user-avatar.png"
-          class="w-10 h-10 rounded-full object-cover"
-          alt="User avatar"
-        />
+        <!-- User or assistant avatar -->
+        <img *ngIf="m.role === 'user'; else assistantAvatar" src="/assets/user-avatar.png"
+          class="w-10 h-10 rounded-full object-cover" alt="User avatar" />
         <ng-template #assistantAvatar>
-          <img
-            src="/assets/ai-avatar.png"
-            class="w-10 h-10 rounded-full object-cover"
-            alt="Assistant avatar"
-          />
+          <img src="/assets/ai-avatar.png" class="w-10 h-10 rounded-full object-cover" alt="Assistant avatar" />
         </ng-template>
 
-        <!-- Message content -->
+        <!-- Message content with role and markdown -->
         <div class="flex-1">
           <div class="font-semibold text-muted-foreground mb-1">
             {{ formatRole(m.role) }}
           </div>
           <div class="text-foreground leading-snug whitespace-pre-wrap">
-            <markdown
-              *ngIf="m.content.length > 0"
-              [data]="m.content"
-            ></markdown>
+            <markdown *ngIf="m.content.length > 0" [data]="m.content"></markdown>
           </div>
         </div>
       </div>
     </ng-container>
   </div>
 
-  <!-- Input form -->
+  <!-- Input form for sending messages -->
   <form (ngSubmit)="handleSubmit()" class="p-4 border-t bg-white">
     <div class="flex items-end space-x-2">
-      <textarea
-        (keydown.enter)="onEnter($event)"
-        [(ngModel)]="input"
-        name="chatInput"
-        rows="1"
+      <textarea (keydown.enter)="onEnter($event)" [(ngModel)]="input" name="chatInput" rows="1"
         class="flex-1 p-2 border border-gray-300 rounded-lg resize-none shadow-sm focus:outline-none focus:ring focus:border-blue-300"
-        placeholder="Welke handelingen zijn relevant?"
-      ></textarea>
-      <button
-        type="submit"
-        class="bg-blue-600 hover:bg-blue-700 text-white p-2 rounded-full shadow-md"
-      >
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          class="h-5 w-5"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
-        >
-          <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="2"
-            d="M5 13l4 4L19 7"
-          />
+        placeholder="Welke handelingen zijn relevant?"></textarea>
+      <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white p-2 rounded-full shadow-md">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
         </svg>
       </button>
     </div>

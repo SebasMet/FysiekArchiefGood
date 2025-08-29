@@ -1,9 +1,8 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { DataService } from '@core/services/data.service';
-import { AnalyzedDocument, ActorMentioned } from '@core/models/result.model'; // Adjust path if needed
-import { map, Observable, Subscription } from 'rxjs';
-import { Database } from '@core/types/types';
+import { AnalyzedDocument } from '@core/models/result.model';
+import { map } from 'rxjs';
 
 
 export interface GroupedActor {
@@ -41,53 +40,54 @@ export class ReportViewComponent {
     private dataService: DataService
   ) {}
 
-ngOnInit(): void {
-  this._uuid = this.route.snapshot.paramMap.get('uuid')!;
+ // Loads latest analysis version or starts new analysis, then sets actoren, dateringen, beschrijving, handelingen data
+ ngOnInit(): void {
+   this._uuid = this.route.snapshot.paramMap.get('uuid')!;
 
-  this.dataService.getAnalysisVersionsByDossier(this._uuid).pipe(
+   this.dataService.getAnalysisVersionsByDossier(this._uuid).pipe(
 
-  map((versions) => {
-      if (versions.length === 0) return null;
+   map((versions) => {
+       if (versions.length === 0) return null;
 
-      return versions.sort((a, b) => b.version_number - a.version_number)[0];
-    })
+       return versions.sort((a, b) => b.version_number - a.version_number)[0];
+     })
 
-  ).subscribe({
-    next: (latest) => {
-      console.log('Latest version:', latest);
-      if (!latest) {
-        this.dataService.startAnalysis(this._uuid).subscribe({
-          next: (result) => {
-            console.log(result)
-            const actorenData = result.actoren as unknown as ActorenData
+   ).subscribe({
+     next: (latest) => {
+       console.log('Latest version:', latest);
+       if (!latest) {
+         this.dataService.startAnalysis(this._uuid).subscribe({
+           next: (result) => {
+             console.log(result)
+             const actorenData = result.actoren as unknown as ActorenData
 
-            this.actoren      = actorenData.actoren;
-            this.dateringen   = result.datering;
-            this.beschrijving = result.beschrijving;
-            this.handelingen = result.handeling
+             this.actoren      = actorenData.actoren;
+             this.dateringen   = result.datering;
+             this.beschrijving = result.beschrijving;
+             this.handelingen = result.handeling
 
-            console.log('Actoren:', this.actoren);
-            console.log('Dateringen:', this.dateringen);
-            console.log('Beschrijving:', this.beschrijving);
-                    
+             console.log('Actoren:', this.actoren);
+             console.log('Dateringen:', this.dateringen);
+             console.log('Beschrijving:', this.beschrijving);
 
-            this.initialized = true;
-          }
-        });
-      } else {
-        const actorenData = latest.actoren as unknown as ActorenData
 
-        this.actoren      = actorenData.actoren;
-        this.dateringen   = latest.datering;
-        this.beschrijving = latest.beschrijving;
-        this.handelingen = latest.handeling
-        console.log('Actoren:', this.actoren);
-        console.log('Dateringen:', this.dateringen);
-        console.log('Beschrijving:', this.beschrijving);
-        this.initialized = true;
-      }
-    },
-    error: console.error
-  });
-}
+             this.initialized = true;
+           }
+         });
+       } else {
+         const actorenData = latest.actoren as unknown as ActorenData
+
+         this.actoren      = actorenData.actoren;
+         this.dateringen   = latest.datering;
+         this.beschrijving = latest.beschrijving;
+         this.handelingen = latest.handeling
+         console.log('Actoren:', this.actoren);
+         console.log('Dateringen:', this.dateringen);
+         console.log('Beschrijving:', this.beschrijving);
+         this.initialized = true;
+       }
+     },
+     error: console.error
+   });
+ }
 }

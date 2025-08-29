@@ -7,7 +7,6 @@
   </div>
 
   <div formArrayName="actorEntries">
-
     <div *ngFor="let actorEntryControl of actorEntries.controls; let i = index"
          [formGroupName]="i"
          class="flex flex-col gap-y-4 mb-4">
@@ -15,7 +14,6 @@
       <h3>Actor {{ i + 1 }}</h3>
 
       <div class="space-y-1.5">
-
         <label hlmLabel class="text-base" [for]="'actorNaam-' + i"> Naam </label>
         <textarea [id]="'actorNaam-' + i"
                   formControlName="actorNaam"
@@ -26,9 +24,7 @@
              class="text-red-500 text-xs">
           <span *ngIf="actorEntryControl.get('actorNaam')?.errors?.['required']">Naam is vereist.</span>
         </div>
-
       </div>
-
     </div>
   </div>
 

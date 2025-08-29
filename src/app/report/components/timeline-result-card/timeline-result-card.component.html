@@ -1,26 +1,30 @@
+<!-- Timeline result card with first/last events and timeline -->
 <div hlmCard class="w-full  h-fit flex flex-col gap-y-4">
-  <div class="pb-0" hlmCardHeader>
-    <h1 class="text-base text-muted-foreground">Tijdlijn</h1>
-  </div>
-  <div hlmCardContent *ngIf="initalized; else noContent " class="flex flex-col gap-y-4">
-    <div class="  flex justify-between mr-32">
-      <div class="max-w-64">
-        <h2 class="text-xl font-medium">Eerste Gebeurtenis</h2>
-        <h3 class="text-muted-foreground uppercase text-base">{{this.dateringenData.dates?.[0]}}</h3>
-        <h3 class="text-muted-foreground text-base">{{this.dateringenData.events?.[0]}} </h3>
-      </div>
-      <div class="max-w-64">
-        <h2 class="text-xl font-medium">Laatste Gebeurtenis</h2>
-        <h3 class="text-muted-foreground uppercase text-base">{{this.dateringenData.dates?.slice(-1)[0]}}</h3>
-        <h3 class="text-muted-foreground text-base">{{this.dateringenData.events?.slice(-1)[0]}} </h3>
-      </div>
-    </div>
-    <app-timeline></app-timeline>
-  </div>
-  <ng-template #noContent>
-    <div hlmCardContent class="flex flex-col items-center justify-center gap-y-2">
-      <ng-icon name="heroExclamationTriangle" size="24px" strokeWidth="2px"></ng-icon>
-      <p class="text-muted-foreground text-sm">{{this.dateringenData.note || "Geen dateringen gevonden"}}</p>
-    </div>
-  </ng-template>
-</div>
+   <!-- Card header -->
+   <div class="pb-0" hlmCardHeader>
+     <h1 class="text-base text-muted-foreground">Tijdlijn</h1>
+   </div>
+   <!-- Main content with events and timeline -->
+   <div hlmCardContent *ngIf="initalized; else noContent " class="flex flex-col gap-y-4">
+     <div class="  flex justify-between mr-32">
+       <div class="max-w-64">
+         <h2 class="text-xl font-medium">Eerste Gebeurtenis</h2>
+         <h3 class="text-muted-foreground uppercase text-base">{{this.dateringenData.dates?.[0]}}</h3>
+         <h3 class="text-muted-foreground text-base">{{this.dateringenData.events?.[0]}} </h3>
+       </div>
+       <div class="max-w-64">
+         <h2 class="text-xl font-medium">Laatste Gebeurtenis</h2>
+         <h3 class="text-muted-foreground uppercase text-base">{{this.dateringenData.dates?.slice(-1)[0]}}</h3>
+         <h3 class="text-muted-foreground text-base">{{this.dateringenData.events?.slice(-1)[0]}} </h3>
+       </div>
+     </div>
+     <app-timeline></app-timeline>
+   </div>
+   <!-- No content template -->
+   <ng-template #noContent>
+     <div hlmCardContent class="flex flex-col items-center justify-center gap-y-2">
+       <ng-icon name="heroExclamationTriangle" size="24px" strokeWidth="2px"></ng-icon>
+       <p class="text-muted-foreground text-sm">{{this.dateringenData.note || "Geen dateringen gevonden"}}</p>
+     </div>
+   </ng-template>
+ </div>

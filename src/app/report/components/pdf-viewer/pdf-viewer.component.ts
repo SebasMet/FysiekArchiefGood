@@ -14,7 +14,7 @@ import {
   PDFDocumentProxy,
   PDFPageProxy,
 } from 'pdfjs-dist/types/src/display/api';
-import { Observable, of } from 'rxjs';
+
 
 interface PdfShape {
   page: number;
@@ -88,6 +88,7 @@ export class PdfViewerComponent implements OnInit, AfterViewInit, OnDestroy {
     this.pdfDocument?.destroy();
   }
 
+  // Loads PDF from dataService, sets up PDF.js document, and renders first page
   async loadPdf() {
     try {
       if (!this.pdfCanvasRef || !this.overlayCanvasRef) {
@@ -121,6 +122,7 @@ export class PdfViewerComponent implements OnInit, AfterViewInit, OnDestroy {
   // }
   //  }
 
+  // Renders specified page to canvas with proper scaling and draws overlay
   async renderPage(pageNumber: number) {
     if (!this.pdfDocument) {
       return;
@@ -158,12 +160,13 @@ export class PdfViewerComponent implements OnInit, AfterViewInit, OnDestroy {
     }
   }
 
+  // Draws shapes on overlay canvas, converting PDF coordinates to viewport coordinates
   drawOverlay() {
     if (!this.pdfPage || !this.overlayCanvasRef) return;
 
     const overlayCanvas = this.overlayCanvasRef.nativeElement;
     const overlayCtx = overlayCanvas.getContext('2d');
-    const viewport = this.pdfPage.getViewport({ scale: this.scale }); 
+    const viewport = this.pdfPage.getViewport({ scale: this.scale });
 
     if (!overlayCtx) {
       console.error('Failed to get overlay canvas context');
@@ -172,7 +175,7 @@ export class PdfViewerComponent implements OnInit, AfterViewInit, OnDestroy {
 
     overlayCanvas.width = viewport.width;
     overlayCanvas.height = viewport.height;
-    overlayCanvas.style.width = `${viewport.width}px`; 
+    overlayCanvas.style.width = `${viewport.width}px`;
     overlayCanvas.style.height = `${viewport.height}px`;
 
     overlayCtx.clearRect(0, 0, overlayCanvas.width, overlayCanvas.height);

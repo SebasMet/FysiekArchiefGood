@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, FormArray, Validators } from '@angular/forms';
 
 @Component({
@@ -11,9 +11,7 @@ import { FormBuilder, FormGroup, FormArray, Validators } from '@angular/forms';
 export class ConfigActorInformationComponent {
   public actorListForm!: FormGroup;
 
-  constructor(private fb: FormBuilder) {}
-
-  ngOnInit(): void {
+  constructor(private fb: FormBuilder) {
     this.actorListForm = this.fb.group({
       actorEntries: this.fb.array([])
     });

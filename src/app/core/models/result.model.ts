@@ -1,3 +1,4 @@
+// types for the structure of the analyzed document data, bounding box for drawing on the PDF for each actor mentioned
 export interface BoundingBox {
   x: number;
   y: number;

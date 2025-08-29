@@ -1,17 +1,12 @@
-
 import { Component, TrackByFunction, computed, effect, signal } from '@angular/core';
 import { toObservable, toSignal } from '@angular/core/rxjs-interop';
-import { PaginatorState, useBrnColumnManager } from '@spartan-ng/brain/table';
-import { debounceTime, map } from 'rxjs';
+import { ProcessedArchive } from '@core/models/archive.model';
+import { PaginatorState } from '@spartan-ng/brain/table';
+import { debounceTime } from 'rxjs';
 
-export type ProcessedArchive = {
-  id: string;
-  name: string;
-  ministry: string;
-  assignedEmployee: string;
-  status: 'Geaccepteerd' | 'Geweigerd' | 'To be processed';
-};
-
+/**
+ * Mock data for the table, representing a list of processed archives.
+ */
 const ARCHIVE_DATA: ProcessedArchive[] = [
   {
     id: 'doc-1001',
@@ -155,6 +150,10 @@ const ARCHIVE_DATA: ProcessedArchive[] = [
   },
 ];
 
+/**
+ * Component for displaying an overview table of processed archives.
+ * It features filtering, sorting, and pagination using Angular Signals and spartan.ng components.
+ */
 @Component({
   selector: 'app-status-overview-table',
   standalone: false,
@@ -162,14 +161,7 @@ const ARCHIVE_DATA: ProcessedArchive[] = [
   styleUrl: './status-overview-table.component.css'
 })
 export class StatusOverviewTableComponent {
-  protected readonly _rawFilterInput = signal('');
-  protected readonly _nameFilter = signal('');
-  private readonly _debouncedFilter = toSignal(toObservable(this._rawFilterInput).pipe(debounceTime(300)));
-
-  private readonly _displayedIndices = signal({ start: 0, end: 0 });
   protected readonly _availablePageSizes = [10, 20, 50, 10000];
-  protected readonly _pageSize = signal(this._availablePageSizes[0]);
-
   protected readonly allDisplayedColumns = [
     'name',
     'ministry',
@@ -177,7 +169,17 @@ export class StatusOverviewTableComponent {
     'status'
   ];
 
+  protected readonly _rawFilterInput = signal('');
+  protected readonly _nameFilter = signal('');
+  protected readonly _pageSize = signal(this._availablePageSizes[0]);
+
+  private readonly _displayedIndices = signal({ start: 0, end: 0 });
+  private readonly _ministrySort = signal<'ASC' | 'DESC' | null>(null);
   private readonly _processedArchives = signal(ARCHIVE_DATA);
+
+  // Converts raw filter input to an Observable, debounces it, then converts back to a signal.
+  private readonly _debouncedFilter = toSignal(toObservable(this._rawFilterInput).pipe(debounceTime(300)));
+  // Computed signal that filters `_processedArchives` based on `_nameFilter`.
   private readonly _filteredArchives = computed(() => {
     const nameFilter = this._nameFilter()?.trim()?.toLowerCase();
     if (nameFilter && nameFilter.length > 0) {
@@ -185,7 +187,7 @@ export class StatusOverviewTableComponent {
     }
     return this._processedArchives();
   });
-  private readonly _ministrySort = signal<'ASC' | 'DESC' | null>(null);
+  // Computed signal that applies filtering, sorting, and pagination to the data.
   protected readonly _filteredSortedPaginatedPayments = computed(() => {
     const sort = this._ministrySort();
     const start = this._displayedIndices().start;
@@ -198,16 +200,20 @@ export class StatusOverviewTableComponent {
       .sort((p1, p2) => (sort === 'ASC' ? 1 : -1) * p1.ministry.localeCompare(p2.ministry))
       .slice(start, end);
   });
-
-  protected readonly _trackBy: TrackByFunction<ProcessedArchive> = (_: number, p: ProcessedArchive) => p.id;
+  // Computed signal for the total number of filtered elements, used by the paginator.
   protected readonly _totalElements = computed(() => this._filteredArchives().length);
+
+  // TrackBy function for optimizing change detection in the table.
+  protected readonly _trackBy: TrackByFunction<ProcessedArchive> = (_: number, p: ProcessedArchive) => p.id;
+  // Callback function for when the paginator state changes.
   protected readonly _onStateChange = ({ startIndex, endIndex }: PaginatorState) =>
     this._displayedIndices.set({ start: startIndex, end: endIndex });
 
+
   constructor() {
+    // Effect to update `_nameFilter` whenever `_debouncedFilter` changes.
     effect(() => this._nameFilter.set(this._debouncedFilter() ?? ''), { allowSignalWrites: true });
   }
-
 
   protected handleMinistirySort() {
     const sort = this._ministrySort();
@@ -219,5 +225,4 @@ export class StatusOverviewTableComponent {
       this._ministrySort.set('ASC');
     }
   }
-
 }

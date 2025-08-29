@@ -11,7 +11,7 @@ export class SafeBase64ImagePipe implements PipeTransform {
 
   transform(base64String: string | null | undefined, imageType: string = 'png'): SafeUrl | null {
     if (!base64String) {
-      return null; // Return null if no string is provided
+      return null; 
     }
 
     const imageUrl = `data:image/${imageType};base64,${base64String}`;

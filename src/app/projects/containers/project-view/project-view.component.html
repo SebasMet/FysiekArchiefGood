@@ -1,44 +1,43 @@
+<!-- Project header with title and action buttons -->
 <div class="w-full flex justify-between items-center mb-12">
-  <div>
-    <h1 class="text-3xl font-semibold mb-2.5">{{ (projectData$ | async)?.generalInformation?.projectName || 'Project Title' }}</h1>
-  </div>
-  <div class="space-x-3 ">
-    <button variant="outline" hlmBtn>
-      <ng-icon name="heroArrowDownTray" size="20px" strokeWidth="2px" class="mr-1"></ng-icon>
-      Export
-    </button>
-    <button variant="outline" hlmBtn>
-      <ng-icon name="heroCog6Tooth" size="20px" strokeWidth="2px"></ng-icon>
-    </button>
-  </div>
-</div>
+   <div>
+     <h1 class="text-3xl font-semibold mb-2.5">{{ (projectData$ | async)?.generalInformation?.projectName || 'Project Title' }}</h1>
+   </div>
+   <div class="space-x-3 ">
+     <button variant="outline" hlmBtn>
+       <ng-icon name="heroArrowDownTray" size="20px" strokeWidth="2px" class="mr-1"></ng-icon>
+       Export
+     </button>
+     <button variant="outline" hlmBtn>
+       <ng-icon name="heroCog6Tooth" size="20px" strokeWidth="2px"></ng-icon>
+     </button>
+   </div>
+ </div>
 
-
+<!-- Main content layout with scan section and sidebar -->
 <div class="flex flex-col lg:flex-row gap-8 justify-between">
+   <!-- Left side: Scan section with dossier cards and upload -->
+   <div class="min-w-[450px]">
+     <div class="flex justify-between items-center">
+       <h1 class="text-3xl font-semibold mb-2.5">Start Scan</h1>
+       <button variant="outline" hlmBtn>
+         <ng-icon name="heroPlus" size="20px" strokeWidth="2px" class="mr-1"></ng-icon>
+         Dossier toevoegen
+       </button>
+     </div>
 
-  <div class="min-w-[450px]">
+     <div class="grid gap-5 mt-5 grid-cols-1 xl:grid-cols-2" *ngIf="dossiersInfo$ | async as dossiersInfo">
+       <app-dossier-info-card *ngFor="let dossierInfo of dossiersInfo" [dossierInfo]="dossierInfo">
+       </app-dossier-info-card>
 
-    <div class="flex justify-between items-center">
-      <h1 class="text-3xl font-semibold mb-2.5">Start Scan</h1>
-      <button variant="outline" hlmBtn>
-        <ng-icon name="heroPlus" size="20px" strokeWidth="2px" class="mr-1"></ng-icon>
-        Dossier toevoegen
-      </button>
-    </div>
+       <div *ngIf="!dossiersInfo || dossiersInfo.length < 4">
+           <app-file-upload [projectId]="projectId"></app-file-upload>
+       </div>
+     </div>
+   </div>
 
-    <div class="grid gap-5 mt-5 grid-cols-1 xl:grid-cols-2" *ngIf="dossiersInfo$ | async as dossiersInfo">
-      <app-dossier-info-card *ngFor="let dossierInfo of dossiersInfo" [dossierInfo]="dossierInfo">
-      </app-dossier-info-card>
-
-      <div *ngIf="!dossiersInfo || dossiersInfo.length < 4">
-          <app-file-upload [projectId]="projectId"></app-file-upload>
-      </div>
-    </div>
-
-  </div>
-
-  <div class="w-full lg:w-1/3 p-4">
-    <app-project-view-sidebar [projectData]="projectData$ | async"></app-project-view-sidebar>
-  </div>
-
-</div>
+   <!-- Right side: Project sidebar -->
+   <div class="w-full lg:w-1/3 p-4">
+     <app-project-view-sidebar [projectData]="projectData$ | async"></app-project-view-sidebar>
+   </div>
+ </div>
